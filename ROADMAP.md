@@ -1,14 +1,14 @@
-# Bench stack — build roadmap (v2.2, 2026-09-15)
+# Bench stack — build roadmap (v2.3, 2026-09-15)
 
 Companion to `HANDOVER.md` (v18). Rule for the whole build: **nothing in HANDOVER §10 prints full-size until the coupon that gates it (§11, P1–P9) has passed.** Coupon numbers below are the handover's.
 
 Stages run in order. Stage 2 (frame) overlaps Stage 1 (coupons) because the coupons only need rail offcuts.
 
-v2: decisions D1–D6 answered (§0), cut plan redone for the 300 mm pack (§2), P7 redefined (§3), viewer v19 and `drawer-quarters-v1.pdf` issued. v2.1: D7 (mini slot 285 with vent channel), viewer v20. v2.2: Done columns and the progress checklist below — tick ☐ → ☑ as things pass.
+v2: decisions D1–D6 answered (§0), cut plan redone for the 300 mm pack (§2), P7 redefined (§3), viewer v19 and `drawer-quarters-v1.pdf` issued. v2.1: D7 (mini slot 285 with vent channel), viewer v20. v2.2: Done columns and the progress checklist below; viewer versions collapsed into `bench-stack-3d.html`. v2.3: D5 confirmed, pack ordered, `fit.py` and the P7 coupon issued; sheet v1.1 (tabs start 25 from the wall, not 15 — 15 fouled the wall-crossing boss). — tick ☐ → ☑ as things pass.
 
 ## Progress
 
-- [ ] §0 decisions D1–D7 all ☑ (D4, D5 pending the v20 review)
+- [ ] §0 decisions D1–D7 all ☑ (D4, D5 pending the viewer review)
 - [ ] Stage 0 — coupons modelled and sliced, spacer set printed
 - [ ] Stage 1 — extrusion cut; P1–P9 all ☑ in §3, values in `fit.py`
 - [ ] Stage 2 — frame assembled, sled feet on the scope rails, instruments trial-fitted
@@ -33,10 +33,10 @@ Found by checking the handover against the 1 m bars and the 256 × 256 bed.
 | ☑ | D1 | Cut list (7,579 mm) does not pack into 8 × 1 m at a 2 mm kerf — the two 179.5 inner uprights are what don't fit. | **Buy the CNCMANS 300 mm 4-pack (£13.99).** The 179.5s and 70s move to the 300s; the 8 × 1 m then take every 3xx and 510 piece with room. Two of the 300s are left whole as coupon rail. The pack's extra 4 brackets + 50 T-nuts also cover the 42-joint count. | **Decided.** Order it. |
 | ☑ | D2 | Bottom drawer 315 × 300 cannot split into two bed-size pieces. | **Four quarters 157.5 × 150, full size kept.** Joint design in `drawer-quarters-v1.pdf`: floor puzzle-dovetail tabs (12 neck / 18 head / 8 long, pitch 30) alternating along both seams, none within 15 of the cross; vertical sliding dovetail (4/6 × 3) at the four wall crossings in a 12 × 8 boss; facia screwed across Q1–Q2; every joint assembles vertically (Q2 → Q1, Q3 → Q1, Q4 last). Housing top above = four loose clipped tiles. P7 is now this joint (§3). | **Decided.** Coupon P7 verifies before any quarter prints. |
 | ☑ | D3 | Drawer fronts can't print face-down (315 × 86 fails flat and diagonal). | **All three fronts + sled bar standing on the long edge on the diagonal** (315 × ~15 → 233). No seam. P6 prints in that orientation. | **Decided.** |
-| ☐ | D4 | Side tiles 310 long and top tiles 160.5 × 310 don't fit in one piece. | **Two 155 tiles per band, each clipped; top panel four tiles 160.5 × 155 on a printed H-spline** (two 10 × 3 strips under the seams at x 180.5 and y 175). Shown in viewer v19. | **Provisional** — confirm after viewing v19. |
-| ☐ | D5 | Column drawer 65 × 240 × 300 fails the diagonal by 2 mm. | **Shorten to 285** (diag 247.5). Body y 3–288 in v19; housing top over column + slot stays 300 deep as two loose tiles. | **Provisional** — confirm after viewing v19. |
-| ☑ | D6 | Sled beams 327 × 40 with arms fail the diagonal. | **Split each beam at y 165** (between the rear-bumper cup arms at 106–138 and the front cross bar at 190); the 210 T-foot bridges the seam. Cable channel is a separate 194 part keyed to the left beam. Shown in v19. | **Decided.** Joint coupon is part of P7. |
-| ☑ | D7 | Mini slot was 180 deep only because it sits 5 mm off the AWG's right side, and the AWG's fan vent is on that side (measured: Ø80 centred 123 from the AWG front → frame y 126, vent y 86–166). | **Slot 285 deep (y 3–288), same as the column, with a 15 mm air channel beside the vent:** the slot's inner wall steps from x 242 to x 252 over y 81–171, so the body is a 26-wide front pocket (78 deep), a 16-wide neck (90) and a 26-wide rear pocket (117). The housing top over column + slot is notched the same (x 252–338 over y 81–171) so the channel is open upward into the 19 mm layer under the scope and downward past the inner rail. Shown in v20; slot travel now 250. | **Decided.** Gates: P3 (rides the inner AWG rail). Prints flat on the diagonal (285 + 26 → 220). |
+| ☐ | D4 | Side tiles 310 long and top tiles 160.5 × 310 don't fit in one piece. | **Two 155 tiles per band, each clipped; top panel four tiles 160.5 × 155 on a printed H-spline** (two 10 × 3 strips under the seams at x 180.5 and y 175). Shown in `bench-stack-3d.html`. | **Provisional** — confirm from `bench-stack-3d.html`. |
+| ☑ | D5 | Column drawer 65 × 240 × 300 fails the diagonal by 2 mm. | **Shorten to 285** (diag 247.5). Body y 3–288 in `bench-stack-3d.html`; housing top over column + slot stays 300 deep as two loose tiles. | **Decided** (confirmed from the viewer). |
+| ☑ | D6 | Sled beams 327 × 40 with arms fail the diagonal. | **Split each beam at y 165** (between the rear-bumper cup arms at 106–138 and the front cross bar at 190); the 210 T-foot bridges the seam. Cable channel is a separate 194 part keyed to the left beam. Shown in `bench-stack-3d.html`. | **Decided.** Joint coupon is part of P7. |
+| ☑ | D7 | Mini slot was 180 deep only because it sits 5 mm off the AWG's right side, and the AWG's fan vent is on that side (measured: Ø80 centred 123 from the AWG front → frame y 126, vent y 86–166). | **Slot 285 deep (y 3–288), same as the column, with a 15 mm air channel beside the vent:** the slot's inner wall steps from x 242 to x 252 over y 81–171, so the body is a 26-wide front pocket (78 deep), a 16-wide neck (90) and a 26-wide rear pocket (117). The housing top over column + slot is notched the same (x 252–338 over y 81–171) so the channel is open upward into the 19 mm layer under the scope and downward past the inner rail. Shown in `bench-stack-3d.html`; slot travel now 250. | **Decided.** Gates: P3 (rides the inner AWG rail). Prints flat on the diagonal (285 + 26 → 220). |
 
 **Sled-foot assembly constraint (terse):** the T-feet enter the scope rails' side slots from the rail end. Once a rail is bolted between the uprights, both ends are blocked. So: feet onto the rails first, then bolt those two rails in. Beam bottom 337 vs AWG top 336 is 1 mm — set the scope-rail height with the 63.5 spacer, not a tape.
 
@@ -50,10 +50,10 @@ Done when: D1–D7 ticked, coupon STLs sliced, spacer set printed.
 
 | Done | Step | Output |
 |---|---|---|
-| ☐ | 0.1a Order the 300 mm 4-pack (D1). | — |
-| ☐ | 0.1b Confirm D4, D5, D7 from viewer v20; approve `drawer-quarters-v1.pdf`. | ticks in §0 |
-| ☐ | 0.2 Create `src/fit.py` — one module holding every tuned clearance (table in §3), imported by every part script. Coupons exist to set these numbers; production parts read them. | `src/fit.py` |
-| ☐ | 0.3 Model the coupons in CadQuery, one script each: `src/coupons/p1_sled_foot.py`, `p3_runner.py`, `p4_clip_tile.py`, `p5_hinge_magnet.py`, `p6_jpull.py`, `p7_dovetail.py`, `p8_tpu_foot.py`, `p9_bumper_cup.py`. P2 is `psu_cradle.py` already. Each coupon is a literal section of the production part, in the production orientation, not a generic block. | 8 STLs |
+| ☑ | 0.1a Order the 300 mm 4-pack (D1). | ordered 2026-09-15 |
+| ☐ | 0.1b Confirm D4 from `bench-stack-3d.html` (D5, D7 done; `drawer-quarters-v1.pdf` approved pending P7). | tick D4 in §0 |
+| ☑ | 0.2 Create `src/fit.py` — one module holding every tuned clearance (table in §3), imported by every part script. Coupons exist to set these numbers; production parts read them. | `src/fit.py` |
+| ☐ | 0.3 Model the coupons in CadQuery, one script each under `src/coupons/`: `p1_sled_foot.py`, `p3_runner.py`, `p4_clip_tile.py`, `p5_hinge_magnet.py`, `p6_jpull.py`, **`p7_quarter_joint.py` ☑** (cropped from `src/parts/drawer_quarters.py`, STLs in `coupons/p7/`), `p8_tpu_foot.py`, `p9_bumper_cup.py`. P2 is `psu_cradle.py` already. Each coupon is a literal section of the production part, in the production orientation, not a generic block. | STLs in `coupons/pN/` |
 | ☐ | 0.4 Print the rail-height spacer set in PETG (hollow, any colour): **48** (base top 20 → PSU rail 68), **139.5** (88 → 227.5), **63.5** (247.5 → 311), **159** (331 → 490). Two of each. Plus a 3.0 mm gap gauge for the sled web. | 9 small prints |
 | ☐ | 0.5 Fix HANDOVER open item 3: `layout_gen.py` scope rails 318–338 → 311–331, regenerate page 1. | `bench-stack-layout-v16.pdf` |
 | ☐ | 0.6 Slice coupon plates (§3): A = black ASA, B = black PETG, C = dark grey PETG, D = blue TPU. | 4 `.3mf` |
@@ -88,7 +88,7 @@ Check: 510 × 4, 321 × 2, 310 × 10, 307 × 4, 179.5 × 2, 70 × 3. Coupon rail
 | Done | Plate | Material | Parts |
 |---|---|---|---|
 | ☐ | A | black ASA | P1 foot 50 mm + 2.5 web + beam stub · P2 psu-cradle-v2 · P3 runner 80 mm · P5 knuckle pair + 3 mm pin + magnet boss · P9 40 × 40 cup pad + front pad with 5 mm lip |
-| ☐ | B | black PETG | P3 drawer-side stub 100 mm with groove · P4 60 × 60 hex tile with clips · P7 per `drawer-quarters-v1.pdf`: centre cross (four 60 × 60 floor corners with the real tab pattern), one wall crossing (rib + boss, 60 tall), one 9 × 40 beam-section pair |
+| ☐ | B | black PETG | **P7 needs no rail — print it now:** `coupons/p7/p7-plate.stl`. P3 drawer-side stub 100 mm with groove · P4 60 × 60 hex tile with clips · P7 per `drawer-quarters-v1.pdf`: centre cross (four 60 × 60 floor corners with the real tab pattern), one wall crossing (rib + boss, 60 tall), one 9 × 40 beam-section pair |
 | ☐ | C | dark grey PETG | P6 60 mm of front with J-pull pocket, **standing on edge on the diagonal** (D3) |
 | ☐ | D | blue TPU | P8 foot · one AWG pad · one sled-stop cap — proves all the TPU parts in one go |
 
@@ -147,7 +147,7 @@ Order follows the handover: cradles → drawers → sled → box and channel →
 
 ## 6. Files issued with this roadmap
 
-`bench-stack-3d-v20.html` — current viewer: D2/D4/D5/D6 (v19, `src/viewer_v19_patch.py` applied to v18) plus D7 (`src/viewer_v20_patch.py` applied to v19). Rebuild chain: v18 → v19 → v20. `drawer-quarters-v1.pdf/.svg` — D2 joint sheet (`src/drawer_quarters_gen.py`).
+`bench-stack-3d.html` — the one viewer, edited in place; history is in git (the v18 → v19 → v20 patch scripts that applied D2–D7 live in the git history, not the tree). D2/D4/D5/D6/D7 are all in it. `drawer-quarters-v1.pdf/.svg` — D2 joint sheet (`src/drawer_quarters_gen.py`).
 
 ## 7. Stage 9 — close-out
 

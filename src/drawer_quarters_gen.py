@@ -11,6 +11,7 @@ DW, DD, DH = 315, 300, 60      # body outside
 WALL, FLOOR = 2.4, 3.0
 SEAM_X, SEAM_Y = 157.5, 150    # seams (from the drawer's own left/front)
 TAB_NECK, TAB_HEAD, TAB_LEN, TAB_PITCH = 12, 18, 8, 30   # floor puzzle-dovetail tabs
+TAB_START = 25                                          # first tab centre from the wall (clears the 8 mm boss)
 TAB_CLR = 0.15                                          # -> fit.py DOVETAIL_CLR
 RIB_NECK, RIB_HEAD, RIB_DEPTH = 4, 6, 3                 # wall vertical sliding dovetail
 BOSS_W, BOSS_T = 12, 3                                  # female boss grown inboard of the wall
@@ -57,14 +58,14 @@ rect(x + WALL, y + WALL, DW - 2*WALL, DD - 2*WALL, "none", "#222", 0.5)
 line(*P(SEAM_X, 0), *P(SEAM_X, DD), SEAM, 1.2, "4 2"); line(*P(0, SEAM_Y), *P(DW, SEAM_Y), SEAM, 1.2, "4 2")
 # floor tabs along both seams (alternating owner), stopping CENTRE_KEEP from the cross
 def tabs_along_x_seam():   # seam at x = SEAM_X, tabs point in ±x, run along y
-    for j, yc in enumerate([15 + TAB_PITCH*k for k in range(10)]):
+    for j, yc in enumerate([TAB_START + TAB_PITCH*k for k in range(10)]):
         if yc + TAB_HEAD/2 > DD - WALL or abs(yc - SEAM_Y) < CENTRE_KEEP + TAB_HEAD/2: continue
         sgn = 1 if j % 2 == 0 else -1          # even: tab belongs to the left quarter, points right
         x0 = SEAM_X; x1 = SEAM_X + sgn*TAB_LEN
         pts = [(x0, yc - TAB_NECK/2), (x1, yc - TAB_HEAD/2), (x1, yc + TAB_HEAD/2), (x0, yc + TAB_NECK/2)]
         poly([P(*p) for p in pts], Q[0 if sgn > 0 else 1] if yc < SEAM_Y else Q[2 if sgn > 0 else 3], "#222", 0.7)
 def tabs_along_y_seam():
-    for j, xc in enumerate([15 + TAB_PITCH*k for k in range(11)]):
+    for j, xc in enumerate([TAB_START + TAB_PITCH*k for k in range(11)]):
         if xc + TAB_HEAD/2 > DW - WALL or abs(xc - SEAM_X) < CENTRE_KEEP + TAB_HEAD/2: continue
         sgn = 1 if j % 2 == 0 else -1          # even: tab belongs to the front quarter, points rearward
         y0 = SEAM_Y; y1 = SEAM_Y + sgn*TAB_LEN
@@ -86,7 +87,7 @@ text(*P(SEAM_X, -6), "facia screws x4 (M3, into printed bosses) tie Q1–Q2 acro
 # dims
 hdim(PX, PX + DW, PY + DD + 16, "315"); hdim(PX, PX + SEAM_X, PY + DD + 30, "157.5"); hdim(PX + SEAM_X, PX + DW, PY + DD + 30, "157.5")
 vdim(PY, PY + DD, PX - 46, "300", side=-1); vdim(PY, PY + SEAM_Y, PX - 30, "150", side=-1); vdim(PY + SEAM_Y, PY + DD, PX - 30, "150", side=-1)
-text(PX, PY + DD + 50, "FRONT is the top edge of the plan. Red dashes = seams. Coloured tabs = floor puzzle-dovetails, owner shown by colour, alternate along each seam, pitch 30, none within 15 of the cross.", 8, fill="#444")
+text(PX, PY + DD + 50, "FRONT is the top edge of the plan. Red dashes = seams. Coloured tabs = floor puzzle-dovetails, owner shown by colour, alternate along each seam, first at 25 from the wall, pitch 30, none within 15 of the cross.", 8, fill="#444")
 text(PX, PY + DD + 62, "Grey blocks = female bosses of the wall dovetails (front, rear, left, right walls). Runner grooves on the outer side walls cross the rear seam; the wall dovetail keeps them aligned.", 8, fill="#444")
 
 # ================= DETAIL A — floor tab, 4:1 =================
@@ -143,7 +144,7 @@ for l in ["Q1 on the bench → Q2 down onto Q1 (front + rear wall dovetails, flo
 
 svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1130 760" width="1130" height="760" font-family="Helvetica, Arial, sans-serif">\n'
        f'<rect width="1130" height="760" fill="#ffffff"/>\n' + "\n".join(out) +
-       '\n<text x="20" y="748" font-size="8" fill="#888">drawer-quarters v1 — D2 option (a) — 2026-09-15 — for approval; supersedes "2 x drawer halves" in layout v15</text>\n</svg>\n')
+       '\n<text x="20" y="748" font-size="8" fill="#888">drawer-quarters v1.1 — D2 option (a) — 2026-09-15 — approved pending P7 coupon; tabs start 25 from the wall (v1: 15, fouled the boss); supersedes "2 x drawer halves" in layout v15</text>\n</svg>\n')
 outdir = sys.argv[1] if len(sys.argv) > 1 else "."
 open(os.path.join(outdir, "drawer-quarters-v1.svg"), "w").write(svg)
 if cairosvg:
