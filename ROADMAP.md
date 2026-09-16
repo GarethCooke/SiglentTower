@@ -54,7 +54,7 @@ Done when: D1–D7 ticked, coupon STLs sliced, spacer set printed.
 | ☑ | 0.1b D4, D5, D7 confirmed from `bench-stack-3d.html`; `drawer-quarters-v1.pdf` approved pending P7. | §0 all ☑ |
 | ☑ | 0.2 Create `src/fit.py` — one module holding every tuned clearance (table in §3), imported by every part script. Coupons exist to set these numbers; production parts read them. | `src/fit.py` |
 | ☐ | 0.3 Model the coupons in CadQuery, one script each under `src/coupons/`: `p1_sled_foot.py`, `p3_runner.py`, `p4_clip_tile.py`, `p5_hinge_magnet.py`, `p6_jpull.py`, **`p7_quarter_joint.py` ☑** (cropped from `src/parts/drawer_quarters.py`, STLs in `coupons/p7/`), `p8_tpu_foot.py`, `p9_bumper_cup.py`. P2 is `psu_cradle.py` already. Each coupon is a literal section of the production part, in the production orientation, not a generic block. | STLs in `coupons/pN/` |
-| ☐ | 0.4 Print the rail-height spacer set in PETG (hollow, any colour): **48** (base top 20 → PSU rail 68), **139.5** (88 → 227.5), **63.5** (247.5 → 311), **159** (331 → 490). Two of each. Plus a 3.0 mm gap gauge for the sled web. | 9 small prints |
+| ☐ | 0.4 Print the rail-height spacer set, any PETG: **48** (base top 20 → PSU rail 68), **139.5** (88 → 227.5), **63.5** (247.5 → 311), **159** (331 → 490), two of each, plus the 3.0 mm web gauge — `coupons/spacers/spacers-plate.stl`, flat as laid out, 2 walls, 10 % infill (`src/coupons/spacers.py`). | 9 small prints |
 | ☐ | 0.5 Fix HANDOVER open item 3: `layout_gen.py` scope rails 318–338 → 311–331, regenerate page 1. | `bench-stack-layout-v16.pdf` |
 | ☐ | 0.6 Slice coupon plates (§3): A = black ASA, B = black PETG, C = dark grey PETG, D = blue TPU. | 4 `.3mf` |
 
