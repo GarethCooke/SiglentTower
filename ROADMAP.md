@@ -87,7 +87,7 @@ Check: 510 × 4, 321 × 2, 310 × 10, 307 × 4, 179.5 × 2, 70 × 3. Coupon rail
 
 | Done | Plate | Material | Parts |
 |---|---|---|---|
-| ☐ | A | black ASA | P1 foot 50 mm + 2.5 web + beam stub · P2 psu-cradle-v2 (**top face down** — the STL is exported that way; cup-up as the handover says cannot print unsupported) · P3 runner 80 mm · P5 knuckle pair + 3 mm pin + magnet boss · P9 40 × 40 cup pad + front pad with 5 mm lip |
+| ☐ | A | black ASA | P1 foot 50 mm + 2.5 web + beam stub · P2 psu-cradle-v3 (**top face down** — the STL is exported that way; cup-up as the handover says cannot print unsupported) · P3 runner 80 mm · P5 knuckle pair + 3 mm pin + magnet boss · P9 40 × 40 cup pad + front pad with 5 mm lip |
 | ☐ | B | black PETG | **P7 needs no rail — print it now:** `coupons/p7/p7-plate.stl`. P3 drawer-side stub 100 mm with groove · P4 60 × 60 hex tile with clips · P7 per `drawer-quarters-v1.pdf`: centre cross (four 60 × 60 floor corners with the real tab pattern), one wall crossing (rib + boss, 60 tall), one 9 × 40 beam-section pair |
 | ☐ | C | dark grey PETG | P6 60 mm of front with J-pull pocket, **standing on edge on the diagonal** (D3) |
 | ☐ | D | blue TPU | P8 foot · one AWG pad · one sled-stop cap — proves all the TPU parts in one go |
@@ -123,7 +123,7 @@ ASA/ABS: filament preset, door closed, everything else as above. Saved in Bambu 
 | Done | Coupon | Pass when | Sets in `fit.py` | Gates (nothing here prints until PASS) | Start value |
 |---|---|---|---|---|---|
 | ☐ | **P1** sled foot + web | Slides by hand with no rock; can't lift out; web passes the 3.0 gauge; stub sits 1 mm above a 336 reference. | `SLOT_FOOT_W`, `SLOT_FOOT_T`, `WEB_T` | Sled feet ×2, beams ×2, front bar, cross bars ×2, cable channel — the whole of §10.1 | foot 5.8 (6.2 − 0.4), web 2.5 |
-| ☐ | **P2** PSU cradle v2 | Saddle flat on the rail, foot seats in cup, M5×10 into T-nut pulls down, counterbore intact. | `RAIL_CLR` (saddle 20 + x), `CUP_CLR` | PSU cradles ×3 more, AWG cradles ×4 (same saddle/clamp) | 0.4, 0.6 |
+| ☐ | **P2** PSU cradle | Saddle flat on the rail, foot seats in cup, M5×10 into T-nut pulls down, counterbore intact. **v2 (2026-09-17): saddle, bolts, counterbore PASS; cup FAIL** — printed Ø21.6 against a foot that is Ø21.5 at the pad (widest there, 19.5 at 4 mm up). v3: cup Ø22.7 modelled → ~22.1 printed, 1 mm 45° lead-in. | `RAIL_CLR` ☑ 0.4, `CUP_CLR` 0.3 + `HOLE_SHRINK` 0.3, `PSU_FOOT_D` 21.5 | PSU cradles ×3 more, AWG cradles ×4 (same saddle/clamp) | v3 to test |
 | ☐ | **P3** drawer runner | Stub slides full length, side play < 0.5, no stick-slip dry or with PTFE. | `RUNNER_CLR` | Bottom-drawer runners, column guide strips ×4, mini-slot runner, all three drawer bodies | 0.3 |
 | ☐ | **P4** slot-clip tile | Snaps in by thumb, pulls out only with a tool, 10 cycles no cracks. | `CLIP_T`, `CLIP_BARB` | All 16 side pieces, door tile, 4 top tiles, 6 housing-top tiles (D2/D5) | 3 mm PETG, barb 0.6 |
 | ☐ | **P5** hinge + magnet | Pin pushes in, knuckle swings free through 180, magnet CA-glues flush in 10.4 × 2.2, pair pulls apart cleanly at 0.5 gap. | `PIN_HOLE_D`, `MAG_POCKET` | Door knuckles ×2, magnet bosses ×2, L-bracket, rear-tile tab | 3.2, 10.4 × 2.2 |

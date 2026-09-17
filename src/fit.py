@@ -8,8 +8,10 @@ SLOT_FOOT_T    = 3.8    # T-foot thickness (flange) inside the slot
 WEB_T          = 2.5    # web down the 3 mm gap between upright and AWG frame; must pass the 3.0 gauge
 
 # P2 PSU cradle (also AWG cradles: same saddle/clamp)
-RAIL_CLR       = 0.4    # saddle channel = 20 + RAIL_CLR across the rail
-CUP_CLR        = 0.6    # radial clearance in the PSU foot cup
+RAIL_CLR       = 0.4    # saddle channel = 20 + RAIL_CLR across the rail — PASSED 2026-09-17 (flat, no rock, M5x10 ok)
+CUP_CLR        = 0.3    # radial clearance at the foot's widest (bottom) edge, on top of HOLE_SHRINK
+PSU_FOOT_D     = 21.5   # measured 2026-09-17: bottom face 21.5, 19.5 at 4 mm up, ~18 at the chassis — widest at the pad
+HOLE_SHRINK    = 0.3    # radial: a Ø22.2 cup in black ASA printed Ø21.6 (2026-09-17). Add to every printed hole/cup radius.
 
 # P3 drawer runners / guide strips
 RUNNER_CLR     = 0.3    # groove-to-runner clearance per side; side play < 0.5 total, no stick-slip
