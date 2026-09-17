@@ -13,14 +13,15 @@ HOLE_D    = 5.5
 CBORE_D   = 10.0
 CBORE_H   = 4.0
 REACH     = 38.75    # rail inner face -> foot centre (PSU body edge 5.75 from rail + 33)
-from fit import PSU_FOOT_D as FOOT_D, CUP_CLR, HOLE_SHRINK, RAIL_CLR   # v3: cup sized from the measured foot + measured shrink
+from fit import PSU_FOOT_PAD_D, PSU_FOOT_D4, CUP_CLR, HOLE_SHRINK, RAIL_CLR   # v3: conical cup matching the measured foot taper
 CUP_DEPTH = 4.0      # cup floor = TOP_T - CUP_DEPTH = 4 mm above rail top
 CUP_LEAD  = 1.0      # 45° lead-in at the cup rim so the foot's 21.5 edge finds a 22.1 printed cup
 ARM_W     = 30.0
 GUSSET_H  = 14.0     # rib under the arm down the rail's inner face
 WALL      = 3.0
 
-cup_r  = FOOT_D/2 + CUP_CLR + HOLE_SHRINK      # 11.35 modelled -> ~11.05 printed -> 0.3 radial on the foot
+cup_r0 = PSU_FOOT_PAD_D/2 + CUP_CLR + HOLE_SHRINK   # cup floor radius, modelled 9.0  -> ~8.7 printed (0.3 on the 16.8 pad)
+cup_r  = PSU_FOOT_D4/2  + CUP_CLR + HOLE_SHRINK   # cup rim radius,   modelled 10.35 -> ~10.05 printed (0.3 on 19.5 at 4 mm)
 arm_len = REACH + cup_r + WALL           # from rail inner face to arm tip
 
 # saddle block sitting on rail top (x along rail, y across, z up). Rail top = z 0.
@@ -45,9 +46,10 @@ gus = (cq.Workplane("YZ").polyline([(RAIL/2 + LIP_T, 0), (RAIL/2 + LIP_T, -GUSSE
 body = body.union(gus)
 
 # foot cup
-body = (body.faces(">Z").workplane()
-        .center(0, RAIL/2 + LIP_T + REACH)
-        .hole(2*cup_r, CUP_DEPTH))
+# conical cup: floor radius cup_r0 at z = TOP_T - CUP_DEPTH, rim radius cup_r at z = TOP_T — matches the foot's own taper so it self-centres
+cup = cq.Workplane("XY").add(cq.Solid.makeCone(cup_r0, cup_r, CUP_DEPTH,
+        pnt=cq.Vector(0, RAIL/2 + LIP_T + REACH, TOP_T - CUP_DEPTH), dir=cq.Vector(0, 0, 1)))
+body = body.cut(cup)
 # 45° lead-in at the cup rim (a cone cut, so no edge selection ambiguity with the counterbores)
 lead = cq.Workplane("XY").add(cq.Solid.makeCone(cup_r, cup_r + CUP_LEAD, CUP_LEAD,
         pnt=cq.Vector(0, RAIL/2 + LIP_T + REACH, TOP_T - CUP_LEAD), dir=cq.Vector(0, 0, 1)))

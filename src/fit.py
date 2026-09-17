@@ -10,7 +10,8 @@ WEB_T          = 2.5    # web down the 3 mm gap between upright and AWG frame; m
 # P2 PSU cradle (also AWG cradles: same saddle/clamp)
 RAIL_CLR       = 0.4    # saddle channel = 20 + RAIL_CLR across the rail — PASSED 2026-09-17 (flat, no rock, M5x10 ok)
 CUP_CLR        = 0.3    # radial clearance at the foot's widest (bottom) edge, on top of HOLE_SHRINK
-PSU_FOOT_D     = 21.5   # measured 2026-09-17: bottom face 21.5, 19.5 at 4 mm up, ~18 at the chassis — widest at the pad
+PSU_FOOT_PAD_D = 16.8   # measured 2026-09-17: pad face 16.8, 19.5 at 4 mm above the pad, 21.5 at the chassis flange
+PSU_FOOT_D4    = 19.5   # diameter 4 mm above the pad = at the cup rim (cup depth 4)
 HOLE_SHRINK    = 0.3    # radial: a Ø22.2 cup in black ASA printed Ø21.6 (2026-09-17). Add to every printed hole/cup radius.
 
 # P3 drawer runners / guide strips
