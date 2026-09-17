@@ -52,7 +52,21 @@ body = (body.faces(">Z").workplane(origin=(0,0,TOP_T))
         .pushPoints([(-HOLE_PITCH/2, 0), (HOLE_PITCH/2, 0)])
         .cboreHole(HOLE_D, CBORE_D, CBORE_H))
 
-cq.exporters.export(body, "/mnt/user-data/outputs/psu-cradle-v2.stl", tolerance=0.01, angularTolerance=0.1)
-cq.exporters.export(body, "psu-cradle-v2.svg", opt={"projectionDir": (1, -1, 1), "width": 800, "height": 500, "showHidden": False})
+# ---------- export, oriented for printing ----------
+# Cup-up (as modelled) cannot print unsupported: the gusset tip is the lowest point and the whole arm floats 14 mm up.
+# Print it TOP FACE DOWN: rotate 180 about X so the 8 mm saddle/arm top (the largest flat face) is on the bed, lips and
+# gusset point up, and the cup + counterbores become 4 mm-deep recesses open to the plate. Tree supports (on build plate
+# only) fill the cup and counterbores; snap them out. Nothing else needs support.
+import os
+OUT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+printable = body.rotate((0, 0, 0), (1, 0, 0), 180)
+pb = printable.val().BoundingBox()
+printable = printable.translate((0, 0, -pb.zmin))
+cq.exporters.export(printable, os.path.join(OUT, "psu-cradle-v2.stl"), tolerance=0.01, angularTolerance=0.1)
 bb = body.val().BoundingBox()
-print(f"bbox x {bb.xlen:.1f}  y {bb.ylen:.1f}  z {bb.zlen:.1f}   volume {body.val().Volume()/1000:.1f} cm3")
+print(f"bbox x {bb.xlen:.1f}  y {bb.ylen:.1f}  z {bb.zlen:.1f}   volume {body.val().Volume()/1000:.1f} cm3  (exported top-face-down)")
+
+# print check (PRINT-RULES.md §1): the only downward faces are the cup and counterbore ceilings, 4 mm over the plate,
+# handled by the slicer's sacrificial layer — allow them, fail on anything else.
+from printcheck import check
+check(os.path.join(OUT, "psu-cradle-v2.stl"), max_down_frac=0.3)

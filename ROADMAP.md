@@ -40,7 +40,7 @@ Found by checking the handover against the 1 m bars and the 256 × 256 bed.
 
 **Sled-foot assembly constraint (terse):** the T-feet enter the scope rails' side slots from the rail end. Once a rail is bolted between the uprights, both ends are blocked. So: feet onto the rails first, then bolt those two rails in. Beam bottom 337 vs AWG top 336 is 1 mm — set the scope-rail height with the 63.5 spacer, not a tape.
 
-Bed-fit audit for every printed part is in §8.
+Bed-fit audit for every printed part is in §8. **Print-orientation rules and the design-for-print review of every production part are in `PRINT-RULES.md`** — read it before modelling any part; every export runs `src/printcheck.py`.
 
 ---
 
@@ -87,12 +87,34 @@ Check: 510 × 4, 321 × 2, 310 × 10, 307 × 4, 179.5 × 2, 70 × 3. Coupon rail
 
 | Done | Plate | Material | Parts |
 |---|---|---|---|
-| ☐ | A | black ASA | P1 foot 50 mm + 2.5 web + beam stub · P2 psu-cradle-v2 · P3 runner 80 mm · P5 knuckle pair + 3 mm pin + magnet boss · P9 40 × 40 cup pad + front pad with 5 mm lip |
+| ☐ | A | black ASA | P1 foot 50 mm + 2.5 web + beam stub · P2 psu-cradle-v2 (**top face down** — the STL is exported that way; cup-up as the handover says cannot print unsupported) · P3 runner 80 mm · P5 knuckle pair + 3 mm pin + magnet boss · P9 40 × 40 cup pad + front pad with 5 mm lip |
 | ☐ | B | black PETG | **P7 needs no rail — print it now:** `coupons/p7/p7-plate.stl`. P3 drawer-side stub 100 mm with groove · P4 60 × 60 hex tile with clips · P7 per `drawer-quarters-v1.pdf`: centre cross (four 60 × 60 floor corners with the real tab pattern), one wall crossing (rib + boss, 60 tall), one 9 × 40 beam-section pair |
 | ☐ | C | dark grey PETG | P6 60 mm of front with J-pull pocket, **standing on edge on the diagonal** (D3) |
 | ☐ | D | blue TPU | P8 foot · one AWG pad · one sled-stop cap — proves all the TPU parts in one go |
 
 Iterate width/clearance in 0.1 mm steps; re-print only the failing coupon. Budget three rounds for P1 and P4, one for the rest.
+
+**Print settings — X1C, coupons and every fit-critical part (PETG; ASA the same except temperatures).**
+
+| Setting | PETG | Why it matters here |
+|---|---|---|
+| Filament | dried first: 65 °C, 6–8 h (dryer or AMS with fresh desiccant) | wet PETG strings and blobs on the tab flanks — reads as "binds" |
+| Calibration | Bambu Studio → Calibration → Flow Dynamics, then Flow Rate, for the exact spool; Bambu-branded spools: Lidar auto is enough | over-extrusion closes every 0.15 clearance |
+| Process profile | 0.20 mm Standard @BBL X1C, first layer 0.20 | 3 mm floor = 15 layers exactly |
+| Precise Z height | ON (Precise wall is built in on current Bambu Studio — no toggle) | dimensional accuracy of walls and tab widths |
+| X-Y contour / hole compensation | 0 / 0 | clearance is tuned in `fit.py`, not in the slicer |
+| Walls / top / bottom | 4 / 5 / 4 | HANDOVER spec; coupons the same as production |
+| Infill | 40 % gyroid (spacers: 10 %, 2 walls) | |
+| Nozzle / bed / fans | from the filament preset (Bambu PETG Basic or Generic PETG; Generic ASA/ABS), textured PEI, no glue | |
+| Fans (check in the filament preset) | PETG: aux 0 %, part ≤ 50 % | aux fan on PETG chills the wall and hurts layer bond |
+| Outer wall speed | 80 mm/s max (inner 150) | accuracy on the tab flanks |
+| Brim / skirt | No-brim, skirt loops 1 | brim on a tab flank fakes the fit |
+| Seam | Back / Aligned, scarf ON | keeps the seam blob off the joints |
+| Supports | enabled (house rule), tree(auto), threshold 30°, **On build plate only** ticked | fit surfaces never get support residue; a part that shows internal support in the preview is a design fault, not a slicer setting |
+| Ironing | off | |
+| Elephant-foot compensation | 0.15 (default) | first layer of every tab is a fit surface |
+
+ASA/ABS: filament preset, door closed, everything else as above. Saved in Bambu Studio as process profile `SiglentTower fit 0.20`.
 
 ---
 

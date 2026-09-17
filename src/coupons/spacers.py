@@ -3,7 +3,8 @@
 # (XY holds ±0.05; a standing print would quantise 63.5 / 139.5 to the layer height). 2 walls, 10 % infill is plenty.
 # Gaps (rail top -> next rail bottom): 48 (20 -> 68), 139.5 (88 -> 227.5), 63.5 (247.5 -> 311), 159 (331 -> 490). Two of each.
 # Gauge: 3.0 x 20 x 60 flat — the sled web must pass through the 3 mm gap between upright and AWG frame.
-import os, cadquery as cq
+import os, sys, cadquery as cq
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.normpath(os.path.join(HERE, "..", "..", "coupons", "spacers")); os.makedirs(OUT, exist_ok=True)
 
@@ -25,3 +26,8 @@ for L in (48.0, 63.5, 139.5, 159.0):
 g = cq.Workplane("XY").box(60, 20, 3.0, centered=False).translate((0, y, 0)); plate = plate.add(g)
 cq.exporters.export(plate, os.path.join(OUT, "spacers-plate.stl"), tolerance=0.02, angularTolerance=0.2)
 print("plate footprint 159 x", y + 20)
+
+# print check (PRINT-RULES.md §1)
+from printcheck import check
+for f in sorted(os.listdir(OUT)):
+    if f.endswith(".stl"): check(os.path.join(OUT, f))

@@ -44,3 +44,7 @@ for name, p in pieces.items():
 cq.exporters.export(plate, os.path.join(OUT, "p7-plate.stl"), tolerance=0.02, angularTolerance=0.2)
 pb = plate.combine().val().BoundingBox() if hasattr(plate, "combine") else None
 print("plate footprint", f"{cursor_x:.0f} x {row_y + row_h:.0f}", "clearance", C)
+
+# print check on every piece (PRINT-RULES.md §1)
+from printcheck import check
+for name in pieces: check(os.path.join(OUT, f"{name}.stl"))
