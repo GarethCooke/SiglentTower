@@ -34,7 +34,7 @@ JPULL_DEPTH    = 12.0
 JPULL_FLOOR_DEG = 30.0
 
 # P7 quarter joint (drawer quarters, split sled beams, box halves)
-DOVETAIL_CLR   = 0.15   # all-round clearance on every dovetail / puzzle tab; iterate in 0.05 steps, expect 0.15–0.25
+DOVETAIL_CLR   = 0.15   # all-round clearance on every dovetail / puzzle tab — PASSED P7 2026-09-17 (cross, wall, beam all good)
 
 # P8 TPU foot
 SPIGOT_D       = 5.0    # spigot into the 2020 centre bore (~4.2 nominal); expect ~4.6
