@@ -48,6 +48,9 @@ STRIP_KEYHOLE_PITCH = 249.5   # Addtam 4-way strip, measured 2026-09-17
 STRIP_KEYHOLE_D     = 6.5     # large hole
 STRIP_KEYHOLE_SLOT  = 3.5     # slot width
 STRIP_KEYHOLE_END   = 20.0    # cable end -> nearest keyhole centre
+STRIP_KEYHOLE_FAR   = 81.5    # far end -> its keyhole centre (20 + 249.5 + 81.5 = 351 ≈ 350 body)
+                              # keyhole slots run ACROSS the body -> keyholes alone cannot hang it vertically. D8: vertical on the
+                              # rear-left upright, cable end down, pegs at z 45 / 294.5, x 30.2; a shelf under the end takes the weight
 STRIP_KEYHOLE_DEPTH = 6.5     # pocket depth behind the back face (peg head lives in here)
 STRIP_BODY_W        = 78.1
 STRIP_KEYHOLE_OFF   = 29.2    # keyhole line from one long edge (not centred; 48.9 from the other)
