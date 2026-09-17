@@ -42,3 +42,12 @@ SPIGOT_D       = 5.0    # spigot into the 2020 centre bore (~4.2 nominal); expec
 # P9 scope bumper cup / front pad
 BUMPER_CUP_CLR = 0.3    # radial clearance on the Ø32 rear bumper
 PAD_LIP        = 5.0    # front pad lip height
+
+# ---- measured hardware (not clearances; single source for part scripts) ----
+STRIP_KEYHOLE_PITCH = 249.5   # Addtam 4-way strip, measured 2026-09-17
+STRIP_KEYHOLE_D     = 6.5     # large hole
+STRIP_KEYHOLE_SLOT  = 3.5     # slot width
+STRIP_KEYHOLE_END   = 20.0    # cable end -> nearest keyhole centre
+STRIP_KEYHOLE_DEPTH = 6.5     # pocket depth behind the back face (peg head lives in here)
+STRIP_BODY_W        = 78.1
+STRIP_KEYHOLE_OFF   = 29.2    # keyhole line from one long edge (not centred; 48.9 from the other)

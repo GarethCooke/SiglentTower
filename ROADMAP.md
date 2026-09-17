@@ -87,9 +87,9 @@ Check: 510 × 4, 321 × 2, 310 × 10, 307 × 4, 179.5 × 2, 70 × 3. Coupon rail
 
 | Done | Plate | Material | Parts |
 |---|---|---|---|
-| ☐ | A | black ASA | P1 foot 50 mm + 2.5 web + beam stub · P2 psu-cradle-v3 (**top face down** — the STL is exported that way; cup-up as the handover says cannot print unsupported) · P3 runner 80 mm · P5 knuckle pair + 3 mm pin + magnet boss · P9 40 × 40 cup pad + front pad with 5 mm lip |
-| ☐ | B | black PETG | **P7 needs no rail — print it now:** `coupons/p7/p7-plate.stl`. P3 drawer-side stub 100 mm with groove · P4 60 × 60 hex tile with clips · P7 per `drawer-quarters-v1.pdf`: centre cross (four 60 × 60 floor corners with the real tab pattern), one wall crossing (rib + boss, 60 tall), one 9 × 40 beam-section pair |
-| ☐ | C | dark grey PETG | P6 60 mm of front with J-pull pocket, **standing on edge on the diagonal** (D3) |
+| ☐ | A | black ASA (production material — these are sliding pairs, friction and shrink matter) | P1 foot 50 mm + 2.5 web + beam stub · P3 runner 80 mm (the ASA half of the PETG-on-ASA pair) |
+| ☑ | B | **yellow PETG** (house rule from 2026-09-17: every test and prototype part is yellow PETG unless the test depends on the production material) | P3 drawer-side stub 100 mm with groove · P4 60 × 60 hex tile with clips · P5 knuckle pair + 3 mm pin + magnet boss · P9 40 × 40 cup pad + front pad with 5 mm lip · P7 (done — printed in black PETG before the rule) |
+| ☐ | C | yellow PETG | P6 60 mm of front with J-pull pocket, **standing on edge on the diagonal** (D3) — geometry test, colour irrelevant |
 | ☐ | D | blue TPU | P8 foot · one AWG pad · one sled-stop cap — proves all the TPU parts in one go |
 
 Iterate width/clearance in 0.1 mm steps; re-print only the failing coupon. Budget three rounds for P1 and P4, one for the rest.
