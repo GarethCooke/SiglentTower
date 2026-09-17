@@ -2,10 +2,17 @@
 # them. Change a value here only when the coupon that owns it has passed (ROADMAP §3). Start values from ROADMAP v2.2.
 # Each entry: value, then the coupon that owns it and what PASS looks like.
 
-# P1 sled foot + web
-SLOT_FOOT_W    = 5.8    # T-foot width in the 6.2 slot mouth (6.2 - 0.4); slides by hand, no rock
-SLOT_FOOT_T    = 3.8    # T-foot thickness (flange) inside the slot
+# P1 sled foot + web (src/parts/sled_foot.py)
+SLOT_FOOT_W    = 5.8    # neck width in the 6.2 slot mouth (6.2 - 0.4); slides by hand, no rock
+SLOT_FOOT_T    = 3.8    # flange thickness inside the slot cavity
+FOOT_FLANGE_W  = 10.6   # flange width inside the ~11 cavity; undersides 45° to the neck
+SLOT_LIP_T     = 1.8    # 2020 lip thickness, rail face -> inside of the lip (CNCMANS European 6.2 slot; P1 confirms)
+FOOT_STANDOFF  = 0.5    # web outer face stands 0.5 off the rail face (x 20 -> 20.5)
+FLANGE_GAP     = 0.2    # flange face -> inside of the lip; neck length = LIP + STANDOFF + GAP = 2.5
 WEB_T          = 2.5    # web down the 3 mm gap between upright and AWG frame; must pass the 3.0 gauge
+RIB_H          = 4.0    # rib on the web's top edge, inside the beam (z 337-341)
+RIB_W          = 5.0    # rib widens from WEB_T to this toward +x at 45° (half dovetail; the upright closes it)
+WEB_RIB_CLR    = 0.2    # beam rebate grown by this on the rib's fit faces (45° faces are layer-stepped: more than DOVETAIL_CLR)
 
 # P2 PSU cradle (also AWG cradles: same saddle/clamp)
 RAIL_CLR       = 0.4    # saddle channel = 20 + RAIL_CLR across the rail — PASSED 2026-09-17 (flat, no rock, M5x10 ok)
