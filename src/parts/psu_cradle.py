@@ -13,15 +13,15 @@ HOLE_D    = 5.5
 CBORE_D   = 10.0
 CBORE_H   = 4.0
 REACH     = 38.75    # rail inner face -> foot centre (PSU body edge 5.75 from rail + 33)
-from fit import PSU_FOOT_PAD_D, PSU_FOOT_D4, CUP_CLR, HOLE_SHRINK, RAIL_CLR   # v3: conical cup matching the measured foot taper
+from fit import PSU_FOOT_PAD_D, PSU_FOOT_D4, CUP_CLR, RAIL_CLR   # v3: conical cup matching the measured foot taper, clearance from the P2 coupons
 CUP_DEPTH = 4.0      # cup floor = TOP_T - CUP_DEPTH = 4 mm above rail top
 CUP_LEAD  = 1.0      # 45° lead-in at the cup rim so the foot's 21.5 edge finds a 22.1 printed cup
 ARM_W     = 30.0
 GUSSET_H  = 14.0     # rib under the arm down the rail's inner face
 WALL      = 3.0
 
-cup_r0 = PSU_FOOT_PAD_D/2 + CUP_CLR + HOLE_SHRINK   # cup floor radius, modelled 9.0  -> ~8.7 printed (0.3 on the 16.8 pad)
-cup_r  = PSU_FOOT_D4/2  + CUP_CLR + HOLE_SHRINK   # cup rim radius,   modelled 10.35 -> ~10.05 printed (0.3 on 19.5 at 4 mm)
+cup_r0 = PSU_FOOT_PAD_D/2 + CUP_CLR   # cup floor radius 8.5 (coupon -2 winner: prints as a light, rattle-free fit on the 16.8 pad)
+cup_r  = PSU_FOOT_D4/2  + CUP_CLR   # cup rim radius 9.85 at 4 mm up (19.5 foot)
 arm_len = REACH + cup_r + WALL           # from rail inner face to arm tip
 
 # saddle block sitting on rail top (x along rail, y across, z up). Rail top = z 0.
