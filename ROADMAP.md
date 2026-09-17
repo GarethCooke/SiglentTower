@@ -175,7 +175,10 @@ Order follows the handover: cradles → drawers → sled → box and channel →
 
 - [ ] HANDOVER → v19: fold in D1–D7, final `fit.py` values, tile count, drawer depths.
 - [ ] Regenerate the viewer and layout from the final dimensions (`layout_gen.py`, `viewer_boxes.json`).
-- [ ] Archive every final STL with its script under `src/parts/`, named `<part>-v<N>.stl` matching the script version.
+- [ ] Every final STL lives in `parts/` with its script in `src/parts/`, named `<part>-v<N>.stl` matching the script version (coupons stay in `coupons/`).
+- [ ] MakerWorld pack: `publish/` with the final STLs, one Bambu project (.3mf) per plate from `bambu/`, photos of the printed parts, the cut list and hardware BOM, and the assembly sequence (HANDOVER §5 access sequence + Stage 2 frame order).
+
+**Bambu project files.** Save Bambu Studio projects (File → Save project, `.3mf`) under `bambu/<stage>/<plate>.3mf` — e.g. `bambu/coupons/p7-plate.3mf`, later `bambu/03-cradles/psu-cradles.3mf`. Commit the project file, not the sliced `.gcode.3mf`. The STL + CadQuery script stay the source of truth; the .3mf is the build artefact that carries plate layout and the `SiglentTower fit 0.20` profile, and it is what MakerWorld takes as a print profile.
 
 ---
 
