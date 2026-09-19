@@ -10,7 +10,7 @@ v2: decisions D1–D6 answered (§0), cut plan redone for the 300 mm pack (§2),
 
 - [x] §0 decisions D1–D10 all ☑
 - [ ] Stage 0 — coupons modelled and sliced, spacer set printed
-- [ ] Stage 1 — extrusion cut; P1–P9 all ☑ in §3, values in `fit.py`
+- [ ] Stage 1 — extrusion cut ☑ (2026-09-19); P1–P9 all ☑ in §3, values in `fit.py`
 - [ ] Stage 2 — frame assembled, sled feet on the scope rails, instruments trial-fitted
 - [ ] Stage 3 — cradles
 - [ ] Stage 4 — drawers (incl. D7 thermal check)
@@ -59,7 +59,7 @@ Done when: D1–D7 ticked, coupon STLs sliced, spacer set printed.
 | ☐ | 0.3 Model the coupons in CadQuery, one script each under `src/coupons/`: **`p1_sled_foot.py` ☑** (v2 2026-09-19: web at x 22.2, closed beam groove; from `src/parts/sled_foot.py`, STLs in `coupons/p1/`), `p3_runner.py`, `p4_clip_tile.py`, `p5_hinge_magnet.py`, **`p6_pull.py` ☑** (`coupons/p6/`), **`p7_quarter_joint.py` ☑** (cropped from `src/parts/drawer_quarters.py`, STLs in `coupons/p7/`), `p8_tpu_foot.py`, **`p9_bumper_cup.py` ☑** (`coupons/p9/`). P2 is `psu_cradle.py` already. Each coupon is a literal section of the production part, in the production orientation, not a generic block. | STLs in `coupons/pN/` |
 | ☑ | 0.4 Print the rail-height spacer set, any PETG: **48** (base top 20 → PSU rail 68), **139.5** (88 → 227.5), **63.5** (247.5 → 311), **159** (331 → 490), two of each, plus the 3.0 mm web gauge — `coupons/spacers/spacers-plate.stl`, flat as laid out, 2 walls, 10 % infill (`src/coupons/spacers.py`). | 9 small prints |
 | ☐ | 0.5 Fix HANDOVER open item 3: `layout_gen.py` scope rails 318–338 → 311–331, regenerate page 1. | `bench-stack-layout-v16.pdf` |
-| ☐ | 0.6 Slice coupon plates (§3): A = black ASA, B = black PETG, C = dark grey PETG, D = blue TPU. | 4 `.3mf` |
+| ☐ | 0.6 Slice coupon plates (§3): A = black ASA, B/C = yellow PETG, D = blue TPU. P1 and P9 sliced and printed (`bambu/01-coupons/`). | 4 `.3mf` |
 
 ---
 
@@ -73,14 +73,14 @@ Done when: every row in §3 is PASS and its number is in `fit.py`.
 
 | Done | Step | Jig | Cut from | Cuts | Pieces made | Bar left after |
 |---|---|---|---|---|---|---|
-| ☐ | 1 | 200 | W | 1 | 1 × 200 — coupon rail (P2, P3, P8) | W ≈ 98 |
-| ☐ | 2 | 179.5 | X, Y | 1 each | 2 × 179.5 — inner uprights | X, Y ≈ 118 |
-| ☐ | 3 | 70 | W, X, Y | 1 each | 3 × 70 — ties | scrap |
-| ☐ | — | — | Z | none | 1 × 300 whole — coupon rail (P1, P4) | — |
-| ☐ | 4 | 510 | A, B, C, D | 1 each | 4 × 510 — uprights | A–D ≈ 488 |
-| ☐ | 5 | 321 | A, B | 1 each | 2 × 321 — rear cross rails | scrap |
-| ☐ | 6 | 310 | C, D (1 each), E, F (3 each), G (2) | 10 | 10 × 310 — side rails | G ≈ 376, rest scrap |
-| ☐ | 7 | 307 | G (1), H (3) | 4 | 4 × 307 — inner sub-frame rails | scrap |
+| ☑ | 1 | 200 | W | 1 | 1 × 200 — coupon rail (P2, P3, P8) | W ≈ 98 |
+| ☑ | 2 | 179.5 | X, Y | 1 each | 2 × 179.5 — inner uprights | X, Y ≈ 118 |
+| ☑ | 3 | 70 | W, X, Y | 1 each | 3 × 70 — ties | scrap |
+| ☑ | — | — | Z | none | 1 × 300 whole — coupon rail (P1, P4) | — |
+| ☑ | 4 | 510 | A, B, C, D | 1 each | 4 × 510 — uprights | A–D ≈ 488 |
+| ☑ | 5 | 321 | A, B | 1 each | 2 × 321 — rear cross rails | scrap |
+| ☑ | 6 | 310 | C, D (1 each), E, F (3 each), G (2) | 10 | 10 × 310 — side rails | G ≈ 376, rest scrap |
+| ☑ | 7 | 307 | G (1), H (3) | 4 | 4 × 307 — inner sub-frame rails | scrap |
 
 Check: 510 × 4, 321 × 2, 310 × 10, 307 × 4, 179.5 × 2, 70 × 3. Deburr every end as you go; the T-foot and clips will find any burr. Bundle each length with tape, length written on it.
 
