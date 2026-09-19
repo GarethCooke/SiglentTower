@@ -30,8 +30,11 @@ PSU_FOOT_D4    = 19.5   # diameter 4 mm above the pad = at the cup rim (cup dept
 HOLE_SHRINK    = 0.3    # radial: a straight Ø22.2 bore in black ASA printed Ø21.6 (2026-09-17). Add to straight printed bores;
                         # NOT to conical cups (see CUP_CLR).
 
-# P3 drawer runners / guide strips
-RUNNER_CLR     = 0.3    # groove-to-runner clearance per side; side play < 0.5 total, no stick-slip
+# P3 drawer runners / guide strips (src/parts/drawer_runner.py) — L-runner bolted into the base rail's TOP slot (a 3 mm gap
+# cannot hide an M5 head), 7 mm rib into a house-shaped groove in a 10 x 20 boss on the drawer's outer wall. The drawer's
+# floor top rests on the rib (no clearance there); RUNNER_CLR grows the groove's back and 45° roof and is the plate's
+# stand-off from the drawer wall.
+RUNNER_CLR     = 0.3    # groove back/roof over the rib, plate to drawer wall; side play < 0.5, no stick-slip
 
 # P4 slot-clip tiles (side tiles, door, top tiles, housing-top tiles)
 CLIP_T         = 3.0    # clip leg thickness (3 mm PETG)
