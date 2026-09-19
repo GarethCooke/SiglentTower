@@ -78,7 +78,7 @@ BUMPER_FLAT    = "rear" # the D's flat faces the scope's rear edge, the arc face
 BUMPER_SIDE_L  = 13.0   # straight side from the flat before the end arc starts, at the 5 mm section. v2 used a true
                         # semicircle (side 11.05, r 12.95) and only the +1.0 cup fitted: the foot's shoulders are fuller
                         # than that, so v3 lengthens the sides 2 mm and closes the end with a flatter three-point arc.
-BUMPER_CUP_CLR = 0.3    # net per side on the 25.9 x 24 section; the v3 winner replaces this
+BUMPER_CUP_CLR = 0.3    # net per side on the 25.9 x 24 section, sides 13, flat arc — PASSED P9 v3 2026-09-19 ("perfect fit")
 BUMPER_CUP_V3  = (0.1, 0.3, 0.5, 0.7, 1.0, 1.3)    # v3 plate, one row, value stamped by each (1.3 backs up v2's +1.0)
 STAND_POCKET_D = 2.5    # front stand sits in a pocket, not on a lipped pad: 14 - 11.5 = 2.5 keeps the scope level
 STAND_W        = 44.0   # across the scope — v1 pocket 44.6 PASSED 2026-09-19 (width perfect)
