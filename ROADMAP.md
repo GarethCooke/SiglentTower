@@ -20,6 +20,8 @@ v2: decisions D1–D6 answered (§0), cut plan redone for the 300 mm pack (§2),
 - [ ] Stage 8 — trim
 - [ ] Stage 9 — close-out (HANDOVER v19, viewer/layout regenerated, STLs archived)
 
+**Status 2026-09-19:** all extrusion cut. Printed and awaiting test results: P9 (`coupons/p9/p9-plate.stl`), P6 (`pull-60` + `facia-80`), P1 v3 (`coupons/p1/p1-plate.stl`, yellow PETG — test per `coupons/p1/p1-howto.png` in bar Z). PSU cradles: v3 passed, remaining three to print. Frame 2.1–2.5 may proceed; 2.6 (scope rails) waits for P1. Next models from Claude: P4 clip tile, P3 runner, AWG cradles, P8, P5, strip brackets, light bar (D10).
+
 Tick a stage here only when its "Done when" line in the section below is met and every row in its table is ☑.
 
 ---
