@@ -8,7 +8,7 @@ v2: decisions D1–D6 answered (§0), cut plan redone for the 300 mm pack (§2),
 
 ## Progress
 
-- [x] §0 decisions D1–D8 all ☑
+- [x] §0 decisions D1–D9 all ☑
 - [ ] Stage 0 — coupons modelled and sliced, spacer set printed
 - [ ] Stage 1 — extrusion cut; P1–P9 all ☑ in §3, values in `fit.py`
 - [ ] Stage 2 — frame assembled, sled feet on the scope rails, instruments trial-fitted
@@ -38,6 +38,7 @@ Found by checking the handover against the 1 m bars and the 256 × 256 bed.
 | ☑ | D6 | Sled beams 327 × 40 with arms fail the diagonal. | **Split each beam at y 165** (between the rear-bumper cup arms at 106–138 and the front cross bar at 190); the 210 T-foot bridges the seam. Cable channel is a separate 194 part keyed to the left beam. Shown in `bench-stack-3d.html`. | **Decided.** Joint coupon is part of P7. |
 | ☑ | D7 | Mini slot was 180 deep only because it sits 5 mm off the AWG's right side, and the AWG's fan vent is on that side (measured: Ø80 centred 123 from the AWG front → frame y 126, vent y 86–166). | **Slot 285 deep (y 3–288), same as the column, with a 15 mm air channel beside the vent:** the slot's inner wall steps from x 242 to x 252 over y 81–171, so the body is a 26-wide front pocket (78 deep), a 16-wide neck (90) and a 26-wide rear pocket (117). The housing top over column + slot is notched the same (x 252–338 over y 81–171) so the channel is open upward into the 19 mm layer under the scope and downward past the inner rail. Shown in `bench-stack-3d.html`; slot travel now 250. | **Decided.** Gates: P3 (rides the inner AWG rail). Prints flat on the diagonal (285 + 26 → 220). |
 | ☑ | D8 | The strip's keyholes run **horizontally** (slots across the body), so its keyholes alone cannot hold it vertical; and a horizontal mount needs ~380 (350 body + cable exit) against a 361 frame with nothing free either side at the rear. | **Vertical on the rear face of the rear-left upright, cable end down, on two printed L-brackets in that upright's rear slot** (back to HANDOVER §7's position): peg line x 30.2 → body x 1–79 (78.1 wide, 29.2 edge outboard, inside the frame), z 25–375, y 350–380 (30 thick inside the 60 behind), sockets facing the wall. Pegs at z 45 and 294.5 (keyholes 20 and 269.5 from the cable end, 249.5 c-c). The lower bracket carries a shelf under the strip's end (z 21–25, 10 mm cable notch) that takes the weight; the pegs only hold it against the frame. Cable drops to the bench at the rear-left post. Body edge 56 from the PSU fan centre (x ≈135.5), beside it not behind it. Diagonal rejected: at 45° the body crosses the PSU fan zone, neither keyhole lands on a rail or upright (the rear face has only the base and top cross rails), and it still needs the shelf. | **Decided 2026-09-17** (replaces the horizontal base-rail mount decided earlier the same day). |
+| ☑ | D9 | A pull slot cut into a standing front (D3) leaves the slot's top edge as a bridge the width of the opening — 100 on the bottom drawer, 120 on the sled bar — with no way to support it. | **Pulls are separate inserts**: a notch in the front's top edge (no bridge) takes a face-down-printed insert in the accent colour (dark blue, per the HANDOVER colour scheme) carrying the slot, the 5 mm hook strip and the pocket (17 deep, floor 30°, walls 2); glued in, flush front and top. Same on the column front, the mini-slot front and the sled bar. | **Decided 2026-09-19** from modelling P6; the coupon prints the insert and a notched facia stub. |
 
 **Sled-foot assembly constraint (terse):** the T-feet enter the scope rails' side slots from the rail end. Once a rail is bolted between the uprights, both ends are blocked. So: feet onto the rails first, then bolt those two rails in. Beam bottom 337 vs AWG top 336 is 1 mm — set the scope-rail height with the 63.5 spacer, not a tape.
 
@@ -54,7 +55,7 @@ Done when: D1–D7 ticked, coupon STLs sliced, spacer set printed.
 | ☑ | 0.1a Order the 300 mm 4-pack (D1). | ordered 2026-09-15 |
 | ☑ | 0.1b D4, D5, D7 confirmed from `bench-stack-3d.html`; `drawer-quarters-v1.pdf` approved pending P7. | §0 all ☑ |
 | ☑ | 0.2 Create `src/fit.py` — one module holding every tuned clearance (table in §3), imported by every part script. Coupons exist to set these numbers; production parts read them. | `src/fit.py` |
-| ☐ | 0.3 Model the coupons in CadQuery, one script each under `src/coupons/`: **`p1_sled_foot.py` ☑** (from `src/parts/sled_foot.py`, STLs in `coupons/p1/`), `p3_runner.py`, `p4_clip_tile.py`, `p5_hinge_magnet.py`, `p6_jpull.py`, **`p7_quarter_joint.py` ☑** (cropped from `src/parts/drawer_quarters.py`, STLs in `coupons/p7/`), `p8_tpu_foot.py`, `p9_bumper_cup.py`. P2 is `psu_cradle.py` already. Each coupon is a literal section of the production part, in the production orientation, not a generic block. | STLs in `coupons/pN/` |
+| ☐ | 0.3 Model the coupons in CadQuery, one script each under `src/coupons/`: **`p1_sled_foot.py` ☑** (v2 2026-09-19: web at x 22.2, closed beam groove; from `src/parts/sled_foot.py`, STLs in `coupons/p1/`), `p3_runner.py`, `p4_clip_tile.py`, `p5_hinge_magnet.py`, **`p6_pull.py` ☑** (`coupons/p6/`), **`p7_quarter_joint.py` ☑** (cropped from `src/parts/drawer_quarters.py`, STLs in `coupons/p7/`), `p8_tpu_foot.py`, **`p9_bumper_cup.py` ☑** (`coupons/p9/`). P2 is `psu_cradle.py` already. Each coupon is a literal section of the production part, in the production orientation, not a generic block. | STLs in `coupons/pN/` |
 | ☑ | 0.4 Print the rail-height spacer set, any PETG: **48** (base top 20 → PSU rail 68), **139.5** (88 → 227.5), **63.5** (247.5 → 311), **159** (331 → 490), two of each, plus the 3.0 mm web gauge — `coupons/spacers/spacers-plate.stl`, flat as laid out, 2 walls, 10 % infill (`src/coupons/spacers.py`). | 9 small prints |
 | ☐ | 0.5 Fix HANDOVER open item 3: `layout_gen.py` scope rails 318–338 → 311–331, regenerate page 1. | `bench-stack-layout-v16.pdf` |
 | ☐ | 0.6 Slice coupon plates (§3): A = black ASA, B = black PETG, C = dark grey PETG, D = blue TPU. | 4 `.3mf` |
@@ -65,32 +66,28 @@ Done when: D1–D7 ticked, coupon STLs sliced, spacer set printed.
 
 Done when: every row in §3 is PASS and its number is in `fit.py`.
 
-**Cut plan (2 mm kerf, 8 × 1000 + 4 × 300).** Cut the 300s first so the coupon rails exist before the frame does:
+**Cut sheet — by jig setting** (`CUT-TABLE.md` is the same sheet for the workshop). Tape-label the 1000s A–H and the 300s W–Z, the labelled end never goes to the stop (feed the fresh end against it, so the label stays on the remainder), set the jig once per step and cut every bar listed before moving on. Every finished piece is the one between the stop and the blade; the remainder is stock for the next step, never a finished piece (it is short by the kerf). Kerf is allowed for.
 
-| Done | Bar | Pieces | Used |
-|---|---|---|---|
-| ☐ | 300 A | 179.5, 70 | 249.5 |
-| ☐ | 300 B | 179.5, 70 | 249.5 |
-| ☐ | 300 C | 70, then 200 **coupon rail** | 270 |
-| ☐ | 300 D | whole — **coupon rail** | 300 |
-| ☐ | 1000 × 1 | 510, 321 | 831 |
-| ☐ | 1000 × 2 | 510, 321 | 831 |
-| ☐ | 1000 × 3 | 510, 310 | 820 |
-| ☐ | 1000 × 4 | 510, 310 | 820 |
-| ☐ | 1000 × 5 | 310, 310, 310 | 930 |
-| ☐ | 1000 × 6 | 310, 310, 310 | 930 |
-| ☐ | 1000 × 7 | 310, 310, 307 | 927 |
-| ☐ | 1000 × 8 | 307, 307, 307 | 921 |
+| Done | Step | Jig | Cut from | Cuts | Pieces made | Bar left after |
+|---|---|---|---|---|---|---|
+| ☐ | 1 | 200 | W | 1 | 1 × 200 — coupon rail (P2, P3, P8) | W ≈ 98 |
+| ☐ | 2 | 179.5 | X, Y | 1 each | 2 × 179.5 — inner uprights | X, Y ≈ 118 |
+| ☐ | 3 | 70 | W, X, Y | 1 each | 3 × 70 — ties | scrap |
+| ☐ | — | — | Z | none | 1 × 300 whole — coupon rail (P1, P4) | — |
+| ☐ | 4 | 510 | A, B, C, D | 1 each | 4 × 510 — uprights | A–D ≈ 488 |
+| ☐ | 5 | 321 | A, B | 1 each | 2 × 321 — rear cross rails | scrap |
+| ☐ | 6 | 310 | C, D (1 each), E, F (3 each), G (2) | 10 | 10 × 310 — side rails | G ≈ 376, rest scrap |
+| ☐ | 7 | 307 | G (1), H (3) | 4 | 4 × 307 — inner sub-frame rails | scrap |
 
-Check: 510 × 4, 321 × 2, 310 × 10, 307 × 4, 179.5 × 2, 70 × 3. Coupon rail use: 300 D = P1 (scope-rail inner slot) and P4 clips; 200 = P2 cradle saddle, P3 runner, P8 spigot in the centre bore. Deburr every end; the T-foot and clips will find any burr.
+Check: 510 × 4, 321 × 2, 310 × 10, 307 × 4, 179.5 × 2, 70 × 3. Deburr every end as you go; the T-foot and clips will find any burr. Bundle each length with tape, length written on it.
 
 **Coupon plates.**
 
 | Done | Plate | Material | Parts |
 |---|---|---|---|
-| ☐ | A | black ASA (production material — these are sliding pairs, friction and shrink matter) | P1 `coupons/p1/foot-40.stl` (T-foot + web + rib, prints standing) + `beam-40.stl` (rebated stub, prints top face down) — `p1-plate.stl` has both · P3 runner 80 mm (the ASA half of the PETG-on-ASA pair) |
-| ☑ | B | **yellow PETG** (house rule from 2026-09-17: every test and prototype part is yellow PETG unless the test depends on the production material) | P3 drawer-side stub 100 mm with groove · P4 60 × 60 hex tile with clips · P5 knuckle pair + 3 mm pin + magnet boss · P9 40 × 40 cup pad + front pad with 5 mm lip · P7 (done — printed in black PETG before the rule) |
-| ☐ | C | yellow PETG | P6 60 mm of front with J-pull pocket, **standing on edge on the diagonal** (D3) — geometry test, colour irrelevant |
+| ☐ | A | black ASA (production material — these are sliding pairs, friction and shrink matter) | P1 `coupons/p1/foot-40.stl` (T-foot + web + rib, prints standing) + `beam-40.stl` (grooved stub, prints flat) — `p1-plate.stl` has both (v2; the v1 print still tests the slot fit) · P3 runner 80 mm (the ASA half of the PETG-on-ASA pair) |
+| ☑ | B | **yellow PETG** (house rule from 2026-09-17: every test and prototype part is yellow PETG unless the test depends on the production material) | P3 drawer-side stub 100 mm with rib · P4 60 × 60 hex tile with clips · P5 knuckle pair + 3 mm pin + magnet boss · **P9 `coupons/p9/p9-plate.stl`** (cup pad + stand-pocket pad, flat) · P7 (done — printed in black PETG before the rule) |
+| ☐ | C | yellow PETG | **P6 `coupons/p6/pull-60.stl` face down + `facia-80.stl` standing** (D9) — geometry test, colour irrelevant |
 | ☐ | D | blue TPU | P8 foot · one AWG pad · one sled-stop cap — proves all the TPU parts in one go |
 
 Iterate width/clearance in 0.1 mm steps; re-print only the failing coupon. Budget three rounds for P1 and P4, one for the rest.
@@ -128,10 +125,10 @@ ASA/ABS: filament preset, door closed, everything else as above. Saved in Bambu 
 | ☐ | **P3** drawer runner | Stub slides full length, side play < 0.5, no stick-slip dry or with PTFE. | `RUNNER_CLR` | Bottom-drawer runners, column guide strips ×4, mini-slot runner, all three drawer bodies | 0.3 |
 | ☐ | **P4** slot-clip tile | Snaps in by thumb, pulls out only with a tool, 10 cycles no cracks. | `CLIP_T`, `CLIP_BARB` | All 16 side pieces, door tile, 4 top tiles, 6 housing-top tiles (D2/D5) | 3 mm PETG, barb 0.6 |
 | ☐ | **P5** hinge + magnet | Pin pushes in, knuckle swings free through 180, magnet CA-glues flush in 10.4 × 2.2, pair pulls apart cleanly at 0.5 gap. | `PIN_HOLE_D`, `MAG_POCKET` | Door knuckles ×2, magnet bosses ×2, L-bracket, rear-tile tab | 3.2, 10.4 × 2.2 |
-| ☐ | **P6** J-pull | Finger sits comfortably, overhang clean without support in the D3 orientation. | `JPULL` (opening, depth, floor angle) | Three drawer fronts, sled front bar | 10 tall, 12 deep, 30° |
+| ☐ | **P6** pull insert | Insert drops into the facia stub's notch flush front and top; fingertip goes in the slot, hooks up behind the 5 mm strip and pulls comfortably; no support in the preview. | `JPULL_*` | Three drawer fronts + inserts, sled front bar + insert | slot 10, hook 5, pocket 17, floor 30°, insert clr 0.15 |
 | ☑ | **P7** quarter joint | Centre cross, wall crossing and beam pair all assemble by hand, hold without glue, faces flush within 0.2. | `DOVETAIL_CLR` ☑ 0.15 | Bottom drawer quarters ×4 (D2), split beams (D6), rear box halves | **PASSED 2026-09-17** at 0.15 — cross, wall crossing and beam pair all good |
 | ☐ | **P8** TPU foot | Spigot holds in the 2020 centre bore (nominal ~4.2, spec says 5 — expect to trim to ~4.6), foot sits flat, no wobble. | `SPIGOT_D` | Feet ×4, AWG pads ×4, sled-stop caps ×2 | 5.0 |
-| ☐ | **P9** bumper cup | Scope rear bumper drops in and locates, no rattle; front stand sits on the 5.5 pad inside the lip. | `BUMPER_CUP_CLR`, `PAD_LIP` | Scope cradles on the sled beams (cups ×2, pads ×2) | 0.3 |
+| ☐ | **P9** bumper cup + stand pocket | Scope rear bumper drops into the Ø32.6 × 5 cup and locates, no rattle; the folded front stand sits flat in the 44.6 × 43.6 × 2.5 pocket. | `BUMPER_CUP_CLR`, `STAND_CLR`, `STAND_POCKET_D` | Sled beams (cups ×2, stand pockets ×2) | 0.3 / 0.3 / 2.5 |
 
 Dependency chains: P1 + P7 + P9 + P6 → sled complete. P2 → all 12 cradles. P3 + P6 + P7 + P4 → drawers. P4 + P5 → skin. P8 → trim.
 

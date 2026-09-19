@@ -3,11 +3,12 @@
 #
 # Section, world coordinates (left side; the right side is the same part turned end for end):
 #   flange  x 14.2–18.0 (3.8 thick) × z 315.7–326.3 (10.6 tall)   inside the slot cavity, 0.2 behind the lip
-#   neck    x 18.0–20.5 (2.5 long)  × z 318.1–323.9 (5.8 wide)    through the 6.2 mouth (1.8 lip + 0.5 stand-off + 0.2)
-#   web     x 20.5–23.0 (2.5 thick) × z 315.7–341                 down the 3 mm gap between upright (x 20) and AWG frame (x 23)
-#   rib     x 20.5–25.5 × z 337–341 (top 4 mm of the web, inside the beam): widens 2.5 → 5.0 toward +x at 45°.
-# The beam (z 337–346) carries the matching rebate on its outer bottom edge (beam_rebate()); each beam half threads onto
-# the rib from the FRONT (y 0) and cannot lift: the 45° flanks push the web outward and the upright face (0.5 away) stops it.
+#   neck    x 18.0–22.2 (4.2 long)  × z 318.1–323.9 (5.8 wide)    through the 6.2 mouth (1.8 lip + 2.2 stand-off + 0.2)
+#   web     x 22.2–24.7 (2.5 thick) × z 315.7–341                 beside the upright; the AWG body is at x 26.5 (its 3.5 proud
+#                                                               front bezel at x 23 is only ~10 deep — the foot never reaches it)
+#   rib     x 22.2–27.2 × z 337–341 (top 4 mm of the web, inside the beam): widens 2.5 → 5.0 toward +x at 45°.
+# The beam (z 337–346, outer face x 20.5) carries a closed dovetail groove in its underside (beam_groove()): 1.5 wall outside
+# the web, 45° flank inboard, 5.4 mm ceiling — a bridge when the beam prints flat. Each beam half threads on from the FRONT.
 #
 # Print orientation: STANDING on the flange and web bottom edges (world z up), layers along the slide. The neck and flange
 # grow toward −x and the rib toward +x, so neither web face can be the bed (rule 3); standing, the flange and web are plain
@@ -16,12 +17,12 @@
 # Print frame: X = world y (length), Y = world x − 14.2 (flange back face), Z = world z − 315.7 (flange bottom).
 import os, sys, cadquery as cq
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-from fit import SLOT_FOOT_W, SLOT_FOOT_T, WEB_T, SLOT_LIP_T, FOOT_STANDOFF, FLANGE_GAP, FOOT_FLANGE_W, RIB_H, RIB_W, WEB_RIB_CLR
+from fit import SLOT_FOOT_W, SLOT_FOOT_T, WEB_T, SLOT_LIP_T, FOOT_STANDOFF, FLANGE_GAP, FOOT_FLANGE_W, RIB_H, RIB_W, WEB_RIB_CLR, BEAM_WALL
 
-NECK_L   = SLOT_LIP_T + FOOT_STANDOFF + FLANGE_GAP          # 2.5: x 18.0–20.5
-Y_NECK1  = SLOT_FOOT_T + NECK_L                             # 6.3: web outer face (world x 20.5)
-Y_WEB1   = Y_NECK1 + WEB_T                                  # 8.8: web inner face (world x 23)
-Y_RIB    = Y_NECK1 + RIB_W                                  # 11.3 (world x 25.5)
+NECK_L   = SLOT_LIP_T + FOOT_STANDOFF + FLANGE_GAP          # 4.2: x 18.0–22.2
+Y_NECK1  = SLOT_FOOT_T + NECK_L                             # 8.0: web outer face (world x 22.2)
+Y_WEB1   = Y_NECK1 + WEB_T                                  # 10.5: web inner face (world x 24.7)
+Y_RIB    = Y_NECK1 + RIB_W                                  # 13.0 (world x 27.2)
 Z_NECK0  = (FOOT_FLANGE_W - SLOT_FOOT_W) / 2                # 2.4  (world z 318.1)
 Z_NECK1  = Z_NECK0 + SLOT_FOOT_W                            # 8.2  (world z 323.9)
 Z_BEAM   = 337.0 - 315.7                                    # 21.3 (beam underside)
@@ -40,11 +41,15 @@ def foot(length):
     f = cq.Workplane("YZ").polyline(foot_section()).close().extrude(length)
     return f.edges("|X and <Z").chamfer(0.4)
 
-def beam_rebate(length, clr=WEB_RIB_CLR):
-    """Solid to CUT from a beam's outer bottom edge so it threads onto the rib. Beam frame: X = length, Y = world x − 20.5
-    (0 at the outer face), Z = world z − 337 (0 at the underside). Grown by `clr` on the fit faces; open at Y < 0."""
+def beam_groove(length, clr=WEB_RIB_CLR):
+    """Solid to CUT from a beam's underside so it threads onto the rib. Beam frame: X = length, Y = world x − 20.5 (0 at the
+    outer face), Z = world z − 337 (0 at the underside). Mouth = web ± clr, 45° flank inboard, ceiling RIB_H + clr up."""
+    y0 = 20.5 + BEAM_WALL - 20.5 - 0.0                     # outer wall inner face, beam frame (1.5)
+    y_web0 = (14.2 + Y_NECK1) - 20.5                       # web outer face in the beam frame (1.7)
+    assert y_web0 - clr >= y0 - 1e-6, "web collides with the beam's outer wall"
     g = RIB_GROW
-    pts = [(-1, -1), (WEB_T + clr, -1), (WEB_T + clr, 0), (RIB_W + clr, g), (RIB_W + clr, RIB_H + clr), (-1, RIB_H + clr)]
+    pts = [(y_web0 - clr, -1), (y_web0 + WEB_T + clr, -1), (y_web0 + WEB_T + clr, 0), (y_web0 + RIB_W + clr, g),
+           (y_web0 + RIB_W + clr, RIB_H + clr), (y_web0 - clr, RIB_H + clr)]
     return cq.Workplane("YZ").polyline(pts).close().extrude(length)
 
 if __name__ == "__main__":
