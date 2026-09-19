@@ -5,10 +5,11 @@
 # The old cup pad (Ø32.6) was sized on the handover's Ø32, which is not a dimension the bumper has.
 # Test: drop the bumper into each cup. Winner = seats fully on the floor, no rattle, lifts straight out. Set
 # BUMPER_CUP_CLR to it, and say which way the D's flat faces on the scope (the beam arm needs that).
-# Output: coupons/p9/p9-cups-v2.stl.
+# Plus stand-pad-v2: the front-stand pocket at 44 x 23.1 + STAND_CLR (v1 used the 43 overall; the folded flap tucks under
+# the main leg and never reaches the pocket). Output: coupons/p9/p9-cups-v2.stl, stand-pad-v2.stl, p9-v2-plate.stl (both).
 import os, sys, cadquery as cq
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE, ".."))
-from fit import BUMPER_W, BUMPER_D5, BUMPER_CUP_D, BUMPER_CUP_V2
+from fit import BUMPER_W, BUMPER_D5, BUMPER_CUP_D, BUMPER_CUP_V2, STAND_W, STAND_L, STAND_CLR, STAND_POCKET_D
 from printcheck import check
 OUT = os.path.normpath(os.path.join(HERE, "..", "..", "coupons", "p9")); os.makedirs(OUT, exist_ok=True)
 
@@ -46,3 +47,11 @@ print(f"plate {bb.xlen:.0f} x {bb.ylen:.0f} x {bb.zlen:.0f}, {plate.val().Volume
       f"{BUMPER_W} x {BUMPER_D5}: {BUMPER_W + 2*BUMPER_CUP_V2[0]:.1f} x {BUMPER_D5 + 2*BUMPER_CUP_V2[0]:.1f} .. {BUMPER_W + 2*BUMPER_CUP_V2[-1]:.1f} x {BUMPER_D5 + 2*BUMPER_CUP_V2[-1]:.1f}, "
       f"{BUMPER_CUP_D - LEAD} straight + {LEAD} lead-in")
 check(path)
+
+# stand pad v2 — pocket for the main leg only, x = across the scope, y = front-to-back
+sw, sl = STAND_W + 2 * STAND_CLR, STAND_L + 2 * STAND_CLR
+stand = cq.Workplane("XY").box(sw + 8, sl + 8, T, centered=(True, True, False)).faces(">Z").workplane().rect(sw, sl).cutBlind(-STAND_POCKET_D)
+sp = os.path.join(OUT, "stand-pad-v2.stl"); cq.exporters.export(stand, sp, tolerance=0.01, angularTolerance=0.1); check(sp)
+print(f"stand pocket {sw:.1f} x {sl:.1f} x {STAND_POCKET_D}")
+both = plate.add(stand.translate((0, -(PH / 2 + 10 + (sl + 8) / 2), 0)))
+cq.exporters.export(both, os.path.join(OUT, "p9-v2-plate.stl"), tolerance=0.01, angularTolerance=0.1)

@@ -76,8 +76,11 @@ BUMPER_H       = 14.0
 BUMPER_CUP_D   = 6.0    # 5 straight + 1 lead-in
 BUMPER_CUP_CLR = 0.3    # net per side on the 25.9 x 24 section; the v2 winner replaces this
 BUMPER_CUP_V2  = (-0.1, 0.1, 0.3, 0.5, 0.7, 1.0)   # the v2 plate's cups, value stamped by each
-STAND_POCKET_D = 2.5    # front stand (44 x 43 x 11.5) sits in a pocket, not on a lipped pad: 14 - 11.5 = 2.5 keeps the scope level
-STAND_CLR      = 0.3    # per side on the 44 x 43 stand footprint
+STAND_POCKET_D = 2.5    # front stand sits in a pocket, not on a lipped pad: 14 - 11.5 = 2.5 keeps the scope level
+STAND_W        = 44.0   # across the scope — v1 pocket 44.6 PASSED 2026-09-19 (width perfect)
+STAND_L        = 23.1   # front-to-back of the MAIN leg at the bench: v1 used the 43 overall, which includes the folded flap
+                        # that tucks under the main leg and never reaches a 2.5 pocket -> v1 length FAIL, v2 pocket 23.7
+STAND_CLR      = 0.3    # per side on the 44 x 23.1 main-leg footprint (0.3 proven on the width)
 
 # ---- measured hardware (not clearances; single source for part scripts) ----
 STRIP_KEYHOLE_PITCH = 249.5   # Addtam 4-way strip, measured 2026-09-17
