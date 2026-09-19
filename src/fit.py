@@ -61,8 +61,21 @@ DOVETAIL_CLR   = 0.15   # all-round clearance on every dovetail / puzzle tab —
 # P8 TPU foot
 SPIGOT_D       = 5.0    # spigot into the 2020 centre bore (~4.2 nominal); expect ~4.6
 
-# P9 scope bumper cup / front-stand pocket — src/coupons/p9_bumper_cup.py
-BUMPER_CUP_CLR = 0.3    # radial clearance on the Ø32 rear bumper; cup 5 deep in the beam top (bumper base z 341)
+# P9 scope bumper cup / front-stand pocket — src/coupons/p9_cups_v2.py
+# v1 cup Ø32.6 was sized on the handover's "Ø32" — wrong. Calipers 2026-09-19 (width = scope width direction, depth =
+# front-back): pad contact patch 20 x 9.5; at 5 mm up 25.9 x 24.0; at the chassis 25.9 x 26.4; ~14 tall. So the width is
+# constant from 5 mm up, the depth grows ~0.27/mm, and the bottom 5 mm is a bullnose. Photos: D-shaped (flat one side,
+# half-round the other, along the depth). A cup can only locate it at the 5 mm section, so v2 cups are STRAIGHT-walled
+# 25.9 x 24 (+ clr) for 5 mm with a 1 mm 45° lead-in above (cup 6 deep, 3 mm floor in the 9 mm beam) — no lead-in inside
+# the locating height, or nothing touches. Straight walls shrink in print (HOLE_SHRINK) so the plate runs to +1.0.
+BUMPER_W       = 25.9   # across, at 5 mm up and above
+BUMPER_D5      = 24.0   # flat -> arc at 5 mm up (the cup rim)
+BUMPER_D_BASE  = 26.4   # at the chassis
+BUMPER_PAD     = (20.0, 9.5)   # contact patch on the bench
+BUMPER_H       = 14.0
+BUMPER_CUP_D   = 6.0    # 5 straight + 1 lead-in
+BUMPER_CUP_CLR = 0.3    # net per side on the 25.9 x 24 section; the v2 winner replaces this
+BUMPER_CUP_V2  = (-0.1, 0.1, 0.3, 0.5, 0.7, 1.0)   # the v2 plate's cups, value stamped by each
 STAND_POCKET_D = 2.5    # front stand (44 x 43 x 11.5) sits in a pocket, not on a lipped pad: 14 - 11.5 = 2.5 keeps the scope level
 STAND_CLR      = 0.3    # per side on the 44 x 43 stand footprint
 
