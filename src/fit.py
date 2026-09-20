@@ -39,9 +39,12 @@ RUNNER_CLR     = 0.3    # groove back/roof over the rib, plate to drawer wall �
                         # stick-slip not proven: the 80 mm PETG coupon warped and one bolt can't pull it straight. Confirm on the
                         # 300 ABS runners bolted to the base rails (Stage 4 'test on the frame'), ironing ON for the rib's top surface
 
-# P4 slot-clip tiles (side tiles, door, top tiles, housing-top tiles)
-CLIP_T         = 3.0    # clip leg thickness (3 mm PETG)
-CLIP_BARB      = 0.6    # barb interference into the 6.2 slot; thumb-snap in, tool out, 10 cycles
+# P4 slot-clip tiles (src/parts/slot_clip.py) — the spring is a 25 x 5.5 finger cut free from the tile by a 1 mm U-slit,
+# bending sideways in the tile plane; a 5.1 x 6 peg on its free end enters the 5.9 mouth (0.7 slack on the far side,
+# 0.1 on the barb side) and a barb hooks the lip by CLIP_BARB with a 60° face (45° ramp in). Tiles meet on the slot
+# centreline; each hooks its own lip; fingers staggered along the rail. P4 v1 plate: barb 0.6 and 0.9.
+CLIP_T         = 3.0    # tile = finger thickness (3 mm PETG)
+CLIP_BARB      = 0.6    # barb past the mouth edge, under the lip; thumb-snap in, blade out, 10 cycles
 
 # P5 hinge + magnet
 PIN_HOLE_D     = 3.2    # knuckle bore for the 3 mm pin
