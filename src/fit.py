@@ -34,7 +34,9 @@ HOLE_SHRINK    = 0.3    # radial: a straight Ø22.2 bore in black ASA printed Ø
 # cannot hide an M5 head), 7 mm rib into a house-shaped groove in a 10 x 20 boss on the drawer's outer wall. The drawer's
 # floor top rests on the rib (no clearance there); RUNNER_CLR grows the groove's back and 45° roof and is the plate's
 # stand-off from the drawer wall.
-RUNNER_CLR     = 0.3    # groove back/roof over the rib, plate to drawer wall; side play < 0.5, no stick-slip
+RUNNER_CLR     = 0.3    # groove back/roof over the rib, plate to drawer wall — geometry PASSED 2026-09-20 (little rock, slides);
+                        # stick-slip not proven: the 80 mm PETG coupon warped and one bolt can't pull it straight. Confirm on the
+                        # 300 ABS runners bolted to the base rails (Stage 4 'test on the frame'), ironing ON for the rib's top surface
 
 # P4 slot-clip tiles (side tiles, door, top tiles, housing-top tiles)
 CLIP_T         = 3.0    # clip leg thickness (3 mm PETG)
