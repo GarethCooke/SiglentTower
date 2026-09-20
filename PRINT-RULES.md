@@ -12,6 +12,7 @@ House rules for every printed part in this project, then a review of every produ
 6. **Clearances live in one place** (`src/fit.py`), set by coupons, read by every part script. No X-Y compensation in the slicer. Sliding pairs and long thin bars print from one reserved black ABS+ spool (ROADMAP §2 lists them); every other black part is plain ABS. A sliding-pair `fit.py` value set on a PETG coupon is re-checked with a short ABS+ coupon before the full-length part.
 7. **Bed-edge features get a 0.4 mm chamfer** on their bottom edge so elephant foot cannot close a clearance on the first layer.
 8. **Split rather than tilt** when a part exceeds the bed. A diagonal placement is fine for a bar; a fit part with sliding surfaces is split with a joint that itself obeys rules 2–4.
+9. **A coupon is the joint and nothing else.** Enough body to hold and orient it, no more: a 66 × 14 strip tests a tile clip as well as a 60 × 60 tile does at a third of the plastic and time. Variants go on one plate, stamped.
 
 ## 2. Review of production parts
 
