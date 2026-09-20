@@ -9,10 +9,11 @@ SLOT_CAVITY_W  = 10.6   # widest, just behind the lips
 SLOT_THROAT_D  = 4.45   # outer face -> where the cavity walls start angling in (full-width pocket ends)
 SLOT_DEPTH     = 6.15   # outer face -> cavity bottom
 SLOT_BOTTOM_W  = 6.5    # flat at the cavity bottom
-SLOT_CLR       = 0.2    # per side, foot to slot, everywhere (neck in the mouth, flange in the cavity)
+SLOT_CLR       = 0.3    # per side, foot to slot, everywhere (neck in the mouth, flange in the cavity) — P1 v4 2026-09-20: of 0.3/0.4/0.5
+                        # the 40 mm foot (0.3) slid best, yellow PETG; re-check with a 40 mm ABS+ foot before the 210 pair
 SLOT_FOOT_W    = SLOT_MOUTH - 2 * SLOT_CLR      # 5.5 neck width; slides by hand, no rock
 FOOT_FLANGE_W  = SLOT_CAVITY_W - 2 * SLOT_CLR   # 10.2 flange, full width from the lip gap to the throat, then ~45 deg to the bottom
-FLANGE_GAP     = 0.2    # flange top face -> lip underside
+FLANGE_GAP     = 0.3    # flange top face -> lip underside (moves with SLOT_CLR; v4 tied them)
 FOOT_STANDOFF  = 2.2    # web outer face stands 2.2 off the rail face (x 20 -> 22.2) so the beam keeps a 1.5 outer wall
                         # outside the web (x 20.5-22.0) and its groove is closed on both sides -> beams print flat
 WEB_T          = 2.5    # web beside the upright; must pass the 3.0 gauge
