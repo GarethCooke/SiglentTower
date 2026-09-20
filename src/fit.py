@@ -44,7 +44,9 @@ RUNNER_CLR     = 0.3    # groove back/roof over the rib, plate to drawer wall �
 # 0.1 on the barb side) and a barb hooks the lip by CLIP_BARB with a 60° face (45° ramp in). Tiles meet on the slot
 # centreline; each hooks its own lip; fingers staggered along the rail. P4 v1 plate: barb 0.6 and 0.9.
 CLIP_T         = 3.0    # tile = finger thickness (3 mm PETG)
-CLIP_BARB      = 0.6    # barb past the mouth edge, under the lip; thumb-snap in, blade out, 10 cycles
+CLIP_BARB      = 1.2    # barb past the mouth edge, under the lip — PASSED P4 v2 2026-09-20 (variant C: barb 1.2, 45° hook, root stub 5.7)
+CLIP_HOOK_DEG  = 45.0   # hook face angle from the tile plane that fits a 1.2 barb under the slot throat (60° only fits 0.9)
+CLIP_STUB_CLR  = 0.1    # root stub to each mouth edge (5.7 in the 5.9 mouth) — lateral location, passed with C
 
 # P5 hinge + magnet
 PIN_HOLE_D     = 3.2    # knuckle bore for the 3 mm pin

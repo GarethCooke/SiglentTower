@@ -19,7 +19,7 @@
 # Print: face down (x -> up). Fingers and pegs rise from the tile; the barb's underside is 60°, its ramp 45°.
 import os, sys, math, cadquery as cq
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-from fit import SLOT_MOUTH, SLOT_LIP_T, SLOT_THROAT_D, SLOT_DEPTH, SLOT_CAVITY_W, SLOT_BOTTOM_W, CLIP_T, CLIP_BARB
+from fit import SLOT_MOUTH, SLOT_LIP_T, SLOT_THROAT_D, SLOT_DEPTH, SLOT_CAVITY_W, SLOT_BOTTOM_W, CLIP_T, CLIP_BARB, CLIP_HOOK_DEG, CLIP_STUB_CLR
 
 T         = CLIP_T            # tile / finger thickness 3.0
 FINGER_L  = 30.0              # finger length along the rail: STUB_L rigid root + 24 free cantilever
@@ -32,9 +32,9 @@ PEG_W     = SLOT_MOUTH - PEG_CLR - PEG_NEAR   # 5.1
 PEG_L     = 6.0               # along the rail
 HOOK_GAP  = 0.0               # barb's hook face sits on the lip underside: no lift (v1 had 0.2 and rattled)
 STUB_L    = 6.0               # rigid locating stub at the finger's ROOT: fills the mouth so the tile cannot move along the
-STUB_CLR  = 0.1               # slot width (v1 had nothing locating the tile sideways — the pegs rattled in 0.8 of slack)
+STUB_CLR  = CLIP_STUB_CLR     # slot width (v1 had nothing locating the tile sideways — the pegs rattled in 0.8 of slack)
 STUB_H    = 3.0
-HOOK_DEG  = 60.0              # hook face from the tile plane: pull-off = spring x tan 60 = 1.7 x the push (45° ramp); 30° overhang in print
+HOOK_DEG  = CLIP_HOOK_DEG     # hook face from the tile plane. P4 v2 winner C: 45° with a 1.2 barb (pull-off = push, held by the barb's reach)
 RAMP_DEG  = 45.0
 assert PEG_CLR > CLIP_BARB, "peg would jam on the far mouth edge before the barb clears the lip"
 
