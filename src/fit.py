@@ -48,7 +48,7 @@ MAG_POCKET_H   = 2.2
 # P6 pull insert (src/coupons/p6_pull.py) — the pull is a SEPARATE part in the accent colour, printed face-down, glued
 # into a notch in the facia's top edge. A slot cut straight into a standing facia leaves its top edge as a 100-120 mm
 # bridge; a top-edge notch has no bridge, and the insert restores the top edge and carries the pocket.
-JPULL_OPEN_H   = 10.0   # slot height in the insert's face
+JPULL_OPEN_H   = 12.0   # slot height in the insert's face — PASSED P6 v2 2026-09-20 (10 / 12 / 14 tried, 12 best; 14 is the bridge ceiling)
 JPULL_HOOK     = 5.0    # face strip above the slot that the fingertip hooks up behind; cavity runs up behind it
 JPULL_DEPTH    = 17.0   # cavity depth behind the face
 JPULL_FLOOR_DEG = 30.0  # floor rises toward the back (a leaning wall in the face-down print — any angle prints)
@@ -83,8 +83,8 @@ BUMPER_CUP_V3  = (0.1, 0.3, 0.5, 0.7, 1.0, 1.3)    # v3 plate, one row, value st
 STAND_POCKET_D = 2.5    # front stand sits in a pocket, not on a lipped pad: 14 - 11.5 = 2.5 keeps the scope level
 STAND_W        = 44.0   # across the scope — v1 pocket 44.6 PASSED 2026-09-19 (width perfect)
 STAND_L        = 23.1   # front-to-back of the MAIN leg at the bench: v1 used the 43 overall, which includes the folded flap
-                        # that tucks under the main leg and never reaches a 2.5 pocket -> v1 length FAIL, v2 pocket 23.7
-STAND_CLR      = 0.3    # per side on the 44 x 23.1 main-leg footprint (0.3 proven on the width)
+                        # that tucks under the main leg and never reaches a 2.5 pocket -> v1 length FAIL; v2 pocket 23.7 PASSED 2026-09-20
+STAND_CLR      = 0.3    # per side on the 44 x 23.1 main-leg footprint — PASSED (width v1, length v2): perfect fit
 
 # ---- measured hardware (not clearances; single source for part scripts) ----
 STRIP_KEYHOLE_PITCH = 249.5   # Addtam 4-way strip, measured 2026-09-17
