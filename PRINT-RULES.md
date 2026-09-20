@@ -9,7 +9,7 @@ House rules for every printed part in this project, then a review of every produ
 3. **One part, one direction of features.** A part may have features rising from its bed face, never features hanging below it. If a design needs both (a web under a beam, a peg under a bracket), the interface is a joint and the part splits there.
 4. **Overhangs are designed out, not supported.** Slots and grooves in vertical walls get 45° roofs. Horizontal round holes are teardrops. Mushroom heads and lips have a 45° underside. Bridges are kept under 12 mm. Counterbores that must face the bed use the slicer's sacrificial layer (Bambu: Quality → Bridge counterbore holes → Sacrificial layer), not support.
 5. **Supports are a house rule, not a design tool.** They stay enabled with "On build plate only" so they can never grow inside a part. If the slicer preview shows support on any fit surface, the part is wrong.
-6. **Clearances live in one place** (`src/fit.py`), set by coupons, read by every part script. No X-Y compensation in the slicer.
+6. **Clearances live in one place** (`src/fit.py`), set by coupons, read by every part script. No X-Y compensation in the slicer. Sliding pairs and long thin bars print from one reserved black ABS+ spool (ROADMAP §2 lists them); every other black part is plain ABS. A sliding-pair `fit.py` value set on a PETG coupon is re-checked with a short ABS+ coupon before the full-length part.
 7. **Bed-edge features get a 0.4 mm chamfer** on their bottom edge so elephant foot cannot close a clearance on the first layer.
 8. **Split rather than tilt** when a part exceeds the bed. A diagonal placement is fine for a bar; a fit part with sliding surfaces is split with a joint that itself obeys rules 2–4.
 
