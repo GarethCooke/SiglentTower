@@ -10,7 +10,8 @@ SLOT_THROAT_D  = 4.45   # outer face -> where the cavity walls start angling in 
 SLOT_DEPTH     = 6.15   # outer face -> cavity bottom
 SLOT_BOTTOM_W  = 6.5    # flat at the cavity bottom
 SLOT_CLR       = 0.3    # per side, foot to slot, everywhere (neck in the mouth, flange in the cavity) — P1 v4 2026-09-20: of 0.3/0.4/0.5
-                        # the 40 mm foot (0.3) slid best, yellow PETG; re-check with a 40 mm ABS+ foot before the 210 pair
+                        # the 40 mm foot (0.3) slid best, yellow PETG. P1 PASSED 2026-09-21: 40 mm foot in black ABS+ slides the
+                        # length of bar Z's inner slot, can't lift out, minor rock (accepted: the pair is tied by the bars and loaded)
 SLOT_FOOT_W    = SLOT_MOUTH - 2 * SLOT_CLR      # 5.3 neck width (5.5 at v3's 0.2); slides by hand, no rock
 FOOT_FLANGE_W  = SLOT_CAVITY_W - 2 * SLOT_CLR   # 10.0 flange (10.2 at v3), full width from the lip gap to the throat, then ~45 deg to the bottom
 FLANGE_GAP     = 0.3    # flange top face -> lip underside (moves with SLOT_CLR; v4 tied them)
@@ -93,6 +94,17 @@ STAND_W        = 44.0   # across the scope — v1 pocket 44.6 PASSED 2026-09-19 
 STAND_L        = 23.1   # front-to-back of the MAIN leg at the bench: v1 used the 43 overall, which includes the folded flap
                         # that tucks under the main leg and never reaches a 2.5 pocket -> v1 length FAIL; v2 pocket 23.7 PASSED 2026-09-20
 STAND_CLR      = 0.3    # per side on the 44 x 23.1 main-leg footprint — PASSED (width v1, length v2): perfect fit
+STAND_H        = 11.5   # front stand height, folded flat (HANDOVER §1)
+STAND_X_FROM_SIDE     = 24.0   # stand's outer edge from the scope's side (HANDOVER §1 "outer corner 24 from side")
+STAND_FRONT_FROM_FACE = 10.0   # scope front face -> front edge of the 23.1 main leg — MEASURED 2026-09-21 (the leg is at the
+                               # front of the stand's 43; the flap folds rearward under it)
+BUMPER_X_FROM_SIDE    = 39.0   # scope side -> bumper centre across (HANDOVER §1 "centre 39 from side") — ASSUMED from the Ø32
+                               # era; confirm with calipers before the beams print: side face -> bumper's outer straight face
+                               # at the 5 mm section = 39 - 25.9/2 = 26.05 expected
+BUMPER_REAR_FROM_FACE = 135.0  # scope front face -> the D's flat (rear) face (HANDOVER §1 "135 deep incl. rear bumpers") —
+                               # ASSUMED; confirm: front face -> bumper rear flat at the 5 mm section
+# scope placement in the frame (HANDOVER §2/§3): front frame x 23–338 (315), front face at y 3, chassis underside z 355
+SCOPE_X0, SCOPE_W, SCOPE_Y0, SCOPE_Z0 = 23.0, 315.0, 3.0, 355.0
 
 # ---- measured hardware (not clearances; single source for part scripts) ----
 STRIP_KEYHOLE_PITCH = 249.5   # Addtam 4-way strip, measured 2026-09-17
