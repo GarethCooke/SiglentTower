@@ -63,4 +63,4 @@ if __name__ == "__main__":
     from printcheck import check
     OUT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "parts")); os.makedirs(OUT, exist_ok=True)
     p = os.path.join(OUT, "sled-foot-210.stl")
-    cq.exporters.export(foot(210.0), p, tolerance=0.01, angularTolerance=0.1); check(p, max_down_frac=1.0)
+    cq.exporters.export(foot(210.0), p, tolerance=0.01, angularTolerance=0.1); check(p, min_rest_frac=0.2, max_down_frac=2.0)   # same section as the P1 coupon: two narrow bed edges, 4.15 neck bridge
