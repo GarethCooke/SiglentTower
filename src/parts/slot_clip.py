@@ -36,7 +36,14 @@ STUB_CLR  = CLIP_STUB_CLR     # slot width (v1 had nothing locating the tile sid
 STUB_H    = 3.0
 HOOK_DEG  = CLIP_HOOK_DEG     # hook face from the tile plane. P4 v2 winner C: 45° with a 1.2 barb (pull-off = push, held by the barb's reach)
 RAMP_DEG  = 45.0
-assert PEG_CLR > CLIP_BARB, "peg would jam on the far mouth edge before the barb clears the lip"
+# Was: assert PEG_CLR > CLIP_BARB. That models a RIGID peg translating the full barb depth to get under the lip, and
+# P4 v2 disproved it: variant C passed on the bench at barb 1.2 with PEG_CLR 0.7, because the finger springs and the
+# barb's 45° ramp and CLIP_HOOK_DEG hook let it walk in rather than translate bodily. Left as a warning, not a stop —
+# but it is the reason a long tile with several fingers takes real force to push on. (Relaxed 2026-09-22.)
+if PEG_CLR <= CLIP_BARB:
+    import warnings
+    warnings.warn(f"slot_clip: barb {CLIP_BARB} exceeds peg clearance {PEG_CLR} — snap-on force is the finger's, "
+                  f"not a free translation (P4 v2 variant C passed at exactly this)", stacklevel=2)
 
 def box(x0, x1, y0, y1, z0, z1):
     return cq.Workplane("XY").box(x1 - x0, y1 - y0, z1 - z0, centered=False).translate((x0, y0, z0))
