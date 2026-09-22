@@ -76,23 +76,35 @@ def notch(y_lo, y_hi):
 def tile(length, height, roots_lo, roots_hi, notches_lo=(), notches_hi=(), open_hi=False):
     """Tile in slot_clip's frame: face at x = -T, back at 0, y along the rail, z across it with z = 0 the LOWER shared
     slot centreline and z = height the upper one. `roots_*` are finger roots on each edge (all running +y); `notches_*`
-    are the neighbour's finger spans to relieve. `open_hi` leaves the top edge plain (a cropped coupon, or band 4)."""
+    are the NEIGHBOUR's finger spans on that edge, relieved. `open_hi` leaves the top edge plain.
+
+    Order matters: an edge's own fingers go on FIRST and its notches are cut LAST, because where the two overlap the
+    neighbour's finger physically needs the space. They must not overlap at all, which the assert below enforces — v1
+    cut the notch first and then re-filled it with its own finger, so the neighbour had no relief."""
+    for r in roots_lo:
+        for n0, n1 in notches_lo:
+            assert r + sc.FINGER_L <= n0 - NOTCH_PAD or r >= n1 + NOTCH_PAD, \
+                f"lower-edge finger at {r} overlaps the neighbour's {n0}-{n1}: they would occupy the same slot"
+    for r in roots_hi:
+        for n0, n1 in notches_hi:
+            assert r + sc.FINGER_L <= n0 - NOTCH_PAD or r >= n1 + NOTCH_PAD, \
+                f"upper-edge finger at {r} overlaps the neighbour's {n0}-{n1}: they would occupy the same slot"
     t = plate(length, height)
     h = hex_holes(length, height)
     if h is not None:
         t = t.cut(h)
-    for y0, y1 in notches_lo:
-        t = t.cut(notch(y0, y1))
     for r in roots_lo:
         t = sc.add_finger(t, r, +1)
-    # top edge: mirror so it becomes the z = 0 edge, do the same, mirror back
-    t = t.mirror("XY", (0, 0, height / 2))
-    for y0, y1 in notches_hi:
-        t = t.cut(notch(y0, y1))
+    t = t.mirror("XY", (0, 0, height / 2))          # top edge becomes the z = 0 edge
     if not open_hi:
         for r in roots_hi:
             t = sc.add_finger(t, r, +1)
-    return t.mirror("XY", (0, 0, height / 2))
+    for y0, y1 in notches_hi:
+        t = t.cut(notch(y0, y1))
+    t = t.mirror("XY", (0, 0, height / 2))
+    for y0, y1 in notches_lo:
+        t = t.cut(notch(y0, y1))
+    return t
 
 
 def printable(t):
@@ -102,9 +114,16 @@ def printable(t):
     return p.translate((-bb.xmin, -bb.ymin, -bb.zmin))
 
 
-# ---- clip layout for the coupon pair, staggered so no two pegs share a y ----
-LOWER_ROOTS = (20.0, 70.0, 120.0)          # band 1's top edge
-UPPER_ROOTS = (52.0, 102.0)                # band 2's bottom edge, offset between them
+# ---- clip layout on a SHARED rail ----
+# Two tiles meeting on one slot centreline both put material past that line: slot_clip's finger strip runs the finger's
+# whole 30 mm and dips 2.25 into the neighbour. So their fingers cannot overlap in y AT ALL — it is not enough to
+# stagger the pegs. v1 put three on one edge and two on the other and they collided; at 155 long, 30 per finger plus a
+# slit and a little air means two per tile per shared edge, interleaved.
+SHARE_A = (6.0, 84.0)        # band 1's top edge
+SHARE_B = (43.0, 121.0)      # band 2's bottom edge, dropped between them
+BASE_ROOTS = (10.0, 62.0, 114.0)   # band 1's bottom edge sits on the BASE rail with no partner, so it can have three
+
+
 def spans(roots):
     return tuple(sc.finger_span(r, +1) for r in roots)
 
@@ -114,10 +133,12 @@ if __name__ == "__main__":
     OUT = os.path.normpath(os.path.join(HERE, "..", "..", "coupons", "p4")); os.makedirs(OUT, exist_ok=True)
     H1, H2 = band_height(1), 60.0          # band 1 full; band 2 cropped to 60 — enough to carry its edge and the hexes
     parts = {
-        "tile-band1-155": tile(TILE_L, H1, roots_lo=(30.0, 90.0), roots_hi=LOWER_ROOTS,
-                               notches_hi=spans(UPPER_ROOTS)),
-        "tile-band2-crop": tile(TILE_L, H2, roots_lo=UPPER_ROOTS, roots_hi=(),
-                                notches_lo=spans(LOWER_ROOTS), open_hi=True),
+        # band 2 first, so on the plate the two SHARED edges face each other across the gap and the interleave is
+        # obvious at a glance (band 1's shared edge lands at its x-min, band 2's at its x-max)
+        "tile-band2-crop": tile(TILE_L, H2, roots_lo=SHARE_B, roots_hi=(),
+                                notches_lo=spans(SHARE_A), open_hi=True),
+        "tile-band1-155": tile(TILE_L, H1, roots_lo=BASE_ROOTS, roots_hi=SHARE_A,
+                               notches_hi=spans(SHARE_B)),
     }
     placed, x, total = [], 0.0, 0.0
     for name, t in parts.items():
