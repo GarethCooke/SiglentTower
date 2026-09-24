@@ -95,14 +95,16 @@ STAND_L        = 23.1   # front-to-back of the MAIN leg at the bench: v1 used th
                         # that tucks under the main leg and never reaches a 2.5 pocket -> v1 length FAIL; v2 pocket 23.7 PASSED 2026-09-20
 STAND_CLR      = 0.3    # per side on the 44 x 23.1 main-leg footprint — PASSED (width v1, length v2): perfect fit
 STAND_H        = 11.5   # front stand height, folded flat (HANDOVER §1)
-STAND_X_FROM_SIDE     = 24.0   # stand's outer edge from the scope's side (HANDOVER §1 "outer corner 24 from side")
+STAND_X_FROM_SIDE     = 24.7   # stand's outer edge from the bezel's side face — P9 position jig 2026-09-24: skirt gap 5 -> 30 - 5 - 0.3
+                               # (HANDOVER §1 had 24)
 STAND_FRONT_FROM_FACE = 10.0   # scope front face -> front edge of the 23.1 main leg — MEASURED 2026-09-21 (the leg is at the
                                # front of the stand's 43; the flap folds rearward under it)
-BUMPER_X_FROM_SIDE    = 39.0   # scope side -> bumper centre across (HANDOVER §1 "centre 39 from side") — ASSUMED from the Ø32
-                               # era; confirm with calipers before the beams print: side face -> bumper's outer straight face
-                               # at the 5 mm section = 39 - 25.9/2 = 26.05 expected
-BUMPER_REAR_FROM_FACE = 135.0  # scope front face -> the D's flat (rear) face (HANDOVER §1 "135 deep incl. rear bumpers") —
-                               # ASSUMED; confirm: front face -> bumper rear flat at the 5 mm section
+BUMPER_X_FROM_SIDE    = 44.15  # bezel side face -> bumper centre across — P9 position jigs 2026-09-24: the rear jig's skirt sits
+                               # 3.5 further out than the front jig's, so centre = stand centre (24.7 + 22 = 46.7) + (56.25 - 55.3)
+                               # - 3.5. Cross-check: rear skirt gap 13.5 -> outer side 26.5 from the BLUE BODY, i.e. the body is
+                               # inset 4.7 per side behind the bezel (44.15 - 12.95 - 26.5). HANDOVER's 39 was 5 out.
+BUMPER_REAR_FROM_FACE = 116.0  # scope front face -> the D's flat (rear) face: apex 92 + 24. Apex 91 by rule (2026-09-21) and 92.9 by
+                               # the jig chain (front jig rear edge 41.4 + 21.5 gap + 30) on 2026-09-24 -> 92. HANDOVER's 135 was 19 out.
 # scope placement in the frame (HANDOVER §2/§3): front frame x 23–338 (315), front face at y 3, chassis underside z 355
 SCOPE_X0, SCOPE_W, SCOPE_Y0, SCOPE_Z0 = 23.0, 315.0, 3.0, 355.0
 

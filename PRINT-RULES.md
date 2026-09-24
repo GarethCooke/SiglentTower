@@ -1,4 +1,4 @@
-# Print rules and design-for-print review (v1, 2026-09-17)
+# Print rules and design-for-print review (v1.1, 2026-09-24)
 
 House rules for every printed part in this project, then a review of every production part designed so far against them. The same rules are saved as a Claude skill (`print-oriented-design`) so they apply to every project, not just this one. Coupons (P1–P9, spacers) are exempt from the review; they follow the rules by construction.
 
@@ -15,6 +15,7 @@ House rules for every printed part in this project, then a review of every produ
 9. **A coupon is the joint and nothing else.** Enough body to hold and orient it, no more: a 66 × 14 strip tests a tile clip as well as a 60 × 60 tile does at a third of the plastic and time. Variants go on one plate, stamped.
 10. **One of each variant, never two of the same** (rule from 2026-09-22). If two pieces on a coupon plate are geometrically identical, the second is waste: test the single piece against the frame, an offcut, a loose magnet — whatever the real mating part is — not against a copy of itself. Several pieces are right whenever they DIFFER (P4's four clip strips, P9's six cups, P8's four spigots); two of one thing never is.
 11. **Every variant carries its value on it** (rule from 2026-09-22). A sweep is stamped, debossed 0.4–0.6 into a face that stays visible after the piece leaves the plate. P5 v1's two pins were 3.0 and 2.9 with nothing to tell them apart — that is a failed coupon even if the part is fine. If a value is too small to stamp, the variants go in one part in a fixed order and the order is written down.
+12. **TPU prints once, last.** Every blue TPU part in the build — P8 sweep, feet, AWG pads, stop caps, slot covers — goes on as few plates as possible in one session at Stage 8, after everything else, because the TPU changeover and the filament drying cost more than the parts. A TPU coupon never prints on its own; a design that needs a TPU part to test is tested with a PETG stand-in or waits. (Gareth, 2026-09-22; restated 2026-09-24.)
 
 ## 2. Review of production parts
 

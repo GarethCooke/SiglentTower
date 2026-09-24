@@ -12,7 +12,7 @@
 #               vertically and CA'd BEFORE threading onto the foot (a closed groove cannot be threaded half at a time).
 #   front bar   the beam's front end carries the same tab pointing −y (y 4–12) into a socket in the bar's rear-bottom edge.
 #   cross bars  y 190–210 and 308–328, between the beams (x 60–301): tab on each bar end, socket in the beam's inner edge.
-#   cup boss    x 46.5–80 × y 109–143, 10 thick (z 337–347): the P9 D cup (BUMPER_* + BUMPER_CUP_CLR), 6 deep = 5 straight +
+#   cup boss    x 46.5–86 × y 90–125, 10 thick (z 337–347): the P9 D cup (BUMPER_* + BUMPER_CUP_CLR), 6 deep = 5 straight +
 #               1 lead-in, floor at z 341 so the bumper's 14 puts the chassis at 355 (levels table). Flat faces the rear.
 #   stand arm   x 60–95 × y 12–41, 9 thick: pocket STAND_W/L + STAND_CLR, 2.5 deep (floor 343.5 + 11.5 = 355), open at the
 #               front face — the stand's leg is 1 mm behind the front bar, too close for a wall; the cups locate y anyway.
@@ -35,15 +35,15 @@ GROOVE_Y0 = 119.5                     # closed end of the groove -> foot at y 11
 XC = X0 + BW / 2                      # 40.25: tab centre line
 XBAR_L, XBAR_R = 60.0, 301.0          # cross bars run between the beams' inner faces
 CROSS_Y = (200.0, 318.0)              # cross-bar centre lines (bars 20 wide: 190–210, 308–328)
-CUP_XC = SCOPE_X0 + BUMPER_X_FROM_SIDE            # 62
-CUP_Y_FLAT = SCOPE_Y0 + BUMPER_REAR_FROM_FACE     # 138: the D's flat (rear) face
-CUP_BOSS = (46.5, 80.0, 109.0, 143.0)             # x0 x1 y0 y1 — x0 clears the cable channel (x 20–46, y 140–334) on the beam top
+CUP_XC = SCOPE_X0 + BUMPER_X_FROM_SIDE            # 67.15 (P9 jigs 2026-09-24)
+CUP_Y_FLAT = SCOPE_Y0 + BUMPER_REAR_FROM_FACE     # 119: the D's flat (rear) face
+CUP_BOSS = (46.5, 86.0, 90.0, 125.0)              # x0 x1 y0 y1 round the cup (x 53.75–80.65, y 93.7–120.3 with the lead-in); x0 clears the cable channel (x 20–46)
 CUP_FLOOR  = SCOPE_Z0 - BUMPER_H                  # 341: bumper 14 tall puts the chassis at 355
 CUP_BOSS_T = CUP_FLOOR + BUMPER_CUP_D - Z0         # 10: rim at 347 (5 straight + 1 lead-in above the floor)
 assert abs((Z0 + T - STAND_POCKET_D) + STAND_H - SCOPE_Z0) < 1e-6, 'stand pocket depth does not level the scope'
-STAND_X0 = SCOPE_X0 + STAND_X_FROM_SIDE           # 47: stand's outer edge
+STAND_X0 = SCOPE_X0 + STAND_X_FROM_SIDE           # 47.7: stand's outer edge
 STAND_Y0 = SCOPE_Y0 + STAND_FRONT_FROM_FACE       # 13: main leg's front edge
-STAND_ARM = (XBAR_L, 95.0, Y_BAR, 41.0)
+STAND_ARM = (XBAR_L, 96.0, Y_BAR, 41.0)            # pocket to x 92.3, 3.7 wall
 PEGS = ((33.0, 150.0), (33.0, 290.0)); PEG_D, PEG_H = 4.0, 2.5
 
 def d_profile(wp, w, d, side):
