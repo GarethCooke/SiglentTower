@@ -93,7 +93,9 @@ STAND_POCKET_D = 2.5    # front stand sits in a pocket, not on a lipped pad: 14 
 STAND_W        = 44.0   # across the scope — v1 pocket 44.6 PASSED 2026-09-19 (width perfect)
 STAND_L        = 23.1   # front-to-back of the MAIN leg at the bench: v1 used the 43 overall, which includes the folded flap
                         # that tucks under the main leg and never reaches a 2.5 pocket -> v1 length FAIL; v2 pocket 23.7 PASSED 2026-09-20
-STAND_CLR      = 0.3    # per side on the 44 x 23.1 main-leg footprint — PASSED (width v1, length v2): perfect fit
+STAND_CLR      = 0.3    # per side on the 44 x 23.1 main-leg footprint — PASSED (width v1, length v2): perfect fit (the coupon)
+STAND_POCKET_CLR_X    = 0.6    # in the BEAM the pocket is looser than the coupon: the two rear cups (0.3) locate the scope in x and y,
+STAND_POCKET_CLR_REAR = 1.0    # the pocket only levels it and stops it sliding — four 0.3 locators on three separate readings would bind
 STAND_H        = 11.5   # front stand height, folded flat (HANDOVER §1)
 STAND_X_FROM_SIDE     = 24.7   # stand's outer edge from the bezel's side face — P9 position jig 2026-09-24: skirt gap 5 -> 30 - 5 - 0.3
                                # (HANDOVER §1 had 24)
@@ -103,8 +105,10 @@ BUMPER_X_FROM_SIDE    = 44.15  # bezel side face -> bumper centre across — P9 
                                # 3.5 further out than the front jig's, so centre = stand centre (24.7 + 22 = 46.7) + (56.25 - 55.3)
                                # - 3.5. Cross-check: rear skirt gap 13.5 -> outer side 26.5 from the BLUE BODY, i.e. the body is
                                # inset 4.7 per side behind the bezel (44.15 - 12.95 - 26.5). HANDOVER's 39 was 5 out.
-BUMPER_REAR_FROM_FACE = 116.0  # scope front face -> the D's flat (rear) face: apex 92 + 24. Apex 91 by rule (2026-09-21) and 92.9 by
-                               # the jig chain (front jig rear edge 41.4 + 21.5 gap + 30) on 2026-09-24 -> 92. HANDOVER's 135 was 19 out.
+BUMPER_REAR_FROM_FACE = 116.9  # scope front face -> the D's flat (rear) face: apex 92.9 + 24. The apex comes from the jig chain (stand
+                               # pocket centre 24.55 + front jig rear edge 16.85 + 21.5 caliper gap between the jigs + 30) so the cup and the
+                               # stand pocket are placed from ONE measurement and cannot fight; the rule read of 91 (2026-09-21) is ~2 low.
+                               # Any error in the 10 (leg from face) moves cup and pocket together. HANDOVER's 135 was 18 out.
 # scope placement in the frame (HANDOVER §2/§3): front frame x 23–338 (315), front face at y 3, chassis underside z 355
 SCOPE_X0, SCOPE_W, SCOPE_Y0, SCOPE_Z0 = 23.0, 315.0, 3.0, 355.0
 

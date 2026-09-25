@@ -14,8 +14,9 @@
 #   cross bars  y 190–210 and 308–328, between the beams (x 60–301): tab on each bar end, socket in the beam's inner edge.
 #   cup boss    x 46.5–86 × y 90–125, 10 thick (z 337–347): the P9 D cup (BUMPER_* + BUMPER_CUP_CLR), 6 deep = 5 straight +
 #               1 lead-in, floor at z 341 so the bumper's 14 puts the chassis at 355 (levels table). Flat faces the rear.
-#   stand arm   x 60–95 × y 12–41, 9 thick: pocket STAND_W/L + STAND_CLR, 2.5 deep (floor 343.5 + 11.5 = 355), open at the
-#               front face — the stand's leg is 1 mm behind the front bar, too close for a wall; the cups locate y anyway.
+#   stand arm   x 60–96 × y 12–41, 9 thick: pocket 45.2 × (leg + 1.0 behind), 2.5 deep (floor 343.5 + 11.5 = 355), open at the
+#               front face — the stand's leg is 1 mm behind the front bar, too close for a wall. The pocket is deliberately
+#               looser than the P9 coupon (0.6 / 1.0 in fit.py): the two cups locate the scope, the pocket levels it.
 #   pegs        left beam only: two Ø4 × 2.5 pegs on the top at x 33, y 150 / 290, keying the cable channel's floor.
 # Print: FLAT, top up, as exported (z = 0 on the bed). Groove ceiling is a 5.4 bridge; cup, pocket, sockets open upward;
 # 0.4 chamfer on every bed edge (rule 7). Black ABS+ (sliding pair — same spool as the feet). printcheck on export.
@@ -23,7 +24,7 @@ import os, sys, cadquery as cq
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from fit import (DOVETAIL_CLR as C, BUMPER_W, BUMPER_D5, BUMPER_SIDE_L, BUMPER_CUP_D, BUMPER_CUP_CLR, BUMPER_H,
                  BUMPER_X_FROM_SIDE, BUMPER_REAR_FROM_FACE, STAND_W, STAND_L, STAND_CLR, STAND_POCKET_D, STAND_H,
-                 STAND_X_FROM_SIDE, STAND_FRONT_FROM_FACE, SCOPE_X0, SCOPE_Y0, SCOPE_W, SCOPE_Z0)
+                 STAND_X_FROM_SIDE, STAND_FRONT_FROM_FACE, STAND_POCKET_CLR_X, STAND_POCKET_CLR_REAR, SCOPE_X0, SCOPE_Y0, SCOPE_W, SCOPE_Z0)
 from parts.drawer_quarters import box, prism, trapezoid, TAB_NECK, TAB_HEAD, TAB_LEN
 from parts.sled_foot import beam_groove
 
@@ -36,8 +37,8 @@ XC = X0 + BW / 2                      # 40.25: tab centre line
 XBAR_L, XBAR_R = 60.0, 301.0          # cross bars run between the beams' inner faces
 CROSS_Y = (200.0, 318.0)              # cross-bar centre lines (bars 20 wide: 190–210, 308–328)
 CUP_XC = SCOPE_X0 + BUMPER_X_FROM_SIDE            # 67.15 (P9 jigs 2026-09-24)
-CUP_Y_FLAT = SCOPE_Y0 + BUMPER_REAR_FROM_FACE     # 119: the D's flat (rear) face
-CUP_BOSS = (46.5, 86.0, 90.0, 125.0)              # x0 x1 y0 y1 round the cup (x 53.75–80.65, y 93.7–120.3 with the lead-in); x0 clears the cable channel (x 20–46)
+CUP_Y_FLAT = SCOPE_Y0 + BUMPER_REAR_FROM_FACE     # 119.9: the D's flat (rear) face
+CUP_BOSS = (46.5, 86.0, 91.0, 126.0)              # x0 x1 y0 y1 round the cup (x 53.75–80.65, y 93.7–120.3 with the lead-in); x0 clears the cable channel (x 20–46)
 CUP_FLOOR  = SCOPE_Z0 - BUMPER_H                  # 341: bumper 14 tall puts the chassis at 355
 CUP_BOSS_T = CUP_FLOOR + BUMPER_CUP_D - Z0         # 10: rim at 347 (5 straight + 1 lead-in above the floor)
 assert abs((Z0 + T - STAND_POCKET_D) + STAND_H - SCOPE_Z0) < 1e-6, 'stand pocket depth does not level the scope'
@@ -78,8 +79,8 @@ def left_front():
     b = b.union(box(*CUP_BOSS, Z0, Z0 + CUP_BOSS_T))
     b = b.union(box(*STAND_ARM, Z0, Z0 + T))
     b = b.cut(cup_cutter(CUP_FLOOR))
-    s = STAND_CLR
-    b = b.cut(box(STAND_X0 - s, STAND_X0 + STAND_W + s, Y_BAR - 1, STAND_Y0 + STAND_L + s, Z0 + T - STAND_POCKET_D, Z0 + T + 1))
+    sx, sr = STAND_POCKET_CLR_X, STAND_POCKET_CLR_REAR                          # looser than the P9 coupon: the cups locate
+    b = b.cut(box(STAND_X0 - sx, STAND_X0 + STAND_W + sx, Y_BAR - 1, STAND_Y0 + STAND_L + sr, Z0 + T - STAND_POCKET_D, Z0 + T + 1))
     b = b.cut(groove(GROOVE_Y0, Y_SPLIT + 1))                                  # closed at 119.5, open at the split
     b = b.union(cq.Workplane("XY").workplane(offset=Z0 + T).pushPoints([p for p in PEGS if p[1] < Y_SPLIT]).circle(PEG_D / 2).extrude(PEG_H))
     return b
