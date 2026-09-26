@@ -1,4 +1,4 @@
-# Addtam strip brackets (D8, HANDOVER §7, ROADMAP Stage 8). v1 2026-09-22.
+# Addtam strip brackets (D8, HANDOVER §7, ROADMAP Stage 8). v1 2026-09-22; lower bracket v2 2026-09-26.
 #
 # The 4-way strip hangs VERTICALLY on the rear face of the rear-left upright, cable end down, on two printed brackets
 # bolted into that upright's rear slot. Its keyhole slots run across the body, so the keyholes alone cannot hold it
@@ -19,6 +19,11 @@
 #   beds on one flat plane.
 #   The strip therefore sits at frame y 355–385, not 350–380 — still well inside the 60 behind the frame.
 #
+# Lower bracket v2 (2026-09-26): v1's 45° gusset stood ON the shelf in front of the plate — inside the strip's own
+# footprint — so the strip could not sit down on the shelf (found on the yellow run). The brace is now UNDER the shelf
+# and the plate runs down to z 1 to carry it. Rule: a brace goes where nothing else lives; check every print-only
+# feature against the part's working envelope (PRINT-RULES).
+#
 # Print: plate face (y = 0) down, peg rising, shelf coplanar with the plate on the bed. The peg's head is a mushroom, so
 # it gets a 45° cone under it (PRINT-RULES rule 4) and needs no support. The counterbore opens upward.
 import os, sys, cadquery as cq
@@ -26,24 +31,23 @@ HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.jo
 from fit import (STRIP_KEYHOLE_PITCH, STRIP_KEYHOLE_D, STRIP_KEYHOLE_SLOT, STRIP_KEYHOLE_END,
                  STRIP_KEYHOLE_DEPTH, STRIP_BODY_W, STRIP_KEYHOLE_OFF)
 
-PLATE_W, PLATE_H, PLATE_T = 20.0, 40.0, 5.0        # on the upright's rear face (upright is x 0–20)
-BOLT_D, CBORE_D, CBORE_H = 5.5, 10.0, 2.5          # M5x10 + T-nut in the rear slot; 2.5 of plate left under the head
-PEG_X = 30.2                                        # keyhole line: strip body x 1–79, STRIP_KEYHOLE_OFF 29.2 from the edge
-ARM_X1 = PEG_X + 4.0                                # arm runs out past the peg
-ARM_H = 20.0                                        # arm height, centred on the peg
-PEG_SHAFT_D, PEG_SHAFT_L = 3.2, 3.0                 # through the strip's back wall; slot is 3.5
-PEG_HEAD_D, PEG_HEAD_L = 6.0, 1.1                   # head passes the Ø6.5 hole, traps in the 6.5 pocket
-PEG_CONE = (PEG_HEAD_D - PEG_SHAFT_D) / 2           # 1.4, a 45° cone under the head so the mushroom is self-supporting
-STRIP_Z0 = 25.0                                     # strip's bottom end
-PEG_Z = (STRIP_Z0 + STRIP_KEYHOLE_END, STRIP_Z0 + STRIP_KEYHOLE_END + STRIP_KEYHOLE_PITCH)   # 45.0, 294.5
-SHELF_W, SHELF_D, SHELF_T = 80.0, 30.0, 4.0         # under the strip's bottom end
-SHELF_NOTCH = 10.0                                  # cable drops through, at the cable end
-GUSSET_H = 20.0                                     # 45° brace from the plate onto the shelf: the shelf is a cantilever
-                                                    # in use, and an 80 x 4 wall standing 30 mm in the print wants bracing
+PLATE_W, PLATE_H, PLATE_T = 20.0, 40.0, 5.0
+BOLT_D, CBORE_D, CBORE_H = 5.5, 10.0, 2.5
+PEG_X = 30.2
+ARM_X1 = PEG_X + 4.0
+ARM_H = 20.0
+PEG_SHAFT_D, PEG_SHAFT_L = 3.2, 3.0
+PEG_HEAD_D, PEG_HEAD_L = 6.0, 1.1
+PEG_CONE = (PEG_HEAD_D - PEG_SHAFT_D) / 2
+STRIP_Z0 = 25.0
+PEG_Z = (STRIP_Z0 + STRIP_KEYHOLE_END, STRIP_Z0 + STRIP_KEYHOLE_END + STRIP_KEYHOLE_PITCH)
+SHELF_W, SHELF_D, SHELF_T = 80.0, 30.0, 4.0
+SHELF_NOTCH = 10.0
+GUSSET_H = 20.0
 assert PEG_SHAFT_L + PEG_CONE + PEG_HEAD_L <= STRIP_KEYHOLE_DEPTH, "peg deeper than the keyhole pocket"
 assert PEG_SHAFT_D < STRIP_KEYHOLE_SLOT and PEG_HEAD_D < STRIP_KEYHOLE_D, "peg will not enter the keyhole"
-STRIP_X0 = PEG_X - STRIP_KEYHOLE_OFF                # 1.0
-STRIP_X1 = STRIP_X0 + STRIP_BODY_W                  # 79.1 — the roadmap's "x 1–79" rounds this
+STRIP_X0 = PEG_X - STRIP_KEYHOLE_OFF
+STRIP_X1 = STRIP_X0 + STRIP_BODY_W
 assert STRIP_X1 <= 80.0, "strip would overhang the frame"
 
 
@@ -69,19 +73,21 @@ def bracket(peg_z, shelf=False):
     body = box(0.0, PLATE_W, 0.0, PLATE_T, z0, z0 + PLATE_H)
     body = body.union(box(PLATE_W, ARM_X1, 0.0, PLATE_T, peg_z - ARM_H / 2, peg_z + ARM_H / 2))
     body = body.union(peg(peg_z))
-    # M5 into the rear slot, counterbored from the outer face (opens upward in the print)
     hole = (cq.Workplane("XZ").workplane(offset=-PLATE_T - 1).center(PLATE_W / 2, peg_z)
             .circle(BOLT_D / 2).extrude(-(PLATE_T + 2)))
     cb = (cq.Workplane("XZ").workplane(offset=-PLATE_T - 1).center(PLATE_W / 2, peg_z)
           .circle(CBORE_D / 2).extrude(-(CBORE_H + 1)))
     body = body.cut(hole).cut(cb)
     if shelf:
+        # v2 2026-09-26: v1's gusset stood ON the shelf, in front of the plate — i.e. inside the strip's own footprint
+        # (x 1–79, y 5–35, z 25 up): 3.9 cm3 of clash, the strip could not sit down (Gareth, on the yellow run). The
+        # brace now lives UNDER the shelf, where nothing else is, and the plate runs down to z 1 to anchor it.
+        body = body.union(box(0.0, PLATE_W, 0.0, PLATE_T, 1.0, z0 + 0.01))          # plate extended down to z 1
         sh = box(0.0, SHELF_W, 0.0, SHELF_D, STRIP_Z0 - SHELF_T, STRIP_Z0)
         sh = sh.cut(box(STRIP_X0, STRIP_X0 + SHELF_NOTCH, -1.0, SHELF_D + 1, STRIP_Z0 - SHELF_T - 1, STRIP_Z0 + 1))
         body = body.union(sh)
-        # 45° gusset in the y-z plane, under the plate's width, tying the standing shelf back to the plate
         g = (cq.Workplane("YZ").workplane(offset=0.0)
-             .polyline([(PLATE_T, STRIP_Z0), (PLATE_T + GUSSET_H, STRIP_Z0), (PLATE_T, STRIP_Z0 + GUSSET_H)])
+             .polyline([(PLATE_T, STRIP_Z0 - SHELF_T), (PLATE_T + GUSSET_H, STRIP_Z0 - SHELF_T), (PLATE_T, STRIP_Z0 - SHELF_T - GUSSET_H)])
              .close().extrude(PLATE_W))
         body = body.union(g)
     return body
@@ -99,19 +105,11 @@ if __name__ == "__main__":
     from printcheck import check
     OUT = os.path.normpath(os.path.join(HERE, "..", "..", "parts")); os.makedirs(OUT, exist_ok=True)
     parts = {"strip-bracket-upper-v1": bracket(PEG_Z[1], shelf=False),
-             "strip-bracket-lower-v1": bracket(PEG_Z[0], shelf=True)}
-    placed, x, total = [], 0.0, 0.0
+             "strip-bracket-lower-v2": bracket(PEG_Z[0], shelf=True)}
     for name, b in parts.items():
         p = printable(b)
         bb = p.val().BoundingBox()
         path = os.path.join(OUT, f"{name}.stl")
         cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
-        v = p.val().Volume() / 1000; total += v
-        print(f"{name:26s} {bb.xlen:6.1f} x {bb.ylen:6.1f} x {bb.zlen:5.1f}   {v:5.1f} cm3")
+        print(f"{name:26s} {bb.xlen:6.1f} x {bb.ylen:6.1f} x {bb.zlen:5.1f}   {p.val().Volume()/1000:5.1f} cm3")
         check(path, min_rest_frac=0.3, max_down_frac=0.2)
-        placed.append(p.val().moved(cq.Location(cq.Vector(x, 0, 0)))); x += bb.xlen + 8.0
-    pl = cq.Workplane("XY").newObject([cq.Compound.makeCompound(placed)])
-    cq.exporters.export(pl, os.path.join(OUT, "strip-brackets-plate.stl"), tolerance=0.01, angularTolerance=0.1)
-    pb = pl.val().BoundingBox()
-    print(f"\nstrip-brackets-plate {pb.xlen:.0f} x {pb.ylen:.0f} x {pb.zlen:.0f} mm, {total:.1f} cm3; "
-          f"pegs at z {PEG_Z[0]:.1f} and {PEG_Z[1]:.1f}, strip body frame y 355–385")
