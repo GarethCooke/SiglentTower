@@ -6,7 +6,8 @@
 #
 # Measured 2026-09-17 (fit.py): keyholes 249.5 c-c, large hole Ø6.5, slot 3.5, nearest keyhole centre 20 from the cable
 # end, pocket 6.5 deep behind the back face, body 78.1 wide with the keyhole line 29.2 from one long edge.
-# Placement: peg line x 30.2, strip body x 1–79, pegs at z 45 and 294.5, strip bottom z 25.
+# Placement: peg line x 38.2 (v3, 2026-09-26: the 29.2 was to the keyhole's start, the seat is 8 further in), strip body
+# x 1–79, pegs at z 45 and 294.5, strip bottom z 25.
 #
 # Local frame = the frame's, with y measured from the upright's rear face (frame y 350): plate y 0–PLATE_T, the strip's
 # back face resting on it, pegs rising in +y into the keyhole pockets.
@@ -33,7 +34,7 @@ from fit import (STRIP_KEYHOLE_PITCH, STRIP_KEYHOLE_D, STRIP_KEYHOLE_SLOT, STRIP
 
 PLATE_W, PLATE_H, PLATE_T = 20.0, 40.0, 5.0
 BOLT_D, CBORE_D, CBORE_H = 5.5, 10.0, 2.5
-PEG_X = 30.2
+PEG_X = 1.0 + STRIP_KEYHOLE_OFF                    # 38.2: strip body x 1–79, seat 37.2 from its near edge (was 30.2 on the 29.2 measure)
 ARM_X1 = PEG_X + 4.0
 ARM_H = 20.0
 PEG_SHAFT_D, PEG_SHAFT_L = 3.2, 3.0
@@ -104,8 +105,8 @@ if __name__ == "__main__":
     sys.path.insert(0, os.path.join(HERE, ".."))
     from printcheck import check
     OUT = os.path.normpath(os.path.join(HERE, "..", "..", "parts")); os.makedirs(OUT, exist_ok=True)
-    parts = {"strip-bracket-upper-v1": bracket(PEG_Z[1], shelf=False),
-             "strip-bracket-lower-v2": bracket(PEG_Z[0], shelf=True)}
+    parts = {"strip-bracket-upper-v2": bracket(PEG_Z[1], shelf=False),
+             "strip-bracket-lower-v3": bracket(PEG_Z[0], shelf=True)}
     for name, b in parts.items():
         p = printable(b)
         bb = p.val().BoundingBox()
