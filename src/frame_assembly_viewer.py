@@ -26,7 +26,7 @@ TNUTS = {
     "PSU-rail-left": "4 TOP (cradles)",
     "PSU-rail-right": "4 TOP (cradles) + 1 INNER-face at y 27–43 (front-tie bracket) + 3 INNER-face (guide strips)",
     "AWG-rail-left": "4 TOP (cradles)", "AWG-rail-right": "2 spare TOP + 3 INNER-face (guide strips)",
-    "scope-rail-left": "at 2.6: 2 BOTTOM (cast brackets)", "scope-rail-right": "at 2.6: 2 BOTTOM (cast brackets) + 2 OUTER (hinge leaves)",
+    "scope-rail-left": "2 BOTTOM (cast brackets)", "scope-rail-right": "2 BOTTOM (cast brackets); hinge leaves later use the OUTER slot",
     "inner-rail-PSU": "3 in the RIGHT-face slot (guide strips)",
     "inner-rail-AWG": "4 LEFT-face (right AWG cradles) + 3 TOP (mini-slot runner) + 3 RIGHT-face (guide strips)",
 }
@@ -34,7 +34,7 @@ def add(name, label, b, kind):
     t = TNUTS.get(name)
     if t is None:
         t = {"upright": "none now — its slots stay open at the top until the caps go on", "cross": "none", "inner": "none", "tie": "none",
-             "spacer": "—", "cast": "1 in each slot it bridges; 2 × M5×8"}[kind]
+             "spacer": "—", "foot": "—", "cast": "1 drop-in nut in each slot it bridges; 2 × M5×8 (the metal L brackets from the extrusion pack)"}[kind]
     parts.append({"name": name, "label": label, "box": b, "kind": kind, "tnuts": t})
 
 for tag, (x0, x1) in (("left", L), ("right", R)):
@@ -56,34 +56,39 @@ for tag, (x0, x1) in (("left", L), ("right", R)):
     for pos, y in (("front", 40), ("rear", 290)):
         add(f"spacer48-{tag}-{pos}", "48 spacer (base rail top → PSU rail)", box(x0 + 2, x1 - 2, y, y + 20, 20, 68), "spacer")
         add(f"spacer139-{tag}-{pos}", "139.5 spacer (PSU rail top → AWG rail)", box(x0 + 2, x1 - 2, y, y + 20, 88, 227.5), "spacer")
+for tag, (x0, x1) in (("left", L), ("right", R)):
+    for pos, y in (("front", 40), ("rear", 290)):
+        add(f"spacer63-{tag}-{pos}", "63.5 spacer (AWG rail top → scope rail)", box(x0 + 2, x1 - 2, y, y + 20, 247.5, 311), "spacer")
+add("foot-left", "210 sled foot in the scope rail's inner-face slot (rib pointing into the frame)", box(8, 23, 120, 330, 316, 326), "foot")
+add("foot-right", "210 sled foot in the scope rail's inner-face slot (rib pointing into the frame)", box(338, 353, 120, 330, 316, 326), "foot")
 add("spacer48-inner-rear", "48 spacer under the rear inner upright (on the base rear cross rail)", box(253, 269, 332, 348, 20, 68), "spacer")
 # cast corner brackets: (a) UNDER the scope rails at both ends — those rails cannot take a hidden L (the sled feet run the
 # inner slot, the tile fingers the outer); (b) one lying flat between the PSU-level front tie's rear face and the right PSU
 # rail's inner face — the tie sits 3 mm behind the front upright, so no face of the two lines up for a hidden L. Legs 4 thick.
 for tag, (x0, x1) in (("left", L), ("right", R)):
-    for pos, (y0, y1) in (("front", (20, 40)), ("rear", (310, 330))):
-        add(f"cast-scope-{tag}-{pos}", "cast bracket under the scope rail end (at 2.6)", box(x0 + 3, x1 - 3, y0, y1, 291, 311), "cast")
-add("cast-tie-front-a", "cast bracket, front tie rear face → right PSU rail inner face (2 × M5×8)", box(321, 341, 23, 27, 70, 86), "cast")
-add("cast-tie-front-b", "cast bracket, front tie rear face → right PSU rail inner face (2 × M5×8)", box(337, 341, 27, 43, 70, 86), "cast")
+    for pos, (y0, y1, yf0, yf1) in (("front", (20, 40, 20, 24)), ("rear", (310, 330, 326, 330))):
+        lab = "L-shaped metal corner bracket under the scope rail end (one M5×8 up into the rail's bottom slot, one into the upright's face)"
+        add(f"cast-scope-{tag}-{pos}", lab, box(x0 + 2, x1 - 2, y0, y1, 307, 311), "cast")          # leg under the rail
+        add(f"cast-scope-{tag}-{pos}-b", lab, box(x0 + 2, x1 - 2, yf0, yf1, 291, 311), "cast")      # leg down the upright's face
+add("cast-tie-front-a", "L-shaped metal corner bracket, front tie rear face → right PSU rail inner face (2 × M5×8)", box(321, 341, 23, 27, 70, 86), "cast")
+add("cast-tie-front-b", "L-shaped metal corner bracket, front tie rear face → right PSU rail inner face (2 × M5×8)", box(337, 341, 27, 43, 70, 86), "cast")
 
 STEPS = [
-    ("1 · Left side", "front-left upright + rear-left upright + left base rail (z 0–20) + left top rail (z 490–510). Lay it flat on the bench, hidden L-connectors, square it: diagonals equal within 1 mm.",
-     ["upright-front-left", "upright-rear-left", "base-rail-left", "top-rail-left"]),
-    ("2 · Right side", "Same four for the right side: front-right upright, rear-right upright, right base rail, right top rail.",
-     ["upright-front-right", "upright-rear-right", "base-rail-right", "top-rail-right"]),
-    ("3 · Join at the rear", "Stand both sides up and join them with the base rear cross rail and the top rear cross rail (both 321, between the rear uprights). Check: 321 clear between the uprights at the front as well as the rear, 510 overall height, plan diagonals equal within 1 mm.",
+    ("1 · Left side, all five rails", "Lay the front-left and rear-left uprights flat on the bench, 321 apart. Slide 4 connectors into each upright's inner-face slot from the top end (they only go in from an end) and push them down to roughly z 20, 88, 247 and 490. Push one 210 sled foot into the scope rail's inner-face slot from the end, rib pointing into the frame. Lay the five left rails between the uprights — base rail (z 0–20), PSU rail, AWG rail, scope rail, top rail — and close the uprights onto them so each connector leg enters its rail's end slot (the scope rail has no connector). All loose. Then: base rail flush with the uprights' bottom ends and top rail flush with their top ends, tighten; two 48 spacers on the base rail, PSU rail down onto them, tighten; two 139.5 spacers on the PSU rail, AWG rail down onto them, tighten; two 63.5 spacers on the AWG rail, scope rail down onto them, a metal L corner bracket under each end (M5×8 up into the rail's bottom slot, M5×8 into the upright's face — hold the drop-in nut in the downward slot with a fingertip until the bolt bites); spacers out. Diagonals equal within 1 mm. The foot stays loose in its rail; it cannot come out.",
+     ["upright-front-left", "upright-rear-left", "base-rail-left", "top-rail-left", "spacer48-left-front", "spacer48-left-rear", "PSU-rail-left", "spacer139-left-front", "spacer139-left-rear", "AWG-rail-left",
+      "spacer63-left-front", "spacer63-left-rear", "foot-left", "scope-rail-left", "cast-scope-left-front", "cast-scope-left-front-b", "cast-scope-left-rear"]),
+    ("2 · Right side, all five rails", "Same again: front-right upright, rear-right upright, right base rail, right PSU rail, right AWG rail, right scope rail (foot in first), right top rail; 4 connectors per upright from the top; spacers 48, 139.5, 63.5; metal L corner brackets under the scope rail; diagonals.",
+     ["upright-front-right", "upright-rear-right", "base-rail-right", "top-rail-right", "spacer48-right-front", "spacer48-right-rear", "PSU-rail-right", "spacer139-right-front", "spacer139-right-rear", "AWG-rail-right",
+      "spacer63-right-front", "spacer63-right-rear", "foot-right", "scope-rail-right", "cast-scope-right-front", "cast-scope-right-front-b", "cast-scope-right-rear"]),
+    ("3 · Join at the rear", "Stand both sides up. Into the rear-right upright's FRONT-face slot from the top end: 2 connectors pushed down to roughly z 88 and 247 (for the two rear ties, later), then 1 for the top cross rail; 1 into the same slot of the rear-left upright from the top; 1 each from the bottom ends for the base cross rail. Base rear cross rail and top rear cross rail (321) between the rear uprights, tighten. Check: 321 between the uprights at the front as well as the rear, 510 overall, plan diagonals equal within 1 mm.",
      ["rear-cross-base", "rear-cross-top"]),
-    ("4 · PSU rails", "Stand the two 48 spacers on the left base rail, sit the left PSU rail on them (bottom at z 68), hidden L-connectors on the inner faces, tighten, remove the spacers; repeat on the right.",
-     ["spacer48-left-front", "spacer48-left-rear", "spacer48-right-front", "spacer48-right-rear", "PSU-rail-left", "PSU-rail-right"]),
-    ("5 · Inner sub-frame", "On the bench: PSU-level inner rail and AWG-level inner rail between the two inner uprights (a 347 × 247.5 ladder, rails at the uprights' ends). Bolt the three 70 ties to it: PSU-level front tie (front upright, front face 3 mm behind the frame front), PSU-level rear tie and AWG-level rear tie (rear upright). Slide it in from the front, 48 spacer under the rear inner upright on the base rear cross rail. Rear ties: hidden L-connectors on their front faces into the rear-right upright's front face. Front tie: a cast bracket lying flat, one leg on the tie's rear face, the other on the right PSU rail's inner face (its top flush with the PSU rail's top, z 88).",
+    ("4 · Inner sub-frame", "On the bench, the same way as a side: the two inner uprights 307 apart, 2 connectors each in the RIGHT-face slot (x 271) from an end, the PSU-level inner rail and AWG-level inner rail closed onto them at the uprights' ends (a 347 × 247.5 ladder), tighten. Ties: PSU-level front tie on the front inner upright's right face (connector on their rear faces), PSU-level rear tie and AWG-level rear tie on the rear inner upright (connectors on their front faces; their upright-side legs are the two pre-loaded in step 3 — the tie slides on as the ladder goes in). Slide the ladder in from the front with a 48 spacer standing on the base rear cross rail under the rear inner upright; tie tops flush with the right PSU rail's top (z 88); tighten; spacer out. Front tie's outer end: a metal L corner bracket lying flat — one leg on the tie's rear face, the other on the right PSU rail's inner face, 2 × M5×8 on drop-in nuts.",
      ["inner-upright-front", "inner-upright-rear", "inner-rail-PSU", "inner-rail-AWG", "tie-PSU-front", "tie-PSU-rear", "tie-AWG-rear", "spacer48-inner-rear", "cast-tie-front-a", "cast-tie-front-b"]),
-    ("6 · AWG rails", "Stand the two 139.5 spacers on the left PSU rail, sit the left AWG rail on them (bottom at z 227.5), connect, remove the spacers; repeat on the right. Hidden L-connectors only.",
-     ["spacer139-left-front", "spacer139-left-rear", "spacer139-right-front", "spacer139-right-rear", "AWG-rail-left", "AWG-rail-right"]),
-    ("7 · End of this session", "Stop here. The two scope rails (ghosted, z 311–331) go in at 2.6 once the sled feet are bonded into the beams — each with a T-foot already in its inner slot. Two of the four 307s cut are spare (the design uses two inner rails).",
-     ["scope-rail-left", "scope-rail-right", "cast-scope-left-front", "cast-scope-left-rear", "cast-scope-right-front", "cast-scope-right-rear"]),
+    ("5 · Done — rack test", "Push and rack the frame: if a corner gives, the 3 spare L brackets go under the PSU rails' rear ends first. All ten 310s are in. Later, from the rear: the sled beams thread onto the feet's ribs and are glued there (2.6's clearance check, 3.0 gauge against a 336 reference, happens then). Two of the four 307s cut are spare (the design uses two inner rails).",
+     []),
 ]
-GHOST = ["scope-rail-left", "scope-rail-right", "cast-scope-left-front", "cast-scope-left-rear", "cast-scope-right-front", "cast-scope-right-rear"]
-COLOURS = {"upright": "#4a4f57", "rail": "#4a4f57", "cross": "#4a4f57", "inner": "#4a4f57", "tie": "#4a4f57", "spacer": "#e8c547", "cast": "#2f6f73"}
+GHOST = []
+COLOURS = {"upright": "#4a4f57", "rail": "#4a4f57", "cross": "#4a4f57", "inner": "#4a4f57", "tie": "#4a4f57", "spacer": "#e8c547", "cast": "#2f6f73", "foot": "#8a2b2b"}
 NEW = "#e0641b"
 
 STYLE = """<title>Frame Assembly Stage 2</title>
@@ -113,7 +118,7 @@ BODY = f"""<canvas id="c"></canvas>
 <div><button id="prev">◀ back</button> <button id="next">next ▶</button> <label style="margin-left:10px"><input type="checkbox" id="showall"> show finished frame</label></div>
 <div id="title"></div><div id="desc"></div><ul id="plist"></ul>
 <div id="tn">T-nuts are the drop-in type: drop each one in as its part is fitted (the counts are a tally per slot). Cast brackets M5×8; printed parts later M5×10.</div>
-<div id="legend"><span class="sw" style="background:{NEW}"></span>added this step &nbsp; <span class="sw" style="background:#4a4f57"></span>already fitted &nbsp; <span class="sw" style="background:{COLOURS['spacer']}"></span>printed spacer (remove after) &nbsp; <span class="sw" style="background:{COLOURS['cast']}"></span>cast bracket &nbsp; <span class="sw" style="background:#bbb;opacity:.5"></span>scope rails — NOT yet<br>Hidden L-connectors go on the faces that look INTO the frame (side rails and uprights: inner faces; rear cross rails and rear ties: front faces; front tie to its inner upright: rear faces). x from the outside of the left upright, y from the front face, z from the bench (mm). Front is the open side.</div>
+<div id="legend"><span class="sw" style="background:{NEW}"></span>added this step &nbsp; <span class="sw" style="background:#4a4f57"></span>already fitted &nbsp; <span class="sw" style="background:{COLOURS['spacer']}"></span>printed spacer (remove after) &nbsp; <span class="sw" style="background:{COLOURS['cast']}"></span>metal L corner bracket &nbsp; <span class="sw" style="background:{COLOURS['foot']}"></span>sled foot (in the scope rail's slot)<br>Hidden L-connectors go on the faces that look INTO the frame (side rails ↔ uprights: inner faces; rear cross rails and rear ties: front faces; inner rails ↔ inner uprights: right faces; front tie ↔ its inner upright: rear faces). One per joint. x from the outside of the left upright, y from the front face, z from the bench (mm). Front is the open side.</div>
 </div>
 <div id="hint">drag: orbit · right-drag / shift-drag: pan · wheel / pinch: zoom</div>
 <script>{THREE}</script>
@@ -152,8 +157,9 @@ function apply(){{
   const now=new Set(STEPS[k][2]);
   for(const [name,o] of Object.entries(meshes)){{
     const p=o.part, m=o.mesh;
-    if(GHOST.includes(name)){{ m.visible=true; m.material.color.set(0xbbbbbb); m.material.opacity=all?1:0.25; if(all) m.material.color.set(COLOURS[p.kind]); continue; }}
+    if(GHOST.includes(name)){{ m.visible=all||k===STEPS.length-1; m.material.color.set(0xbbbbbb); m.material.opacity=all?1:0.25; if(all) m.material.color.set(COLOURS[p.kind]); continue; }}
     if(p.kind==='spacer'){{ m.visible=!all && now.has(name); m.material.opacity=1; m.material.color.set(COLOURS.spacer); continue; }}
+    if(p.kind==='foot'){{ m.visible=all||fitted.has(name); m.material.opacity=1; m.material.color.set(COLOURS.foot); continue; }}
     const on=all||fitted.has(name);
     m.visible=on; m.material.opacity=1;
     m.material.color.set(!all&&now.has(name)?NEW:COLOURS[p.kind]);
