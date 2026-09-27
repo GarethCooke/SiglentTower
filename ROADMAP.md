@@ -9,7 +9,7 @@ v2: decisions D1–D6 answered (§0), cut plan redone for the 300 mm pack (§2),
 ## Progress
 
 - [x] §0 decisions D1–D11 all ☑
-- [ ] Stage 0 — coupons modelled and sliced ☑, spacer set printed ☑; only 0.5 (layout page regen) open
+- [x] Stage 0 — coupons modelled and sliced, spacer set printed (0.5 was already fixed in layout v15)
 - [ ] Stage 1 — extrusion cut ☑ (2026-09-19); P1–P9 all ☑ in §3, values in `fit.py` — P1 P2 P4 P5 P6 P7 P9 ☑; P3 (friction verdict on the frame, 4.1) and P8 (Stage 8 TPU session) open
 - [ ] Stage 2 — frame assembled, sled feet on the scope rails, instruments trial-fitted
 - [ ] Stage 3 — cradles
@@ -85,7 +85,7 @@ Done when: D1–D7 ticked, coupon STLs sliced, spacer set printed.
 | ☑ | 0.2 Create `src/fit.py` — one module holding every tuned clearance (table in §3), imported by every part script. Coupons exist to set these numbers; production parts read them. | `src/fit.py` |
 | ☑ | 0.3 Model the coupons in CadQuery (all eight scripts ☑ — ticked 2026-09-27), one script each under `src/coupons/`: **`p1_sled_foot.py` ☑** (v3 2026-09-19: T-nut flange from the measured slot; v2: web at x 22.2, closed beam groove; from `src/parts/sled_foot.py`, STLs in `coupons/p1/`), **`p3_runner.py` ☑** (2026-09-19: L-runner into the base rail's top slot + drawer-wall groove stub, from `src/parts/drawer_runner.py`, STLs in `coupons/p3/`), **`p4_clip_tile.py` ☑** (2026-09-20: spring-finger clip from `src/parts/slot_clip.py`, STLs in `coupons/p4/`), **`p5_hinge_magnet.py` ☑** (2026-09-22: three-segment butt hinge, printed pins and magnet bosses, STLs in `coupons/p5/`), **`p6_pull.py` ☑** (`coupons/p6/`), **`p7_quarter_joint.py` ☑** (cropped from `src/parts/drawer_quarters.py`, STLs in `coupons/p7/`), **`p8_tpu.py` ☑** (2026-09-22: spigot sweep, foot, AWG pad, slot covers, stop caps, STLs in `coupons/p8/`), **`p9_bumper_cup.py` ☑** (`coupons/p9/`). P2 is `psu_cradle.py` already. Each coupon is a literal section of the production part, in the production orientation, not a generic block. | STLs in `coupons/pN/` |
 | ☑ | 0.4 Print the rail-height spacer set, any PETG: **48** (base top 20 → PSU rail 68), **139.5** (88 → 227.5), **63.5** (247.5 → 311), **159** (331 → 490), two of each, plus the 3.0 mm web gauge — `coupons/spacers/spacers-plate.stl`, flat as laid out, 2 walls, 10 % infill (`src/coupons/spacers.py`). | 9 small prints |
-| ☐ | 0.5 Fix HANDOVER open item 3: `layout_gen.py` scope rails 318–338 → 311–331, regenerate page 1. | `bench-stack-layout-v16.pdf` |
+| ☑ | 0.5 Fix HANDOVER open item 3: `layout_gen.py` scope rails 318–338 → 311–331, regenerate page 1. **Already done in v15** (checked 2026-09-27: `layout_gen.py` has `SCOPE_RAIL = (311, 331)` and page 1 of `bench-stack-layout-v15.pdf` prints 311–331) — HANDOVER's open item 3 was stale. The sheet's side-panel notes (3 ASA tiles per side) predate D4 and P4 and are superseded by `bench-stack-3d.html`; regenerate only at Stage 9 close-out. | `bench-stack-layout-v15.pdf` stands |
 | ☑ | 0.6 Slice coupon plates (§3): A = black ASA, B/C = yellow PETG, D = blue TPU. All sliced and printed as they were needed (`bambu/`); D (TPU) rides in the single Stage 8 TPU session by rule, so nothing is left to slice here. | `.3mf` in `bambu/` |
 
 ---
