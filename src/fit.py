@@ -121,6 +121,5 @@ STRIP_KEYHOLE_FAR   = 81.5    # far end -> its keyhole centre (20 + 249.5 + 81.5
                               # keyhole slots run ACROSS the body -> the strip hangs HORIZONTALLY (D8: on the base rear cross rail)
 STRIP_KEYHOLE_DEPTH = 6.5     # pocket depth behind the back face (peg head lives in here)
 STRIP_BODY_W        = 78.1
-STRIP_KEYHOLE_OFF   = 37.2    # keyhole SEATING point (where the shaft rests, slot end) from the near long edge. 29.2 was measured
-                              # 2026-09-17 to the keyhole's near edge/start, not its seat: on the yellow run the peg lined up with the
-                              # start of the keyhole and the strip could not seat — Gareth, 2026-09-26: +8 mm
+STRIP_KEYHOLE_OFF   = 29.2    # keyhole line from the strip's near long edge (measured 2026-09-17; the +8 tried on 2026-09-26 was
+                              # withdrawn the next day — the shelf fouling the mains cable was the real problem)

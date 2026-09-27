@@ -6,13 +6,16 @@
 #
 # Measured 2026-09-17 (fit.py): keyholes 249.5 c-c, large hole Ø6.5, slot 3.5, nearest keyhole centre 20 from the cable
 # end, pocket 6.5 deep behind the back face, body 78.1 wide with the keyhole line 29.2 from one long edge.
-# Placement: peg line x 38.2 (v3, 2026-09-26: the 29.2 was to the keyhole's start, the seat is 8 further in), strip body
-# x 1–79, pegs at z 45 and 294.5, strip bottom z 25.
+# Placement: peg line x 30.2 (the +8 tried in v3 was withdrawn 2026-09-27 — not the problem), strip body
+# x 1–79. v4 (2026-09-27): strip bottom z 75 (was 25), pegs at z 95 and 344.5 — its Ø15 mains cable leaves the bottom end on
+# the keyhole line and is rigid for 25 mm, so the shelf is a U round it and the strip sits high enough for the cable to bend.
 #
 # Local frame = the frame's, with y measured from the upright's rear face (frame y 350): plate y 0–PLATE_T, the strip's
 # back face resting on it, pegs rising in +y into the keyhole pockets.
 #
 # Two DIFFERENT brackets (PRINT-RULES 10 — never two of the same): upper is plate + arm + peg; lower adds the shelf.
+# The upper is built around its peg, so moving the strip up (v4) did not change its geometry: upper stays v1 (upper v2/v3
+# were byte-for-byte the same part and were withdrawn 2026-09-27) — only its bolt height moved, z 294.5 -> 344.5.
 #
 # Deviations from the roadmap's sketch, both deliberate:
 #   plate 4 -> 5 mm. A Ø10 counterbore for the M5 head needs 2.5, and 1.5 of plate under it is not enough. At 5 the
@@ -34,16 +37,20 @@ from fit import (STRIP_KEYHOLE_PITCH, STRIP_KEYHOLE_D, STRIP_KEYHOLE_SLOT, STRIP
 
 PLATE_W, PLATE_H, PLATE_T = 20.0, 40.0, 5.0
 BOLT_D, CBORE_D, CBORE_H = 5.5, 10.0, 2.5
-PEG_X = 1.0 + STRIP_KEYHOLE_OFF                    # 38.2: strip body x 1–79, seat 37.2 from its near edge (was 30.2 on the 29.2 measure)
+PEG_X = 1.0 + STRIP_KEYHOLE_OFF                    # 30.2: strip body x 1–79, keyhole line 29.2 from its near edge
 ARM_X1 = PEG_X + 4.0
 ARM_H = 20.0
 PEG_SHAFT_D, PEG_SHAFT_L = 3.2, 3.0
 PEG_HEAD_D, PEG_HEAD_L = 6.0, 1.1
 PEG_CONE = (PEG_HEAD_D - PEG_SHAFT_D) / 2
-STRIP_Z0 = 25.0
+STRIP_Z0 = 75.0                                     # v4: was 25 — the mains cable leaves the strip's END on the keyhole line,
+                                                    # Ø15, rigid for 25 below the end plate; at 25 it hit the bench. 75 gives
+                                                    # 25 rigid + ~25 bend radius above z 25
+CABLE_D, CABLE_RIGID = 15.0, 25.0                   # measured 2026-09-27
+CABLE_GAP = (PEG_X - 16.0, PEG_X + 16.0)            # shelf U-cut round the cable: Ø15 + 8 of sideways keyhole travel either way
 PEG_Z = (STRIP_Z0 + STRIP_KEYHOLE_END, STRIP_Z0 + STRIP_KEYHOLE_END + STRIP_KEYHOLE_PITCH)
 SHELF_W, SHELF_D, SHELF_T = 80.0, 30.0, 4.0
-SHELF_NOTCH = 10.0
+SHELF_NOTCH = 10.0                                  # (v1-v3 cable notch at the strip's near edge — wrong place; superseded by CABLE_GAP)
 GUSSET_H = 20.0
 assert PEG_SHAFT_L + PEG_CONE + PEG_HEAD_L <= STRIP_KEYHOLE_DEPTH, "peg deeper than the keyhole pocket"
 assert PEG_SHAFT_D < STRIP_KEYHOLE_SLOT and PEG_HEAD_D < STRIP_KEYHOLE_D, "peg will not enter the keyhole"
@@ -80,16 +87,19 @@ def bracket(peg_z, shelf=False):
           .circle(CBORE_D / 2).extrude(-(CBORE_H + 1)))
     body = body.cut(hole).cut(cb)
     if shelf:
-        # v2 2026-09-26: v1's gusset stood ON the shelf, in front of the plate — i.e. inside the strip's own footprint
-        # (x 1–79, y 5–35, z 25 up): 3.9 cm3 of clash, the strip could not sit down (Gareth, on the yellow run). The
-        # brace now lives UNDER the shelf, where nothing else is, and the plate runs down to z 1 to anchor it.
-        body = body.union(box(0.0, PLATE_W, 0.0, PLATE_T, 1.0, z0 + 0.01))          # plate extended down to z 1
-        sh = box(0.0, SHELF_W, 0.0, SHELF_D, STRIP_Z0 - SHELF_T, STRIP_Z0)
-        sh = sh.cut(box(STRIP_X0, STRIP_X0 + SHELF_NOTCH, -1.0, SHELF_D + 1, STRIP_Z0 - SHELF_T - 1, STRIP_Z0 + 1))
+        # v2 (2026-09-26): the brace goes UNDER the shelf, where nothing else lives (v1's stood on it, inside the strip's
+        # footprint). v4 (2026-09-27): the strip's mains cable comes straight out of its bottom end ON the keyhole line,
+        # Ø15 and rigid for 25 mm — v1-v3 put a 10 mm notch at the strip's near edge and a full plate under the cable.
+        # The shelf is now a U: two bearing pads (x 0-22.2 and 54.2-80) joined by an 8 mm bridge against the plate,
+        # open to the rear round the cable, with room for the 8 mm sideways keyhole travel either way.
+        z_sh = STRIP_Z0 - SHELF_T
+        body = body.union(box(0.0, PLATE_W, 0.0, PLATE_T, z_sh - GUSSET_H, z0 + 0.01))   # plate runs down to carry the brace
+        sh = box(0.0, SHELF_W, 0.0, SHELF_D, z_sh, STRIP_Z0)
+        sh = sh.cut(box(CABLE_GAP[0], CABLE_GAP[1], 8.0, SHELF_D + 1, z_sh - 1, STRIP_Z0 + 1))
         body = body.union(sh)
         g = (cq.Workplane("YZ").workplane(offset=0.0)
-             .polyline([(PLATE_T, STRIP_Z0 - SHELF_T), (PLATE_T + GUSSET_H, STRIP_Z0 - SHELF_T), (PLATE_T, STRIP_Z0 - SHELF_T - GUSSET_H)])
-             .close().extrude(PLATE_W))
+             .polyline([(PLATE_T, z_sh), (PLATE_T + GUSSET_H, z_sh), (PLATE_T, z_sh - GUSSET_H)])
+             .close().extrude(min(PLATE_W, CABLE_GAP[0] - 0.5)))                        # brace stays clear of the cable's drop
         body = body.union(g)
     return body
 
@@ -105,8 +115,8 @@ if __name__ == "__main__":
     sys.path.insert(0, os.path.join(HERE, ".."))
     from printcheck import check
     OUT = os.path.normpath(os.path.join(HERE, "..", "..", "parts")); os.makedirs(OUT, exist_ok=True)
-    parts = {"strip-bracket-upper-v2": bracket(PEG_Z[1], shelf=False),
-             "strip-bracket-lower-v3": bracket(PEG_Z[0], shelf=True)}
+    parts = {"strip-bracket-upper-v1": bracket(PEG_Z[1], shelf=False),
+             "strip-bracket-lower-v4": bracket(PEG_Z[0], shelf=True)}
     for name, b in parts.items():
         p = printable(b)
         bb = p.val().BoundingBox()
