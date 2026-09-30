@@ -10,7 +10,7 @@ import os, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import cadquery as cq
 from parts.drawer_quarters import production, DW, DD
-from parts.drawer_runner import runner, RAIL, GAP
+from parts.drawer_runner import production as runner_production, RAIL, GAP, BOLTS
 
 def vol(a, b):
     try: return a.intersect(b).val().Volume() / 1000
@@ -29,11 +29,11 @@ print("3. Q2 lifted:", round(vol(Q[2].translate((0, 0, up)), Q[1]), 4), " Q3 lif
       " Q4 lifted:", round(vol(Q[4].translate((0, 0, up)), Q[2].union(Q[3])), 4), "cm3 (all must be 0)")
 # runner, frame coords (left rail x 0-20, drawer wall x 23, drawer bottom z 3, runner y 23-323 on the 310 rail, drawer y 3-303)
 # -> drawer coords: x - 23, y + 20, z - 3
-left = runner(300, [40, 150, 260]).translate((-(RAIL + GAP), 20, -3))
+left = runner_production().translate((-(RAIL + GAP), 20, -3))
 right = left.mirror("YZ").translate((DW, 0, 0))
 drawer = Q[1].union(Q[2]).union(Q[3]).union(Q[4])
 rails = left.union(right)
-print("4. runners in place:", round(vol(drawer, rails), 4), "cm3 (must be 0)")
+print(f"4. production runners (bolts at y {BOLTS}) in place:", round(vol(drawer, rails), 4), "cm3 (must be 0)")
 for tag, d in (("down 0.5", (0, 0, -0.5)), ("up 0.5", (0, 0, 0.5)), ("left 0.5", (-0.5, 0, 0)), ("right 0.5", (0.5, 0, 0)),
                ("up 0.2", (0, 0, 0.2)), ("left 0.2", (-0.2, 0, 0))):
     v = vol(drawer.translate(d), rails)

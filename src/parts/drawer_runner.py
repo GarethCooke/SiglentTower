@@ -84,6 +84,39 @@ def wall_stub(length, floor_w=30.0, wall_h=40.0, wall_t=2.4):
     s = box(0, floor_w, 0, length, 0, DRAWER_FLOOR).union(box(0, wall_t, 0, length, 0, wall_h)).union(box(0, BOSS_T, 0, length, 0, BOSS_H))
     return s.cut(groove_cut(length)).clean()
 
+# ---- production (Stage 4) ----
+# Bottom-drawer runners x2, 300 long on the 310 base side rails (frame y 23-323; drawer y 3-303), black ABS+.
+# FOUR M5 x 10 into the rail's top slot, not three: the bolts pull a long printed bar flat onto the rail (the 80 mm P3
+# coupon stuck where one bolt could not straighten it). Bolts symmetric about mid-length, so the left and right runners are
+# the SAME part (the right is this one turned end for end) — print it twice. Rear bolt at y 280 = frame y 303, the drawer's
+# rear face: the home stop behind the drawer is a separate small part, modelled after the P3 friction verdict.
+LENGTH = 300.0
+BOLTS = (20.0, 107.0, 193.0, 280.0)
+
+def production():
+    return runner(LENGTH, BOLTS)
+
+def plate():
+    """One runner leg-top down, turned 45° onto the bed diagonal and centred on the 256 bed. Two runners with the ABS+
+    5 mm outer brim do not fit one plate ((300 + 2 x 27 + gap + 10) / sqrt 2 > 250), so it is one runner per plate."""
+    p = runner_printable(LENGTH, BOLTS).rotate((0, 0, 0), (0, 0, 1), 45)
+    bb = p.val().BoundingBox()
+    return p.translate((128 - (bb.xmin + bb.xmax) / 2, 128 - (bb.ymin + bb.ymax) / 2, -bb.zmin))
+
+if __name__ == "__main__" and "--export" in sys.argv:
+    from printcheck import check
+    OUT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "parts", "drawer"))
+    path = os.path.join(OUT, "drawer-runner-300-v1.stl")
+    p = plate(); cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
+    bb = p.val().BoundingBox(); flat = runner_printable(LENGTH, BOLTS).val().BoundingBox()
+    print(f"drawer-runner-300-v1: {flat.xlen:.1f} x {flat.ylen:.1f} x {flat.zlen:.1f} flat, {bb.xlen:.1f} x {bb.ylen:.1f} on the "
+          f"diagonal (with 5 mm brim {bb.xlen + 10 / 2 ** 0.5 * 2:.0f}), {p.val().Volume() / 1000:.1f} cm3, bolts at y {BOLTS}")
+    flat_path = os.path.join(OUT, "_runner-flat-check.stl")          # printcheck on the unturned part: on the diagonal the
+    cq.exporters.export(runner_printable(LENGTH, BOLTS), flat_path, tolerance=0.01, angularTolerance=0.1)   # bbox footprint is
+    try: check(flat_path, min_rest_frac=0.3)                           # mostly empty and the resting-face ratio means nothing
+    finally: os.remove(flat_path)
+    sys.exit()
+
 if __name__ == "__main__":
     r = runner(300, [40, 150, 260]); bb = r.val().BoundingBox()
     print(f"runner 300: {bb.xlen:.1f} x {bb.ylen:.1f} x {bb.zlen:.1f}  {r.val().Volume()/1000:.1f} cm3  rib tip x {RIB_X1}, bearing z {Z_BEAR}, "
