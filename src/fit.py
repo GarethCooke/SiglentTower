@@ -37,8 +37,9 @@ HOLE_SHRINK    = 0.3    # radial: a straight Ø22.2 bore in black ASA printed Ø
 # floor top rests on the rib (no clearance there); RUNNER_CLR grows the groove's back and 45° roof and is the plate's
 # stand-off from the drawer wall.
 RUNNER_CLR     = 0.3    # groove back/roof over the rib, plate to drawer wall — geometry PASSED 2026-09-20 (little rock, slides);
-                        # stick-slip not proven: the 80 mm PETG coupon warped and one bolt can't pull it straight. Confirm on the
-                        # 300 ABS runners bolted to the base rails (Stage 4 'test on the frame'), ironing ON for the rib's top surface
+                        # the 80 mm PETG coupon stuck in places (warped, one bolt). P3 PASSED 2026-10-01: both 300 ABS+ runners on
+                        # four M5 each in the base rails, ironing on the rib, the dry-fitted drawer fits and slides well. FINAL —
+                        # the column guide strips and the mini-slot runner use this value.
 
 # P4 slot-clip tiles (src/parts/slot_clip.py) — the spring is a 25 x 5.5 finger cut free from the tile by a 1 mm U-slit,
 # bending sideways in the tile plane; a 5.1 x 6 peg on its free end enters the 5.9 mouth (0.7 slack on the far side,
