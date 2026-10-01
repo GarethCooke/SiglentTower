@@ -4,10 +4,11 @@
 # assembled vertically and CA'd: a dry tab has 0.15 of play, and the whole point of the ladder is roll stiffness — on their
 # own the beams lean inwards under the scope (2026-09-28, Gareth's photo: the scope would not seat in the stand pockets).
 #
-#   front bar   x 23–338 (315), y 0–12, z 337–355 (18 tall). v3 (2026-10-01): four CLOSED pockets in its rear face
-#               (x 40.25 / 78 and mirrors, 14.3 × 4.3, 8.15 deep, z 341.35–345.65, plus the 45° wedge under each root) take
-#               the beams' front tongues (sled_beam v2: body and stand pad); the bar slides on from the FRONT, so every
-#               tongue is held above (9.35 of bar) and below (4.35 floor) — the stand pad cannot drop. v1/v2 had dovetail sockets open at the bottom (bar dropped on),
+#   front bar   x 23–338 (315), y 0–12, z 337–355 (18 tall). v3 (2026-10-01): one CLOSED pocket per beam in its rear face
+#               (x 27.85–96.15 and mirror, 4.3 tall, 8.15 deep, z 341.35–345.65, plus the 45° wedge under the root) takes
+#               the beam's front tongue (sled_beam v2: beam body through to the stand pad's inboard edge); the bar slides
+#               on from the FRONT, so the tongue is held above (9.35 of bar) and below (4.35 floor) along its whole 68 —
+#               the stand pad's edge cannot drop. v1/v2 had dovetail sockets open at the bottom (bar dropped on),
 #               which is a hinge in roll. Pull: a 120 × 6 notch in the top edge
 #               (x 120.5–240.5, z 349–355) — the D9 notch; whether it gets an insert is decided when the sled is in use.
 #               v2 (2026-09-28/10-01, after Gareth's photo of the stand arm's inboard edge dropping): two SADDLES on the
@@ -30,7 +31,7 @@ import os, sys, cadquery as cq
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from fit import DOVETAIL_CLR as C
 from parts.drawer_quarters import box
-from parts.sled_beam import tab, Z0, T, XC, Y_BAR, XBAR_L, XBAR_R, CROSS_Y, TONGUE_X, TONGUE_W, TONGUE_L, TONGUE_Z, tongue_wedge
+from parts.sled_beam import tab, Z0, T, XC, Y_BAR, XBAR_L, XBAR_R, CROSS_Y, TONGUE_X0, TONGUE_X1, TONGUE_L, TONGUE_Z, tongue_wedge
 
 BAR_X0, BAR_X1, BAR_Y1, BAR_H = 23.0, 338.0, 12.0, 18.0      # front bar
 XC_R = 361.0 - XC                                            # 320.75: right beam's tab centre (mirror about x 180.5)
@@ -43,11 +44,9 @@ REAR_CROSS = (308.0, 335.0)                                  # body y (runs 5 pa
 
 def front_bar():
     b = box(BAR_X0, BAR_X1, 0.0, BAR_Y1, Z0, Z0 + BAR_H)
-    for xt in TONGUE_X:                                      # closed pockets for the two tongues per beam, open at the rear face
-        for xc in (xt, 361 - xt):
-            b = b.cut(box(xc - TONGUE_W / 2 - C, xc + TONGUE_W / 2 + C, Y_BAR - TONGUE_L - C, Y_BAR + 1,
-                          TONGUE_Z[0] - C, TONGUE_Z[1] + C))
-            b = b.cut(tongue_wedge(xc, grow=C))               # and the 45° wedge under its root
+    for x0, x1 in ((TONGUE_X0, TONGUE_X1), (361 - TONGUE_X1, 361 - TONGUE_X0)):   # one closed pocket per beam, open at the rear face
+        b = b.cut(box(x0 - C, x1 + C, Y_BAR - TONGUE_L - C, Y_BAR + 1, TONGUE_Z[0] - C, TONGUE_Z[1] + C))
+        b = b.cut(tongue_wedge(x0, x1, grow=C))               # and the 45° wedge under its root
     xm = (BAR_X0 + BAR_X1) / 2
     b = b.cut(box(xm - NOTCH_W / 2, xm + NOTCH_W / 2, -1, BAR_Y1 + 1, Z0 + BAR_H - NOTCH_D, Z0 + BAR_H + 1))
     x0, x1, y0, y1, z0, z1 = SADDLE

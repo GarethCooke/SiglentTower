@@ -10,9 +10,9 @@
 #               the two together: the pair is a sliding fit by design (P1) and the sled must move foot-and-beam as one.
 #   split       y 165: P7 puzzle tab on the front half pointing +y, socket in the rear half (DOVETAIL_CLR), assembled
 #               vertically and CA'd BEFORE threading onto the foot (a closed groove cannot be threaded half at a time).
-#   front bar   v2 front halves (2026-10-01): the front edge carries TWO plain tongues pointing −y (y 4–12, 14 wide,
-#               z 339.5–343.5) — one on the body at x 40.25, one on the STAND PAD at x 78 — into closed pockets in the
-#               bar's rear face (sled_bars.py v3). The bar slides on from the front, so each tongue is captured above and
+#   front bar   v2 front halves (2026-10-01): the front edge carries ONE plain tongue pointing −y (y 4–12, x 28–96:
+#               beam body through to the stand pad's inboard edge, z 341.5–345.5) into a closed pocket in the bar's
+#               rear face (sled_bars.py v3). The bar slides on from the front, so each tongue is captured above and
 #               below: the pad's front edge is held by the bar and cannot drop (Gareth, 2026-09-28/10-01). Tongues sit
 #               z 341.5–345.5 with a 45° wedge under the root (the bar keeps a 4.35 floor under them); the pad's tongue
 #               pokes 2 above the stand pocket's floor but only inside the bar's footprint (y < 12), clear of the leg.
@@ -52,8 +52,9 @@ assert abs((Z0 + T - STAND_POCKET_D) + STAND_H - SCOPE_Z0) < 1e-6, 'stand pocket
 STAND_X0 = SCOPE_X0 + STAND_X_FROM_SIDE           # 47.7: stand's outer edge
 STAND_Y0 = SCOPE_Y0 + STAND_FRONT_FROM_FACE       # 13: main leg's front edge
 STAND_ARM = (XBAR_L, 96.0, Y_BAR, 41.0)            # pocket to x 92.3, 3.7 wall
-TONGUE_X = (XC, 78.0)                              # front tongues: beam body, stand pad centre (60–96)
-TONGUE_W, TONGUE_L, TONGUE_Z = 14.0, 8.0, (341.5, 345.5)   # 4 tall, 4.5 above the beam underside so the bar keeps a 4.35 floor under it
+TONGUE_X0, TONGUE_X1 = 28.0, 96.0                  # ONE front tongue, beam body to the stand pad's inboard edge (Gareth 2026-10-01:
+                                                   # the hold-down belongs right at the pad's edge); 4.85 of bar wall outside it (bar x 23)
+TONGUE_L, TONGUE_Z = 8.0, (341.5, 345.5)           # 4 tall, 4.5 above the beam underside so the bar keeps a 4.35 floor under it
 TONGUE_WEDGE = 4.5                                 # 45° wedge under the tongue's root (y 7.5–12): self-supporting in the flat print, the
                                                    # last 3.5 mm of the tongue is a short cantilever (rule 4)
 PEGS = ((33.0, 150.0), (33.0, 290.0)); PEG_D, PEG_H = 4.0, 2.5
@@ -83,19 +84,18 @@ def groove(y0, y1):
 def tab(seam, along, dirn, grow=0.0, z0=Z0, z1=Z0 + T):
     return prism(trapezoid(seam, along, dirn, TAB_NECK, TAB_HEAD, TAB_LEN, grow=grow), z0, z1)
 
-def tongue_wedge(xt, grow=0.0):
-    """45° wedge under a tongue's root: (y 12, z 337) up to (y 12 − TONGUE_WEDGE, z 341.5). grow > 0 gives the bar's cutter."""
+def tongue_wedge(x0=TONGUE_X0, x1=TONGUE_X1, grow=0.0):
+    """45° wedge under the tongue's root: (y 12, z 337) up to (y 12 − TONGUE_WEDGE, z 341.5). grow > 0 gives the bar's cutter."""
     g = grow
     pts = [(Y_BAR + 1 if g else Y_BAR, Z0 - (1 if g else 0)), (Y_BAR + 1 if g else Y_BAR, TONGUE_Z[0] + g),
            (Y_BAR - TONGUE_WEDGE - g * 2 ** 0.5, TONGUE_Z[0] + g)]
-    w = cq.Workplane("YZ").polyline(pts).close().extrude(TONGUE_W + 2 * g)
-    return w.translate((xt - TONGUE_W / 2 - g, 0, 0))
+    w = cq.Workplane("YZ").polyline(pts).close().extrude(x1 - x0 + 2 * g)
+    return w.translate((x0 - g, 0, 0))
 
 def left_front():
     b = box(X0, X0 + BW, Y_BAR, Y_SPLIT, Z0, Z0 + T)
-    for xt in TONGUE_X:                                                       # tongues into the front bar's closed pockets
-        b = b.union(box(xt - TONGUE_W / 2, xt + TONGUE_W / 2, Y_BAR - TONGUE_L, Y_BAR, TONGUE_Z[0], TONGUE_Z[1]))
-        b = b.union(tongue_wedge(xt))
+    b = b.union(box(TONGUE_X0, TONGUE_X1, Y_BAR - TONGUE_L, Y_BAR, TONGUE_Z[0], TONGUE_Z[1]))   # tongue into the front bar's closed pocket
+    b = b.union(tongue_wedge())
     b = b.union(tab(Y_SPLIT, XC, (+1, "y")))                                 # into the rear half
     b = b.union(box(*CUP_BOSS, Z0, Z0 + CUP_BOSS_T))
     b = b.union(box(*STAND_ARM, Z0, Z0 + T))
