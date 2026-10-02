@@ -124,3 +124,9 @@ STRIP_KEYHOLE_DEPTH = 6.5     # pocket depth behind the back face (peg head live
 STRIP_BODY_W        = 78.1
 STRIP_KEYHOLE_OFF   = 29.2    # keyhole line from the strip's near long edge (measured 2026-09-17; the +8 tried on 2026-09-26 was
                               # withdrawn the next day — the shelf fouling the mains cable was the real problem)
+
+# ---- PSU as seated in the frame (measured 2026-10-02, Stage 2.7) ----
+PSU_FACE_X   = (20.0, 244.5)   # front face (225 wide) against the left PSU rail's inner face, 6.5 off the inner rail's left face
+PSU_BODY_W   = 220.0           # body, centred under the face: x 22.25–242.25
+PSU_FEET_CC  = 155.5           # foot centres across (174.5 outer-to-outer, Ø19): HANDOVER's 33-from-edge gave 154
+PSU_H_FEET   = 150.0           # bench to case top standing on its feet (HANDOVER had 149)
