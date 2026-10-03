@@ -9,7 +9,6 @@ Before cutting: tape-label the eight 1000s **A–H** and the four 300s **W, X, Y
 | 1 | 200 | W | 1 | 1 × 200 — coupon rail | W ≈ 98 |
 | 2 | 179.5 | X, Y | 1 each | 2 × 179.5 — inner uprights | X, Y ≈ 118 |
 | 3 | 70 | W, X, Y | 1 each | 3 × 70 — ties | scrap |
-| — | — | Z | none | 1 × 300 whole — coupon rail | — |
 | 4 | 510 | A, B, C, D | 1 each | 4 × 510 — uprights | A–D ≈ 488 |
 | 5 | 321 | A, B | 1 each | 2 × 321 — rear cross rails | A, B ≈ 165 (scrap) |
 | 6 | 310 | C, D | 1 each | 2 × 310 | C, D ≈ 176 (scrap) |
