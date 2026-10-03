@@ -2,7 +2,7 @@
 # sacrificial layer over the cup and counterbores), 2 × AWG left v2 (standing on end), 2 × AWG right v2 (arm-top down). Black ABS.
 import os, trimesh
 HERE = os.path.dirname(os.path.abspath(__file__)); PARTS = os.path.normpath(os.path.join(HERE, "..", "parts"))
-items = [("psu-cradle-right-v4", 2), ("awg-cradle-left-v2", 2), ("awg-cradle-right-v2", 2)]
+items = [("psu-cradle-right-v4", 2), ("awg-cradle-left-v2", 2), ("awg-cradle-right-v2", 2)]   # as printed 2026-10-03; the right FRONT PSU cradle is then replaced by v5
 meshes, x, y, row_h, GAP = [], 0.0, 0.0, 0.0, 8.0          # two rows: PSU cradles in the back row, AWG parts in the front
 for name, n in items:
     for i in range(n):

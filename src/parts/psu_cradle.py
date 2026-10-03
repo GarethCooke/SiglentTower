@@ -13,11 +13,14 @@ HOLE_D    = 5.5
 CBORE_D   = 10.0
 CBORE_H   = 4.0
 REACH_V3  = 38.75    # left pair as printed (cup 41.75 from the rail face — see cradle())
-REACH_V4R = 30.75    # right pair v4 2026-10-02: cup 8 nearer the inner rail (33.75 from its left face)
+REACH_V4R = 30.75    # right pair v4 2026-10-02: cup 8 nearer the inner rail (33.75 from its left face). Bench 2026-10-03: the REAR
+                     # right foot sits in its v4 cup; the FRONT right foot wants the cup 'a few mm' further out than v4 (the PSU sits
+                     # very slightly skewed) -> one more part:
+REACH_V5RF = 34.75   # right FRONT only, v5: cup 37.75 from the inner rail's face — midway between v4 (33.75) and v3 (41.75)
 def cradle(reach):
     """PSU corner cradle; reach = rail inner face... NOTE the code adds reach after the 3 mm lip, so the cup centre sits
-    reach + 3 from the rail's inner face (the v3 'bug': 38.75 -> 41.75). v3 (left pair, as printed) keeps 38.75; v4 (right pair)
-    uses 30.75 so the cup lands on the measured foot (feet 155.5 apart, 2026-10-02: 61.75 + 155.5 = 217.25 = 251 - 33.75)."""
+    reach + 3 from the rail's inner face (the v3 'bug': 38.75 -> 41.75). v3 (left pair, as printed) keeps 38.75; right rear is
+    v4 (30.75); right front is v5 (34.75), set on the bench 2026-10-03."""
     REACH = reach
     from fit import PSU_FOOT_PAD_D, PSU_FOOT_D4, CUP_CLR, RAIL_CLR   # v3: conical cup matching the measured foot taper, clearance from the P2 coupons
     CUP_DEPTH = 4.0      # cup floor = TOP_T - CUP_DEPTH = 4 mm above rail top
@@ -84,7 +87,7 @@ def printable(body):
 
 if __name__ == "__main__":
     from printcheck import check
-    for name, reach in (("psu-cradle-v3", REACH_V3), ("psu-cradle-right-v4", REACH_V4R)):
+    for name, reach in (("psu-cradle-v3", REACH_V3), ("psu-cradle-right-v4", REACH_V4R), ("psu-cradle-right-front-v5", REACH_V5RF)):
         body = cradle(reach); path = os.path.join(OUT, f"{name}.stl")
         cq.exporters.export(printable(body), path, tolerance=0.01, angularTolerance=0.1)
         bb = body.val().BoundingBox()

@@ -128,5 +128,6 @@ STRIP_KEYHOLE_OFF   = 29.2    # keyhole line from the strip's near long edge (me
 # ---- PSU as seated in the frame (measured 2026-10-02, Stage 2.7) ----
 PSU_FACE_X   = (20.0, 244.5)   # front face (225 wide) against the left PSU rail's inner face, 6.5 off the inner rail's left face
 PSU_BODY_W   = 220.0           # body, centred under the face: x 22.25–242.25
-PSU_FEET_CC  = 155.5           # foot centres across (174.5 outer-to-outer, Ø19): HANDOVER's 33-from-edge gave 154
+PSU_FEET_CC  = 155.5           # foot centres across from a caliper reading (174.5 outer-to-outer, Ø19). Cups that fit on the bench (2026-10-03):
+                               # left v3 at x 61.75, right rear v4 at 217.25 (= 155.5 apart), right front v5 at 213.25 — the PSU sits slightly skewed
 PSU_H_FEET   = 150.0           # bench to case top standing on its feet (HANDOVER had 149)
