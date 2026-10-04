@@ -19,7 +19,9 @@
 #               lap — that is what holds the stand arm's inboard edge up (the arm itself hardly bends: 0.01 mm). 1.1
 #               clear of the stand leg (x 47.1), 2 under the chassis (355), 0.5 / 3 clear of the cup boss (x 46.5, y 91),
 #               clear of the cable channel (y 140+). The beam's and arm's front faces (y 12) are glued to the bar as well.
-#   cross bars  between the beams' inner faces (x 60–301), z 337–346 (level with the beams), tabs on both ends into the
+#   cross bars  v2 (2026-10-04): the printed v1 lips sat exactly 135 apart = the box's length, so the box would not drop
+#               between them; each lip moved 1 mm outward (front lip y 189–194, rear lip y 331–336 → 2 mm of play).
+#               Between the beams' inner faces (x 60–301), z 337–346 (level with the beams), tabs on both ends into the
 #               beams' sockets at y 200 / 318 (sled_beam.CROSS_Y). Front cross bar y 190–210 with a 5 × 10 guide lip on its
 #               front face (z 346–356, chamfered at the right = exit end); rear cross bar y 308–335 with a square lip on its
 #               rear 5 (y 330–335). The box (y 195–330, floor 346) sits on the bars between the lips.
@@ -39,8 +41,8 @@ NOTCH_W, NOTCH_D = 120.0, 6.0
 SADDLE = (20.5, 46.0, 12.0, 88.0, 346.0, 353.0)               # left saddle x0 x1 y0 y1 z0 z1; right is the mirror about x 180.5
 SADDLE_HOLES = ((33.0, 30.0), (33.0, 70.0)); SADDLE_HOLE_D = 3.4   # M3 clearance, teardrop peak toward +y (horizontal in the print)
 LIP_T, LIP_H = 5.0, 10.0
-FRONT_CROSS = (190.0, 210.0)                                 # body y; lip on the front face
-REAR_CROSS = (308.0, 335.0)                                  # body y (runs 5 past the beams' ends to carry the lip); lip on its rear 5, y 330–335
+FRONT_CROSS = (189.0, 210.0)                                 # body y; lip on the front face. v2 2026-10-04: 1 further forward (lip y 189–194)
+REAR_CROSS = (308.0, 336.0)                                  # body y (runs past the beams' ends to carry the lip); lip on its rear 5, y 331–336 (v2: 1 further back)
 
 def front_bar():
     b = box(BAR_X0, BAR_X1, 0.0, BAR_Y1, Z0, Z0 + BAR_H)
@@ -77,7 +79,7 @@ def cross_bar(y0, y1, yc, lip_front):
 def cross_front(): return cross_bar(*FRONT_CROSS, CROSS_Y[0], True)
 def cross_rear():  return cross_bar(*REAR_CROSS, CROSS_Y[1], False)
 
-VERSION = {"sled-front-bar": 3}
+VERSION = {"sled-front-bar": 3, "sled-cross-bar-front": 2, "sled-cross-bar-rear": 2}
 PARTS = {"sled-front-bar": front_bar, "sled-cross-bar-front": cross_front, "sled-cross-bar-rear": cross_rear}
 
 def for_print(part, on_front=False):

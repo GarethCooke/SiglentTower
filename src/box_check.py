@@ -20,6 +20,7 @@ sled = None
 for fn in list(BEAMS.values()) + list(BARS.values()): sled = fn() if sled is None else sled.union(fn())
 bx = L.union(R)
 print("4. box on the sled:", round(vol(bx, sled), 4), "cm3 (0)")
-print("   box forward 0.5:", round(vol(bx.translate((0, -0.5, 0)), sled), 3), " back 0.5:", round(vol(bx.translate((0, 0.5, 0)), sled), 3), "cm3 (both > 0: the lips hold it)")
+print("   box forward 0.5 / back 0.5:", round(vol(bx.translate((0, -0.5, 0)), sled), 3), round(vol(bx.translate((0, 0.5, 0)), sled), 3), "cm3 (both 0: 1 mm play each way, v2 bars)")
+print("   box forward 1.5 / back 1.5:", round(vol(bx.translate((0, -1.5, 0)), sled), 3), round(vol(bx.translate((0, 1.5, 0)), sled), 3), "cm3 (both > 0: the lips hold it)")
 print("   box right 10:", round(vol(bx.translate((10, 0, 0)), sled), 4), " right 60:", round(vol(bx.translate((60, 0, 0)), sled), 4), "cm3 (0: it slides out)")
 scope = box(23, 338, 3, 135, 355, 500); print("   box vs scope envelope:", round(vol(bx, scope), 4), "cm3 (0)")
