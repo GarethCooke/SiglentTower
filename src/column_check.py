@@ -29,10 +29,13 @@ frame = [box(251, 271, 23, 330, 68, 88), box(251, 271, 23, 330, 227.5, 247.5),  
          box(251, 271, 23, 43, 68, 247.5), box(251, 271, 310, 330, 68, 247.5),            # inner uprights
          box(341, 361, 0, 20, 0, 510), box(341, 361, 330, 350, 0, 510),                   # right uprights
          box(271, 341, 23, 43, 68, 88), box(271, 341, 310, 330, 68, 88), box(271, 341, 310, 330, 227.5, 247.5),   # ties
-         box(321, 341, 23, 43, 68, 88)]                                                   # front-tie cast bracket region
+         box(321, 341, 23, 43, 68, 88),                                                   # front-tie cast bracket region
+         box(271, 274, 23, 63, 82, 88), box(271, 274, 223, 263, 82, 88)]                  # right PSU cradles' saddle lips on the inner rail's right face
 F = None
 for f in frame: F = f if F is None else F.union(f)
 print("2. strips vs frame:", {k: round(vol(v, F), 4) for k, v in strips.items()}, "cm3 (all 0)")
 heads = box(271, 279, STRIP_Y0, STRIP_Y0 + STRIP_L, 70, 86).union(box(333, 341, STRIP_Y0, STRIP_Y0 + STRIP_L, 70, 86))
 print("   lower bolt bars vs drawer:", round(vol(heads, D), 4), " vs housing top 64–67 + facia:", round(vol(heads, box(23, 338, 0, 303, 3, 67)), 4), "cm3 (0)")
+from parts.column_drawer import SHORT_Y0
+print(f"   travel before the drawer leaves the short left rib: {Y0 + DD - SHORT_Y0:.0f} mm; the right rib: {Y0 + DD - STRIP_Y0:.0f} mm (drawer is {DD:.0f} deep)")
 print("3. drawer vs frame:", round(vol(D, F), 4), " vs housing top over the column (333–336):", round(vol(D, box(242, 338, 0, 300, 333, 336)), 4), "cm3 (0)")

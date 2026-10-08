@@ -37,6 +37,12 @@ PAD_XS = (16.0, 48.0)                             # facia screw pads
 GAP = 3.0; PLATE_T = GAP - RUNNER_CLR             # 2.7
 STRIP_L, STRIP_Y0 = 260.0, 45.0
 BOLT_YS = (20.0, 93.3, 166.7, 240.0)
+# LEFT lower strip (inner rail's right face): the right PSU cradles sit on that rail and their saddle lips hang 6 mm down its
+# right face (y 23–63 and 223–263, z 82–88) — exactly where the 260 strip's bolt bar wants to be (Gareth, 2026-10-08:
+# 144 clear between them). So the left lower strip is a SHORT one, 140 long with two bolts, centred in that gap; the drawer
+# still hangs on both sides over its whole travel (the groove is 285 long, the right rib 260).
+SHORT_L, SHORT_Y0 = 140.0, 73.0          # y 73–213 (gap 63–223 in the model; place it mid-gap on the bench)
+SHORT_BOLT_YS = (25.0, 115.0)
 LOW_SLOT, UP_SLOT = 78.0, 237.5                   # side-slot centres
 BAR_T, BAR_Z = 8.0, (70.0, 86.0)                  # lower bolt bar
 LOW_PLATE_Z = (70.0, 110.0); LOW_RIB_Z0 = Z0 + FLOOR   # 94: rib bottom = drawer floor top (P3)
@@ -78,15 +84,15 @@ def drawer():
 def drawer_in_frame(): return drawer().translate((X0, Y0, Z0))
 
 # ---- strips, frame coordinates for the LEFT side of the bay (rail face at x 271, rib pointing +x); y 0..STRIP_L ----
-def lower_strip():
+def lower_strip(length=STRIP_L, bolt_ys=BOLT_YS):
     xf = 271.0
-    s = box(xf, xf + BAR_T, 0, STRIP_L, BAR_Z[0], BAR_Z[1])                             # bolt bar
-    s = s.union(box(xf, xf + PLATE_T, 0, STRIP_L, LOW_PLATE_Z[0], LOW_PLATE_Z[1]))        # plate
+    s = box(xf, xf + BAR_T, 0, length, BAR_Z[0], BAR_Z[1])                               # bolt bar
+    s = s.union(box(xf, xf + PLATE_T, 0, length, LOW_PLATE_Z[0], LOW_PLATE_Z[1]))          # plate
     xp = xf + PLATE_T; xt = xp + RIB_ENGAGE
     rib = (cq.Workplane("XZ").polyline([(xp, LOW_RIB_Z0), (xt, LOW_RIB_Z0), (xt, LOW_RIB_Z0 + RIB_TIP_H), (xp, LOW_RIB_Z0 + RIB_H)])
-           .close().extrude(STRIP_L).translate((0, STRIP_L, 0)))
+           .close().extrude(length).translate((0, length, 0)))
     s = s.union(rib)
-    for y in BOLT_YS:                                                                     # M5 through the bar into the side slot
+    for y in bolt_ys:                                                                     # M5 through the bar into the side slot
         s = s.cut(cq.Workplane("YZ", origin=(xf - 1, y, LOW_SLOT)).circle(HOLE_D / 2).extrude(BAR_T + 2))
         s = s.cut(cq.Workplane("YZ", origin=(xf + BAR_T - CBORE_H, y, LOW_SLOT)).circle(CBORE_D / 2).extrude(CBORE_H + 1))
     return s
@@ -104,6 +110,8 @@ def upper_strip():
     return s
 
 def strip_in_frame(kind, side):
+    if kind == "lower" and side == "L":
+        return lower_strip(SHORT_L, SHORT_BOLT_YS).translate((0, SHORT_Y0, 0))            # the short one, between the cradles
     s = (lower_strip() if kind == "lower" else upper_strip()).translate((0, STRIP_Y0, 0))
     return s if side == "L" else s.mirror("YZ", (306.0, 0, 0))                            # bay centre x 306: 271 <-> 341
 
@@ -119,8 +127,10 @@ if __name__ == "__main__":
     cq.exporters.export(d, path, tolerance=0.02, angularTolerance=0.2)
     print(f"column-drawer-v1   {bb.xlen:.1f} x {bb.ylen:.1f} x {bb.zlen:.1f}  {d.val().Volume()/1000:.0f} cm3  diag {(bb.xlen + bb.ylen)/2**0.5:.0f}")
     check(path, max_down_frac=0.5)
-    for name, fn in (("column-strip-lower-v1", lower_strip), ("column-strip-upper-v1", upper_strip)):
+    for name, fn in (("column-strip-lower-v1", lower_strip), ("column-strip-lower-short-v1", lambda: lower_strip(SHORT_L, SHORT_BOLT_YS)),
+                     ("column-strip-upper-v1", upper_strip)):
         p = for_print(fn()); bb = p.val().BoundingBox(); path = os.path.join(OUT, f"{name}.stl")
         cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
-        print(f"{name:20s} {bb.xlen:.1f} x {bb.ylen:.1f} x {bb.zlen:.1f}  {p.val().Volume()/1000:.1f} cm3  diag {(bb.xlen + bb.ylen)/2**0.5:.0f}  (print 2)")
+        n = 1 if ("short" in name or "lower-v1" in name) else 2
+        print(f"{name:28s} {bb.xlen:.1f} x {bb.ylen:.1f} x {bb.zlen:.1f}  {p.val().Volume()/1000:.1f} cm3  diag {(bb.xlen + bb.ylen)/2**0.5:.0f}  (print {n})")
         check(path, max_down_frac=0.5)
