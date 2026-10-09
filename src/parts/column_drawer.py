@@ -31,6 +31,7 @@ from parts.drawer_runner import groove_cut, RIB_ENGAGE, RIB_H, RIB_TIP_H, BOSS_T
 # ---- drawer, drawer coordinates (x from the left wall face, y from the body front, z from the bottom) ----
 DW, DD, DH = 64.0, 285.0, 240.0
 WALL, FLOOR = 2.4, 3.0
+WIN_W, WIN_D = 46.0, 19.0            # pull-pocket window in the top of the front wall (v2, cut by hand in the v1 print)
 X0, Y0, Z0 = 274.0, 3.0, 91.0                     # body in the frame
 PAD_XS = (16.0, 48.0)                             # facia screw pads
 # strips
@@ -79,6 +80,9 @@ def drawer():
     for xc in PAD_XS:
         d = d.union(box(xc - PAD_W / 2, xc + PAD_W / 2, WALL, WALL + PAD_T, 0, PAD_Z1))
         d = d.cut(teardrop_y(xc, PAD_Z, SCREW_HOLE_D / 2, -1, WALL + PAD_T + 1))
+    # pull-pocket window: the facia's insert pocket (44 wide, z 222–245) passes through the top of the front wall — a notch
+    # 46 wide x 19 deep from the wall's top edge, centred. The v1 print (2026-10-09) predates this: cut it by hand.
+    d = d.cut(box(DW / 2 - WIN_W / 2, DW / 2 + WIN_W / 2, -1, WALL + 1, DH - WIN_D, DH + 1))
     return d
 
 def drawer_in_frame(): return drawer().translate((X0, Y0, Z0))
@@ -123,9 +127,9 @@ def for_print(part):
 if __name__ == "__main__":
     from printcheck import check
     OUT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "parts", "column")); os.makedirs(OUT, exist_ok=True)
-    d = drawer(); bb = d.val().BoundingBox(); path = os.path.join(OUT, "column-drawer-v1.stl")
+    d = drawer(); bb = d.val().BoundingBox(); path = os.path.join(OUT, "column-drawer-v2.stl")
     cq.exporters.export(d, path, tolerance=0.02, angularTolerance=0.2)
-    print(f"column-drawer-v1   {bb.xlen:.1f} x {bb.ylen:.1f} x {bb.zlen:.1f}  {d.val().Volume()/1000:.0f} cm3  diag {(bb.xlen + bb.ylen)/2**0.5:.0f}")
+    print(f"column-drawer-v2   {bb.xlen:.1f} x {bb.ylen:.1f} x {bb.zlen:.1f}  {d.val().Volume()/1000:.0f} cm3  diag {(bb.xlen + bb.ylen)/2**0.5:.0f}")
     check(path, max_down_frac=0.5)
     for name, fn in (("column-strip-lower-v1", lower_strip), ("column-strip-lower-short-v1", lambda: lower_strip(SHORT_L, SHORT_BOLT_YS)),
                      ("column-strip-upper-v1", upper_strip)):
