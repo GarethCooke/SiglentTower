@@ -17,7 +17,7 @@ from fit import JPULL_OPEN_H, JPULL_HOOK, JPULL_DEPTH, JPULL_FLOOR_DEG, JPULL_WA
 FT, SLOT_Z, FL_T = 3.0, 4.0, 2.0
 w, d = JPULL_WALL, JPULL_DEPTH; t = math.tan(math.radians(JPULL_FLOOR_DEG))
 H = SLOT_Z + JPULL_OPEN_H + JPULL_HOOK                       # 21: cavity top; the face is H + w = 23 tall
-INSERTS = {"bottom": (100.0, 80.0, 10.0, 0.0, 0.0, ((36.0, 64.0),)), "column": (50.0, 40.0, 3.5, 8.0, -11.0, ()), "mini": (22.0, 16.0, 1.5, 8.0, -11.0, ())}   # face W, slot, ear, lip, wall top (insert z), leg gaps
+INSERTS = {"bottom": (100.0, 80.0, 10.0, 0.0, 0.0, ((36.0, 64.0),)), "column": (50.0, 40.0, 2.5, 8.0, -11.0, ()), "mini": (22.0, 16.0, 1.5, 8.0, -11.0, ())}   # face W, slot, ear, lip, wall top (insert z), leg gaps
 WALL_T, LEG_CLR, LEG_L = 2.4, 0.3, 20.0
 LINER_T = 1.5
 
