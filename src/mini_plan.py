@@ -1,0 +1,37 @@
+# Plan sheet for the mini slot: a cross-section through the runner and body, and the plan view with the D7 neck.
+import os, sys, matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from parts import mini_slot as m
+fig, (a, b) = plt.subplots(1, 2, figsize=(14, 7), gridspec_kw={"width_ratios": [1, 1.3]})
+a.set_title("Section across the slot (looking from the front)"); a.set_aspect("equal")
+a.add_patch(plt.Rectangle((m.RAIL_X0, 227.5), 20, 20, fc="#999", ec="k", label="inner AWG rail (x 251–271)"))
+a.add_patch(plt.Rectangle((247, 227.5), 4, 20, fc="#ccc", ec="k", label="right AWG cradle plate"))
+a.add_patch(plt.Rectangle((m.RUN_X0, m.RAIL_TOP), 12, m.PLATE_T, fc="#444", ec="k", label="runner (ABS+): plate + dovetail rib"))
+rib = m.rib_profile(0.0); a.add_patch(plt.Polygon([(x, z) for x, z in rib], fc="#444", ec="k"))
+a.add_patch(plt.Rectangle((m.BUMP_X0, m.RAIL_TOP + m.PLATE_T), 2, m.BUMP_H, fc="#d33", ec="k", label="stop bump (at y 27–37 only)"))
+# body section at y 50 (full width): outline minus groove, channel, tray
+import numpy as np
+body = plt.Rectangle((m.BX0, m.BZ0), 26, m.BZ1 - m.BZ0, fc="#1f2226", ec="k", alpha=0.85, label="body (PETG)")
+a.add_patch(body)
+a.add_patch(plt.Rectangle((m.BX0 + m.WALL, m.FLOOR_Z), 26 - 2 * m.WALL, m.BZ1 - m.FLOOR_Z + 1, fc="white", ec="none"))
+g = m.rib_profile(m.RUNNER_CLR); a.add_patch(plt.Polygon([(x, z) for x, z in g], fc="white", ec="#1f2226"))
+a.add_patch(plt.Rectangle((m.BUMP_X0 - 0.3, m.BZ0 - 0.01), 2.6, m.CHAN_D, fc="white", ec="#1f2226"))
+a.add_patch(plt.Polygon([(x, z) for x, z in rib], fc="#444", ec="k"))
+a.annotate("groove: rib + 0.3 all round;\nthe flares hold the drawer DOWN", (m.SLOT_X + 4, 256.5), (272, 275), arrowprops=dict(arrowstyle="->"), fontsize=8)
+a.annotate("body bottom rides on the plate top", (m.RUN_X1, m.BZ0), (272, 244), arrowprops=dict(arrowstyle="->"), fontsize=8)
+a.annotate("floor top z 261 (inside 21.2 × 70)", (m.BX0 + 8, m.FLOOR_Z), (225, 268), arrowprops=dict(arrowstyle="->"), fontsize=8)
+a.annotate("AWG bezel ends at x 237", (237, 250), (220, 240), fontsize=8)
+a.set_xlim(215, 300); a.set_ylim(222, 300); a.set_xlabel("frame x (mm)"); a.set_ylabel("frame z (mm)"); a.legend(loc="upper left", fontsize=7)
+b.set_title("Plan view: body outline with the D7 vent neck, runner and bolts"); b.set_aspect("equal")
+pts = [(m.BX0, m.BY0), (m.BX1, m.BY0), (m.BX1, m.BY1), (m.BX0, m.BY1), (m.BX0, m.NECK_Y1), (m.NECK_X0, m.NECK_Y1), (m.NECK_X0, m.NECK_Y0), (m.BX0, m.NECK_Y0)]
+b.add_patch(plt.Polygon(pts, fc="#1f2226", ec="k", alpha=0.3, label="body x 242–268, y 3–288"))
+b.add_patch(plt.Rectangle((m.RUN_X0, m.RUN_Y0), 12, m.RUN_Y1 - m.RUN_Y0, fc="#444", ec="k", alpha=0.6, label="runner x 255–267, y 23–330"))
+for y in m.BOLT_YS: b.add_patch(plt.Circle((m.SLOT_X, y), 4.5, fc="#ddd", ec="k")); b.text(m.SLOT_X + 7, y, f"M5 y {y:.0f}", fontsize=7, va="center")
+b.add_patch(plt.Rectangle((m.BUMP_X0, m.BUMP_Y0), 2, 10, fc="#d33", ec="k", label="stop bump y 27–37"))
+b.add_patch(plt.Rectangle((m.RAIL_X0, 23), 20, 307, fc="none", ec="#999", ls="--", label="rail x 251–271"))
+b.add_patch(plt.Rectangle((m.BX0, 0), 26, 3, fc="#4a4f57", ec="k", label="facia y 0–3"))
+b.add_patch(plt.Rectangle((23, 3), 214, 260, fc="none", ec="#999", ls=":", label="AWG body")); b.add_patch(plt.Circle((233.5, 126), 40, fc="none", ec="#999", ls=":"))
+b.annotate("neck 16 wide: left wall at x 252 over y 81–171\n(15 mm air channel beside the AWG's fan vent)", (m.NECK_X0, 126), (150, 200), arrowprops=dict(arrowstyle="->"), fontsize=8)
+b.annotate("channel in the bottom ends 8 from the rear\n→ travel 250, then the bump stops it", (256, 280), (150, 300), arrowprops=dict(arrowstyle="->"), fontsize=8)
+b.set_xlim(140, 300); b.set_ylim(-10, 345); b.set_xlabel("frame x (mm)"); b.set_ylabel("frame y (mm)"); b.legend(loc="lower left", fontsize=7)
+plt.tight_layout(); out = os.path.join(os.path.dirname(__file__), "..", "parts", "mini", "mini-slot-plan.png"); plt.savefig(out, dpi=110); print("wrote", os.path.normpath(out))
