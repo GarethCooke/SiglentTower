@@ -1,8 +1,8 @@
 # Mini-slot drawer (HANDOVER §6, ROADMAP D7, Stage 4): the 26-wide slot beside the AWG, riding ON the inner AWG-level rail
 # (x 251–271, top z 247.5). Frame coordinates throughout: x from the left upright's outer face, y from the front plane,
 # z from the bench. Three printed parts + the mini pull insert (pull_inserts.py, already printed):
-#   RUNNER  (black ABS+) a 12-wide bar on the rail top, x 255–267, y 23–330, three M5 button heads down into the rail's
-#           top slot (x 261; counterbored, 2 mm under the head). On it a DOVETAIL rib: neck 5 wide × 3 tall, flaring 45°
+#   RUNNER  (black ABS+) a 12-wide bar on the rail top, x 255–267, y 23–330, three COUNTERSUNK M5 x 10 down into the
+#           rail's top slot (x 261), heads flush with the plate top (v2; v1's counterbores suited button heads only). On it a DOVETAIL rib: neck 5 wide × 3 tall, flaring 45°
 #           to an 8-wide head, 6 tall in all. One rib, not the P3 side pair — 26 mm of drawer cannot hold two P3 bosses.
 #           A 2 × 10 × 2.5 STOP BUMP on the plate top at y 27–37 (left of the rib) sets the 250 travel.
 #   BODY    (black PETG) 26 × 285 × 78.2 at x 242–268, y 3–288, z 252.8–331. Its bottom block (8.2 thick) carries the
@@ -41,7 +41,10 @@ RUN_X0, RUN_X1, RUN_Y0, RUN_Y1 = 255.0, 267.0, 23.0, 330.0
 PLATE_T = 5.0                                    # 2 under the M5 head after a 3 mm counterbore
 NECK_W, NECK_H, HEAD_W, RIB_H = 5.0, 3.0, 8.0, 6.0   # rib: neck 258.5–263.5 z 252.5–255.5, 45° flare to 8 wide, head to 258.5
 BOLT_YS = (40.0, 176.0, 312.0)
-HOLE_D, CBORE_D, CBORE_H = 5.5, 9.0, 3.0
+HOLE_D = 5.5
+CSK_D, CSK_DEPTH = 10.6, 2.55           # v2 2026-10-12: COUNTERSUNK M5 x 10 (90 deg head Ø10), sunk flush in the 5 mm plate; v1's Ø9 x 3
+                                        # counterbore only suited a button head — a cap head stood 2 proud and fouled the drawer
+RIB_GAP_D = 10.6                        # the rib is cut away over each head so a driver reaches it
 BUMP_X0, BUMP_X1, BUMP_Y0, BUMP_Y1, BUMP_H = 255.0, 257.0, 27.0, 37.0, 2.5
 TRAVEL = 250.0
 # ---- body ----
@@ -81,9 +84,12 @@ def runner():
     r = box(RUN_X0, RUN_X1, RUN_Y0, RUN_Y1, RAIL_TOP, RAIL_TOP + PLATE_T)
     r = r.union(prism_y(rib_profile(0.0), RUN_Y0, RUN_Y1))
     r = r.union(box(BUMP_X0, BUMP_X1, BUMP_Y0, BUMP_Y1, RAIL_TOP + PLATE_T - 0.01, RAIL_TOP + PLATE_T + BUMP_H))
+    top = RAIL_TOP + PLATE_T
     for y in BOLT_YS:
         r = r.cut(cq.Workplane("XY", origin=(SLOT_X, y, RAIL_TOP - 1)).circle(HOLE_D / 2).extrude(PLATE_T + RIB_H + 2))
-        r = r.cut(cq.Workplane("XY", origin=(SLOT_X, y, RAIL_TOP + PLATE_T - CBORE_H)).circle(CBORE_D / 2).extrude(RIB_H + CBORE_H + 1))
+        cone = cq.Solid.makeCone(HOLE_D / 2, CSK_D / 2, CSK_DEPTH, cq.Vector(SLOT_X, y, top - CSK_DEPTH), cq.Vector(0, 0, 1))
+        r = r.cut(cq.Workplane("XY").add(cone))                                                      # 90° countersink, flush at the plate top
+        r = r.cut(cq.Workplane("XY", origin=(SLOT_X, y, top - 0.01)).circle(RIB_GAP_D / 2).extrude(RIB_H + 1))   # rib cut away over the head
     return r
 
 def outline(inset=0.0):
@@ -145,7 +151,7 @@ if __name__ == "__main__":
     print(f"facia home: back face y {FT} vs upright front y {BY0}; body front at y {BY0}; body bottom {BZ0}, floor top {FLOOR_Z}, inside {BX1 - BX0 - 2 * WALL:.1f} wide x {BZ1 - FLOOR_Z:.0f} tall")
     # exports
     # exported axis-aligned (as the column drawer): rotate 45° on the plate in the slicer — both are longer than the bed
-    for part, name, mdf in ((B, "mini-slot-body-v1", 1.0), (R, "mini-slot-runner-v1", 0.6)):      # body: 8.6 + 2.6 wide bridges in the bottom
+    for part, name, mdf in ((B, "mini-slot-body-v1", 1.0), (R, "mini-slot-runner-v2", 0.6)):      # body: 8.6 + 2.6 wide bridges in the bottom
         bb = part.val().BoundingBox(); p = part.translate((-bb.xmin, -bb.ymin, -bb.zmin)); path = os.path.join(OUT, name + ".stl")
         cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
         print(f"{name:20s} {bb.xlen:.1f} x {bb.ylen:.1f} x {bb.zlen:.1f}  {part.val().Volume()/1000:.0f} cm3  diag {(bb.xlen + bb.ylen) / 2 ** 0.5:.0f}"); check(path, max_down_frac=mdf)
