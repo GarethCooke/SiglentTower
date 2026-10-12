@@ -80,7 +80,7 @@ def notch(y_lo, y_hi):
     return sc.box(-T - 1, 1, y_lo - NOTCH_PAD, y_hi + NOTCH_PAD, -1, NOTCH_D)
 
 
-def tile(length, height, roots_lo, roots_hi, notches_lo=(), notches_hi=(), open_hi=False, cutouts=()):
+def tile(length, height, roots_lo, roots_hi, notches_lo=(), notches_hi=(), open_hi=False, cutouts=(), hexes=True):
     """Tile in slot_clip's frame: face at x = -T, back at 0, y along the rail, z across it with z = 0 the LOWER shared
     slot centreline and z = height the upper one. `roots_*` are finger roots on each edge (all running +y); `notches_*`
     are the NEIGHBOUR's finger spans on that edge, relieved. `open_hi` leaves the top edge plain.
@@ -97,7 +97,7 @@ def tile(length, height, roots_lo, roots_hi, notches_lo=(), notches_hi=(), open_
             assert r + sc.FINGER_L <= n0 - NOTCH_PAD or r >= n1 + NOTCH_PAD, \
                 f"upper-edge finger at {r} overlaps the neighbour's {n0}-{n1}: they would occupy the same slot"
     t = plate(length, height)
-    h = hex_holes(length, height)
+    h = hex_holes(length, height) if hexes else None
     if h is not None:
         t = t.cut(h)
     for r in roots_lo:
@@ -181,6 +181,49 @@ def production():
                               cutouts=windows(HINGES, local_rear_R, *hz, clr=0.5))            # hinge at local 82.5-107.5
     return P
 
+
+# ---- band-height test strips (2026-10-12) ----
+# Gareth, right side, band 3: the printed tile's top tabs sit with their tops level with the BOTTOM of the scope rail's
+# slot — the tile is short by several mm on that side (the left is fine). Before reprinting tiles, a strip tests the
+# height: 3 mm, STRIP_W wide along the rail (one 30 mm finger plus its slit and a border — a clip cannot be narrower),
+# one finger on each edge, no hexes (rule 9), the height added stamped on the back (rule 11). Clip the bottom finger
+# into the AWG rail's slot where the band-3 tile's own tabs went (between the band-2 tile's top tabs), push the top
+# finger into the scope rail's slot: the winner snaps in at both edges and sits flat. Try it at the front and the rear of
+# the band — if different strips win there, the rail is tilted, not just high.
+STRIP_W = 42.0
+STRIP_ROOT = 6.0                              # finger y 6-36, slit to 37, 5 mm border beyond it
+
+def test_strip(band, extra):
+    return tile(STRIP_W, band_height(band) + extra, roots_lo=(STRIP_ROOT,), roots_hi=(STRIP_ROOT,), hexes=False)
+
+def stamp_back(p, text, size=5.0, depth=0.5):
+    """Deboss into the tile's back (the print's top face at z = T); the fingers and pegs stand above it, so pass z."""
+    bb = p.val().BoundingBox()
+    cut = (cq.Workplane("XY").workplane(offset=T - depth).center((bb.xmin + bb.xmax) / 2, (bb.ymin + bb.ymax) / 2)
+           .text(text, size, depth + 1, combine=False, halign="center", valign="center"))
+    return p.cut(cut)
+
+def band_sweep(band, extras, out_dir, name):
+    from printcheck import check
+    os.makedirs(out_dir, exist_ok=True)
+    placed, x, total = [], 0.0, 0.0
+    for e in extras:
+        p = stamp_back(printable(test_strip(band, e)), f"+{e:g}")
+        bb = p.val().BoundingBox(); path = os.path.join(out_dir, f"strip-band{band}-plus{e:g}.stl")
+        cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
+        v = p.val().Volume() / 1000; total += v
+        print(f"strip band {band} +{e:g}: {bb.xlen:.1f} x {bb.ylen:.1f} x {bb.zlen:.1f}  {v:.1f} cm3  (height {band_height(band) + e:.1f})")
+        check(path, min_rest_frac=0.25, max_down_frac=0.25)
+        placed.append(p.val().moved(cq.Location(cq.Vector(0, x, 0)))); x += bb.ylen + 8.0      # stacked along y: 95 x 142
+    plate_all = cq.Workplane("XY").newObject([cq.Compound.makeCompound(placed)])
+    pp = os.path.join(out_dir, f"{name}.stl"); cq.exporters.export(plate_all, pp, tolerance=0.01, angularTolerance=0.1)
+    pb = plate_all.val().BoundingBox()
+    print(f"{name}: {pb.xlen:.0f} x {pb.ylen:.0f} x {pb.zlen:.1f} mm, {total:.1f} cm3, face down as exported, no brim, no support")
+
+
+if __name__ == "__main__" and "--band3-sweep" in sys.argv:
+    band_sweep(3, (4, 5, 6), os.path.normpath(os.path.join(HERE, "..", "..", "coupons", "p4")), "band3-right-sweep")
+    sys.exit(0)
 
 if __name__ == "__main__":
     from printcheck import check
