@@ -43,6 +43,8 @@ NECK_W, NECK_H, HEAD_W, RIB_H = 5.0, 3.0, 8.0, 6.0   # rib: neck 258.5–263.5 z
 BOLT_YS = (40.0, 176.0, 312.0)
 HOLE_D = 5.5
 CSK_D, CSK_DEPTH = 10.6, 2.55           # v2 2026-10-12: COUNTERSUNK M5 x 10 (90 deg head Ø10), sunk flush in the 5 mm plate; v1's Ø9 x 3
+CSK_SINK = 1.0                          # v3: the cone starts 1.0 BELOW the plate top (a Ø10.8 relief above it) — the drawer's bottom rides
+                                        # on the plate with no clearance, so a head merely flush (and a cone printed 0.3 small) still caught
                                         # counterbore only suited a button head — a cap head stood 2 proud and fouled the drawer
 RIB_GAP_D = 10.6                        # the rib is cut away over each head so a driver reaches it
 BUMP_X0, BUMP_X1, BUMP_Y0, BUMP_Y1, BUMP_H = 255.0, 257.0, 27.0, 37.0, 2.5
@@ -87,8 +89,9 @@ def runner():
     top = RAIL_TOP + PLATE_T
     for y in BOLT_YS:
         r = r.cut(cq.Workplane("XY", origin=(SLOT_X, y, RAIL_TOP - 1)).circle(HOLE_D / 2).extrude(PLATE_T + RIB_H + 2))
-        cone = cq.Solid.makeCone(HOLE_D / 2, CSK_D / 2, CSK_DEPTH, cq.Vector(SLOT_X, y, top - CSK_DEPTH), cq.Vector(0, 0, 1))
-        r = r.cut(cq.Workplane("XY").add(cone))                                                      # 90° countersink, flush at the plate top
+        cone = cq.Solid.makeCone(HOLE_D / 2, CSK_D / 2, CSK_DEPTH, cq.Vector(SLOT_X, y, top - CSK_SINK - CSK_DEPTH), cq.Vector(0, 0, 1))
+        r = r.cut(cq.Workplane("XY").add(cone))                                                      # 90° countersink, its rim CSK_SINK below the plate top
+        r = r.cut(cq.Workplane("XY", origin=(SLOT_X, y, top - CSK_SINK)).circle(CSK_D / 2 + 0.1).extrude(CSK_SINK + 0.01))   # relief above the cone
         r = r.cut(cq.Workplane("XY", origin=(SLOT_X, y, top - 0.01)).circle(RIB_GAP_D / 2).extrude(RIB_H + 1))   # rib cut away over the head
     return r
 
@@ -151,7 +154,7 @@ if __name__ == "__main__":
     print(f"facia home: back face y {FT} vs upright front y {BY0}; body front at y {BY0}; body bottom {BZ0}, floor top {FLOOR_Z}, inside {BX1 - BX0 - 2 * WALL:.1f} wide x {BZ1 - FLOOR_Z:.0f} tall")
     # exports
     # exported axis-aligned (as the column drawer): rotate 45° on the plate in the slicer — both are longer than the bed
-    for part, name, mdf in ((B, "mini-slot-body-v1", 1.0), (R, "mini-slot-runner-v2", 0.6)):      # body: 8.6 + 2.6 wide bridges in the bottom
+    for part, name, mdf in ((B, "mini-slot-body-v1", 1.0), (R, "mini-slot-runner-v3", 0.6)):      # body: 8.6 + 2.6 wide bridges in the bottom
         bb = part.val().BoundingBox(); p = part.translate((-bb.xmin, -bb.ymin, -bb.zmin)); path = os.path.join(OUT, name + ".stl")
         cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
         print(f"{name:20s} {bb.xlen:.1f} x {bb.ylen:.1f} x {bb.zlen:.1f}  {part.val().Volume()/1000:.0f} cm3  diag {(bb.xlen + bb.ylen) / 2 ** 0.5:.0f}"); check(path, max_down_frac=mdf)
