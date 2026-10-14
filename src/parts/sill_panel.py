@@ -1,4 +1,12 @@
-# Sill panel + end blocks (ROADMAP D10, Stage 8 trim): the grey strip that fills the reveal between the bottom-drawer
+# Sill panel + end blocks (ROADMAP D10, Stage 8 trim):
+#
+# v4 LEFT BLOCK ONLY (2026-10-14, from the v3 print, Gareth): (1) the head pocket was a 9.5 x 10 box with the bolt at y 10
+# in a y 3-13 pocket - the head could not sit flat on the wall and the bolt went in at an angle. v4 seats the head in a
+# round counterbore CBORE_D (10, takes the ISO 7380 M5 head at 9.5) coaxial with the hole, open to the front (a U: the
+# round half behind the bolt line, a box in front of it), so the head bears square on the 2.2 wall. (2) No room for a key
+# in front of the head: a KEY_D (3.6, passes a 3 mm key - a 2.5 key too) hole runs from the counterbore along the bolt
+# axis through the block and out of its RIGHT end, so the key goes in from the right, under the PSU, before the button and
+# panel go on. Both holes are teardrops (axis along x, apex toward +y = print up). Panel, window, right block unchanged (v3). the grey strip that fills the reveal between the bottom-drawer
 # facia (top z 86) and the PSU's front (bottom z 100), carrying the lighting button and its halo. Frame coordinates.
 #
 # v3 (2026-10-13, from the v2 print): Gareth measured 233.7 between the left upright's inner face and the sub-frame
@@ -34,10 +42,11 @@ BTN_X, BTN_Z, BTN_HOLE_D = 45.0, 93.0, 8.4
 WIN_X0, WIN_X1 = 32.0, 58.0
 PEG_XS, PEG_Z, PEG_D, PEG_L, PEG_HOLE_D, PEG_HOLE_L = (64.0, 227.5), 93.0, 3.2, 7.0, 3.3, 7.5
 LB_X0, LB_X1, LB_Y1 = 20.3, 68.0, 19.5
-LB_POCKET = (22.5, 32.0, 3.0, 13.0, 88.0, 98.0)           # bolt-head pocket, open to the front
+LB_POCKET = (22.5, 31.0, 3.0, 13.0, 88.0, 98.0)           # v3 box pocket, now only its x range is used: the head seat runs x 22.5-31
 NUT_AF, NUT_T, HEX_WALL = 10.6, 3.0, 1.2            # captive nut pocket: 10 AF nut + 0.6, pocket depth, boss wall
 BODY_D = 9.0
-BOLT_Y, BOLT_Z, HOLE_D, CBORE_D, CBORE_H = 10.0, 93.0, 5.5, 9.0, 5.0
+BOLT_Y, BOLT_Z, HOLE_D, CBORE_D, CBORE_H = 10.0, 93.0, 5.5, 10.0, 5.0
+KEY_D = 3.6                                              # v4: key access along the bolt axis from the block's right end (3 mm key corners 3.46)
 CAV = (32.0, 58.0, 3.0, 9.0, 88.0, 98.0)
 LED_XS, LED_W, LED_Y0 = (34.6, 55.3), 5.3, 9.0          # pixel slots: 5.3 wide, from y 9 (the cavity) to the back, open to the bottom
 WIRE_CH = (6.0, 5.0, 13.5)                               # button wire channel under the bore: width, height above the bottom, from y
@@ -71,8 +80,10 @@ def hex_prism(af, y0, y1, xc, zc):
 def left_block():
     b = box(LB_X0, LB_X1, T, LB_Y1, Z0, Z1)
     x0, x1, y0, y1, z0, z1 = LB_POCKET
-    b = b.cut(box(x0, x1, y0 - 1, y1, z0, z1))                                                       # bolt-head pocket, open at the front
+    b = b.cut(teardrop_x(BOLT_Y, BOLT_Z, CBORE_D / 2, x0, x1))                                        # v4: round head seat on the bolt axis (teardrop: apex is print-up)
+    b = b.cut(box(x0, x1, y0 - 1, BOLT_Y, BOLT_Z - CBORE_D / 2, BOLT_Z + CBORE_D / 2))                 # ... opened to the front so the bolt drops in
     b = b.cut(teardrop_x(BOLT_Y, BOLT_Z, HOLE_D / 2, LB_X0 - 1, x0 + 1))                              # M5 through the left wall to the upright
+    b = b.cut(teardrop_x(BOLT_Y, BOLT_Z, KEY_D / 2, x1 - 1, LB_X1 + 1))                                # v4: key hole along the bolt axis out of the right end
     x0, x1, y0, y1, z0, z1 = CAV
     cav = box(x0, x1, y0 - 1, y1, z0, z1)
     boss = hex_prism(NUT_AF + 2 * HEX_WALL, y0 - 1, y1 + 1, BTN_X, BTN_Z)                      # the hex boss stays solid inside the cavity
@@ -118,7 +129,12 @@ if __name__ == "__main__":
     print(f"panel vs frame {vol(P, FR):.3f}  window vs frame {vol(W, FR):.3f}  left block vs frame {vol(L, FR):.3f}  right block vs frame {vol(R, FR):.3f}")
     print(f"panel vs blocks (pegs in holes) {vol(P, L):.3f} / {vol(P, R):.3f}   window vs panel {vol(W, P):.3f}   blocks vs each other {vol(L, R):.3f}")
     print(f"pegs locate: panel shifted 0.5 x / z vs blocks {vol(P.translate((0.5, 0, 0)), L) + vol(P.translate((0.5, 0, 0)), R):.1f} / {vol(P.translate((0, 0, 0.5)), L) + vol(P.translate((0, 0, 0.5)), R):.1f}  (> 0)")
-    print(f"left block: M5 at (y {BOLT_Y}, z {BOLT_Z}) through x {LB_X0}..{LB_POCKET[0]}, pocket x {LB_POCKET[0]}..{LB_POCKET[1]} open to the front; block back at y {LB_Y1}, cradle arm from y 20 -> button must fit in {LB_Y1 - 3:.1f} behind the panel's back")
+    print(f"left block: M5 at (y {BOLT_Y}, z {BOLT_Z}) through x {LB_X0}..{LB_POCKET[0]}, head seat Ø{CBORE_D} x {LB_POCKET[0]}..{LB_POCKET[1]} open to the front, key hole Ø{KEY_D} x {LB_POCKET[1]}..{LB_X1}; block back at y {LB_Y1}, cradle arm from y 20 -> button must fit in {LB_Y1 - 3:.1f} behind the panel's back")
+    # v4 proofs: an M5 button head (Ø9.5 x 2.7) seated on the wall at x 22.5, a 3 mm key (corners 3.46) along the axis from x 70 to the head
+    head = cq.Workplane("YZ", origin=(LB_POCKET[0], 0, 0)).center(BOLT_Y, BOLT_Z).circle(9.5 / 2).extrude(2.7)
+    key = cq.Workplane("YZ", origin=(LB_POCKET[0] + 2.7, 0, 0)).center(BOLT_Y, BOLT_Z).circle(3.46 / 2).extrude(LB_X1 + 10 - LB_POCKET[0] - 2.7)
+    print(f"v4: head seated vs left block {vol(head, L):.3f} (0), head shifted 0.5 in y {vol(head.translate((0, 0.5, 0)), L):.3f} / z {vol(head.translate((0, 0, 0.5)), L):.3f} (>0: located); "
+          f"key through to the head {vol(key, L):.3f} (0); head + key vs frame {vol(head, FR) + vol(key, FR):.3f} (0)")
     print(f"gaps: panel bottom {Z0} vs facia top 86 -> 1.0; panel top {Z1} vs PSU bottom 100 -> 1.0; panel right end {PX1} vs sub-frame upright 253.7 -> 0.3")
     # exports
     def export(part, name, rot=None, **kw):
@@ -132,5 +148,5 @@ if __name__ == "__main__":
     for part, name in ((P, "sill-panel-v3"), (W, "sill-panel-window-v3")):
         p = part.translate(shift); path = os.path.join(OUT, name + ".stl"); cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
         b2 = part.val().BoundingBox(); print(f"{name:22s} {b2.xlen:.1f} x {b2.ylen:.1f} x {b2.zlen:.1f}  {part.val().Volume()/1000:.1f} cm3"); check(path, min_rest_frac=0.2, max_down_frac=1.0)
-    export(L, "sill-block-left-v3", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=2.5)     # front face down; the cavity roof and hex-to-bore step are short bridges
+    export(L, "sill-block-left-v4", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=2.5)     # front face down; the cavity roof and hex-to-bore step are short bridges
     export(R, "sill-block-right-v3", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=1.2)    # front face down; the pocket roof is a 14 mm bridge
