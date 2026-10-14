@@ -44,23 +44,40 @@ NOTCH_PAD = 1.0            # y either side of the neighbour's finger
 CENTRELINES = {"base": 10.0, "psu": 78.0, "awg": 237.5, "scope": 321.0, "top": 500.0}
 BANDS = {1: ("base", "psu"), 2: ("psu", "awg"), 3: ("awg", "scope"), 4: (None, "top")}
 
+# v2 (2026-10-14): THE RAILS ARE NOT WHERE THE SPACERS PUT THEM. Gareth's calipers, rail face to rail face, per side:
+#   gap                     model   left   right
+#   base top -> PSU under    48     51.2   45.4
+#   PSU top -> AWG under    139.5  135.0  139.5
+#   AWG top -> scope under   63.5   65.5   65.8
+#   scope top -> top under  159    157    158     (band 4 hangs from the top rail only; not modelled)
+# A band is centreline to centreline = gap + 20, and a tile's height has to match that to ~0.2 (the finger's root stub
+# fills the slot mouth), so every band now has a height PER SIDE and the tiles are left/right parts. Band 2 right is
+# unchanged (139.5) and its v1 tiles stay; everything else reprints as v2.
+GAPS = {"L": {1: 51.2, 2: 135.0, 3: 65.5}, "R": {1: 45.4, 2: 139.5, 3: 65.8}}
 
-def band_height(n):
-    lo, hi = BANDS[n]
-    return CENTRELINES[hi] - (CENTRELINES[lo] if lo else 347.0)
+
+def band_height(n, side=None):
+    if side is None:                                   # model (spacer) heights — the v1 tiles and the coupons
+        lo, hi = BANDS[n]
+        return CENTRELINES[hi] - (CENTRELINES[lo] if lo else 347.0)
+    return GAPS[side][n] + 20.0
 
 
-def hex_holes(length, height):
-    """The viewer's pattern: pointy-top hexes, HEX_R across corners, staggered rows."""
+def hex_holes(length, height, keep=(), web=1.5):
+    """The viewer's pattern: pointy-top hexes, HEX_R across corners, staggered rows. `keep` = (y0, y1, z0, z1) windows
+    that get a solid border: any hex within `web` of one is left out, so a window never leaves a hex sliver."""
     cuts = []
     z = BORDER_Z + HEX_R
     row = 0
     while z < height - BORDER_Z - HEX_R + 0.01:
         y = BORDER_Y + HEX_R + (HEX_DX / 2 if row % 2 else 0.0)
         while y < length - BORDER_Y - HEX_R + 0.01:
-            pts = [(y + HEX_R * math.cos(math.pi / 6 + k * math.pi / 3),
-                    z + HEX_R * math.sin(math.pi / 6 + k * math.pi / 3)) for k in range(6)]
-            cuts.append(pts)
+            near = any(y + HEX_R + web > y0 and y - HEX_R - web < y1 and z + HEX_R + web > z0 and z - HEX_R - web < z1
+                       for (y0, y1, z0, z1) in keep)
+            if not near:
+                pts = [(y + HEX_R * math.cos(math.pi / 6 + k * math.pi / 3),
+                        z + HEX_R * math.sin(math.pi / 6 + k * math.pi / 3)) for k in range(6)]
+                cuts.append(pts)
             y += HEX_DX
         z += HEX_DY; row += 1
     if not cuts:
@@ -97,7 +114,7 @@ def tile(length, height, roots_lo, roots_hi, notches_lo=(), notches_hi=(), open_
             assert r + sc.FINGER_L <= n0 - NOTCH_PAD or r >= n1 + NOTCH_PAD, \
                 f"upper-edge finger at {r} overlaps the neighbour's {n0}-{n1}: they would occupy the same slot"
     t = plate(length, height)
-    h = hex_holes(length, height) if hexes else None
+    h = hex_holes(length, height, keep=cutouts) if hexes else None
     if h is not None:
         t = t.cut(h)
     for r in roots_lo:
@@ -137,20 +154,27 @@ def spans(roots):
     return tuple(sc.finger_span(r, +1) for r in roots)
 
 
-# ---- production set (2026-09-26) ----
+# ---- production set v2 (2026-10-14; v1 2026-09-26) ----
 # Left tiles have local y = frame y - 20 (front tile) or - 175 (rear tile). RIGHT tiles are the left ones turned 180 about z
-# to face outward, so their local y runs REARWARD: local = 175 - frame y (front) or 330 - frame y (rear). The finger
-# schedules (SHARE_A/B, BASE_ROOTS) are the same in local coordinates on both sides, so bands still interleave; only the
-# windows differ, because the things they clear are fixed in frame y:
-#   PSU cradle saddles (both PSU rails): 40 long centred on the PSU feet at frame y 51 and 253.5 -> y 31-71, 233.5-273.5;
-#     their outer lips hang 6 below the rail top on the rail's outer face, z 82-88 -> band 2 window, local z 3.5-10.5
-#   AWG LEFT cradle saddles: frame y 20-60 and 223-263, lips z 241.5-247.5 -> band 3 LEFT window, local z 3.5-10.5
-#     (the right AWG cradles are brackets on the inner rail: no lip, no window)
-#   door hinge frame leaves (right scope rail only): plates on the rail's outer face, frame y 23-47 and 223-247,
-#     z 311-333 -> band 3 RIGHT top-edge window, local z 73.5-83.5, and the top-edge clips keep clear of them
-LIP_Z = (3.5, 10.5)
+# to face outward, so their local y runs REARWARD: local = 175 - frame y (front) or 330 - frame y (rear).
+#
+# WINDOWS, v2: the cradle saddles are U-channels round the rail — LIP_T 3 walls, LIP_H 6 below the rail top AND TOP_T 8
+# above it (psu_cradle.py / awg_cradle.py). v1 cut windows for the 6 mm lips only (local z 3.5–10.5) and the printed
+# band-2 and band-3 left tiles hit the walls above the rail top. Gareth measured the saddles standing 10 above the rail
+# top, so v2's windows are NOTCHES open to the tile's bottom edge, up to local z 21 (rail top 10 + 10 + 1), and the hex
+# grid keeps a 1.5 web round them. Saddle positions along the rail are the model's (the seating jigs set them from the
+# front upright: PSU feet at frame y 51 / 253.5 -> saddles 31–71 / 233.5–273.5; AWG left saddles 20–60 / 223–263),
+# with 4 mm of air at each end. Only the LEFT rails carry saddles: the right PSU cradles sit on the inner rail and the
+# right AWG cradles are brackets on it, so the right tiles have no windows (v1's right band-2 PSU windows were harmless
+# holes for nothing; band 2 right keeps v1 anyway). The hinge plates on the right scope rail are as v1.
+#
+# FINGERS, v2: a finger rooted inside a notch would hang off nothing, so on the left every shared edge is re-scheduled
+# round the notches — the lower tile's fingers stay out of its notches (with the 1 mm pad), the upper tile's fingers
+# interleave with them. The right side keeps v1's SHARE_A / SHARE_B schedule (band 2 right is a v1 tile).
+SADDLE_Z = (-1.0, 21.0)
 def win(y0, y1, z0, z1): return (max(y0, -1.0), min(y1, TILE_L + 1.0), z0, z1)
 PSU_SADDLES = ((31.0, 71.0), (233.5, 273.5)); AWG_SADDLES = ((20.0, 60.0), (223.0, 263.0)); HINGES = ((23.0, 47.0), (223.0, 247.0))
+SADDLE_CLR = 4.0
 def local_front_L(y): return y - 20.0
 def local_rear_L(y): return y - 175.0
 def local_front_R(y): return 175.0 - y
@@ -163,23 +187,41 @@ def windows(spans, to_local, z0, z1, clr=1.0):
         out.append(win(la - clr, lb + clr, z0, z1))
     return tuple(out)
 
+# left-side finger roots per shared slot (local y, fingers run +y, 30 long): (lower tile's bottom-edge roots, upper tile's top-edge roots)
+#   PSU slot, front: notch 7–55   -> band 2 bottom 56 / 121, band 1 top 6 / 88
+#   PSU slot, rear:  notch 54.5–102.5 -> band 2 bottom 6 / 104, band 1 top 38 / 70
+#   AWG slot, front: notch -1–44  -> band 3 bottom 46 / 121, band 2 top 6 / 78
+#   AWG slot, rear:  notch 44–92  -> band 3 bottom 6 / 121,  band 2 top 38 / 70
+L_PSU = {"F": ((56.0, 121.0), (6.0, 88.0)), "R": ((6.0, 104.0), (38.0, 70.0))}
+L_AWG = {"F": ((46.0, 121.0), (6.0, 78.0)), "R": ((6.0, 121.0), (38.0, 70.0))}
+
 def production():
-    H1, H2, H3 = band_height(1), band_height(2), band_height(3)
-    hz = (H3 - 10.0 - 0.5, H3 + 1.0)                      # hinge plate window: the tile's top 10 mm (+0.5)
+    H1L, H2L, H3L = band_height(1, "L"), band_height(2, "L"), band_height(3, "L")
+    H1R, H3R = band_height(1, "R"), band_height(3, "R")
+    hz = (H3R - 10.0 - 0.5, H3R + 1.0)                   # hinge plate window: the tile's top 10 mm (+0.5)
     P = {}
-    P["tile-band1"] = tile(TILE_L, H1, roots_lo=BASE_ROOTS, roots_hi=SHARE_A, notches_hi=spans(SHARE_B))     # x4, both sides
-    for tag, f in (("LF", local_front_L), ("LR", local_rear_L), ("RF", local_front_R), ("RR", local_rear_R)):
-        P[f"tile-band2-{tag}"] = tile(TILE_L, H2, roots_lo=SHARE_B, roots_hi=SHARE_A, notches_lo=spans(SHARE_A),
-                                      notches_hi=spans(SHARE_B), cutouts=windows(PSU_SADDLES, f, *LIP_Z))
-    P["tile-band3-LF"] = tile(TILE_L, H3, roots_lo=SHARE_B, roots_hi=BASE_ROOTS, notches_lo=spans(SHARE_A),
-                              cutouts=windows(AWG_SADDLES, local_front_L, *LIP_Z))
-    P["tile-band3-LR"] = tile(TILE_L, H3, roots_lo=SHARE_B, roots_hi=BASE_ROOTS, notches_lo=spans(SHARE_A),
-                              cutouts=windows(AWG_SADDLES, local_rear_L, *LIP_Z))
-    P["tile-band3-RF"] = tile(TILE_L, H3, roots_lo=SHARE_B, roots_hi=SHARE_A, notches_lo=spans(SHARE_A),
+    # LEFT
+    for tag, f in (("F", local_front_L), ("R", local_rear_L)):
+        psu_lo, psu_hi = L_PSU[tag]; awg_lo, awg_hi = L_AWG[tag]
+        P[f"tile-band1-L{tag}"] = tile(TILE_L, H1L, roots_lo=BASE_ROOTS, roots_hi=psu_hi, notches_hi=spans(psu_lo))
+        P[f"tile-band2-L{tag}"] = tile(TILE_L, H2L, roots_lo=psu_lo, roots_hi=awg_hi, notches_lo=spans(psu_hi),
+                                       notches_hi=spans(awg_lo), cutouts=windows(PSU_SADDLES, f, *SADDLE_Z, clr=SADDLE_CLR))
+        P[f"tile-band3-L{tag}"] = tile(TILE_L, H3L, roots_lo=awg_lo, roots_hi=BASE_ROOTS, notches_lo=spans(awg_hi),
+                                       cutouts=windows(AWG_SADDLES, f, *SADDLE_Z, clr=SADDLE_CLR))
+    # RIGHT (band 2 right = v1 tiles, schedule SHARE_B bottom / SHARE_A top, unchanged)
+    P["tile-band1-R"] = tile(TILE_L, H1R, roots_lo=BASE_ROOTS, roots_hi=SHARE_A, notches_hi=spans(SHARE_B))
+    P["tile-band3-RF"] = tile(TILE_L, H3R, roots_lo=SHARE_B, roots_hi=SHARE_A, notches_lo=spans(SHARE_A),
                               cutouts=windows(HINGES, local_front_R, *hz, clr=0.5))           # hinge at local 127.5-152.5
-    P["tile-band3-RR"] = tile(TILE_L, H3, roots_lo=SHARE_B, roots_hi=(6.0, 118.0), notches_lo=spans(SHARE_A),
+    P["tile-band3-RR"] = tile(TILE_L, H3R, roots_lo=SHARE_B, roots_hi=(6.0, 118.0), notches_lo=spans(SHARE_A),
                               cutouts=windows(HINGES, local_rear_R, *hz, clr=0.5))            # hinge at local 82.5-107.5
     return P
+
+
+def production_v1_right_band2():
+    """The two right band-2 tiles as printed (v1, model height 159.5) — kept for the skin check only."""
+    return {f"tile-band2-R{tag}": tile(TILE_L, band_height(2), roots_lo=SHARE_B, roots_hi=SHARE_A, notches_lo=spans(SHARE_A),
+                                       notches_hi=spans(SHARE_B), cutouts=windows(PSU_SADDLES, f, 3.5, 10.5))
+            for tag, f in (("F", local_front_R), ("R", local_rear_R))}
 
 
 # ---- band-height test strips (2026-10-12) ----
@@ -253,11 +295,13 @@ if __name__ == "__main__":
     pb = plate_all.val().BoundingBox()
     print(f"\np4-tiles-plate {pb.xlen:.0f} x {pb.ylen:.0f} x {pb.zlen:.0f} mm, {total:.1f} cm3 "
           f"({'FITS' if pb.xlen < 250 and pb.ylen < 250 else 'TOO BIG'} the 256 bed)")
-    print("band heights (centreline to centreline): " + ", ".join(f"{n}={band_height(n):.1f}" for n in BANDS))
+    print("band heights (centreline to centreline), model: " + ", ".join(f"{n}={band_height(n):.1f}" for n in BANDS)
+          + "; LEFT " + ", ".join(f"{n}={band_height(n, 'L'):.1f}" for n in (1, 2, 3))
+          + "; RIGHT " + ", ".join(f"{n}={band_height(n, 'R'):.1f}" for n in (1, 2, 3)))
     # production tiles -> parts/tiles/ (black PETG, face down as exported; plates in src/tiles_plates.py)
     POUT = os.path.normpath(os.path.join(HERE, "..", "..", "parts", "tiles")); os.makedirs(POUT, exist_ok=True)
     for name, t in production().items():
         p = printable(t); bb = p.val().BoundingBox()
-        path = os.path.join(POUT, f"{name}-v1.stl"); cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
+        path = os.path.join(POUT, f"{name}-v2.stl"); cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
         print(f"{name:16s} {bb.xlen:6.1f} x {bb.ylen:6.1f} x {bb.zlen:5.1f}   {p.val().Volume()/1000:5.1f} cm3")
         check(path, min_rest_frac=0.25, max_down_frac=0.25)

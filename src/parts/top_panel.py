@@ -2,7 +2,7 @@
 # plus the four upright caps that screw the panel's corners down. Black PETG tiles, dark blue PETG caps. Stage 7 skin.
 #
 # Why this shape (ROADMAP v2.17, D12):
-#   * The panel covers the whole frame top — x 0–361, y 0–350 — so it lies on the four uprights' top faces and the three
+#   * The panel covers the whole frame top — x 0–362 (tape, 2026-10-14; model 361), y 0–350 — corner holes slotted 1.5 along x so 361–363 all fit — so it lies on the four uprights' top faces and the three
 #     top rails (both sides, rear). HANDOVER's "321 × 310 between the caps" would have rested on nothing. The caps now
 #     sit ON the panel's corners: 20 × 20 × 6 with an M5 × 10 button head through a Ø5.5 hole in the panel into the
 #     upright's centre bore (an M5 self-taps a 2020 bore). Four screws hold the panel down; nothing else is needed.
@@ -29,15 +29,16 @@ import os, sys, math, cadquery as cq
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE, ".."))
 
 # ---- panel ----
-PX0, PX1, PY0, PY1 = 0.0, 361.0, 0.0, 350.0     # frame outer faces (uprights x 0–20 / 341–361, y 0–20 / 330–350)
+PX0, PX1, PY0, PY1 = 0.0, 362.0, 0.0, 350.0     # frame outer faces AS MEASURED 2026-10-14 (tape: 362 x 350; model 361 x 350)
 Z0, T = 510.0, 3.0                             # on the rail / upright tops (490–510), 3 thick -> z 510–513
-SEAM_X, SEAM_Y = 180.5, 175.0                  # the two seams; four tiles 180.5 x 175 nominal
+SEAM_X, SEAM_Y = 181.0, 175.0                  # the two seams; four tiles 181 x 175 nominal
 LAP = 10.0                                     # lap width (±5 about the seam)
 LOWER_T = 1.5                                  # lower tongue thickness (left / front tiles)
 GLUE = 0.1                                     # glue line: upper tongue from z 1.6
 END_CLR = 0.1                                  # between tongue ends and the facing tile (0.05 each)
 HOLE_D = 5.5                                   # M5 clearance, teardrop in the standing print
 HOLE_IN = 10.0                                 # hole centre = the upright's centre bore, 10 in from both outer faces
+HOLE_SLOT = 1.5                                # the holes are slots this long ALONG X: the 362 is a tape reading, so the panel tolerates 361–363
 BED_CHAMFER = 0.4                              # rule 7, on the standing edge
 
 # ---- cap ----
@@ -82,7 +83,12 @@ def tile(c, r):
     # corner hole over the upright's bore, apex away from the bed edge
     hx = PX0 + HOLE_IN if c == 0 else PX1 - HOLE_IN
     hy = PY0 + HOLE_IN if r == 0 else PY1 - HOLE_IN
-    return t.cut(teardrop(hx, hy, HOLE_D, (0, 1) if r == 0 else (0, -1), -1, T + 1))
+    apex = (0, 1) if r == 0 else (0, -1)
+    v_far = hy + apex[1] * HOLE_D / 2 * math.sqrt(2)                    # the teardrop apex
+    hole = (teardrop(hx - HOLE_SLOT / 2, hy, HOLE_D, apex, -1, T + 1)
+            .union(teardrop(hx + HOLE_SLOT / 2, hy, HOLE_D, apex, -1, T + 1))
+            .union(box(hx - HOLE_SLOT / 2, hx + HOLE_SLOT / 2, min(hy - HOLE_D / 2, v_far), max(hy + HOLE_D / 2, v_far), -1, T + 1)))
+    return t.cut(hole)
 
 def tile_print(c, r):
     """Standing on its front (r 0) or rear (r 1) edge: frame y becomes print z."""
@@ -129,15 +135,17 @@ if __name__ == "__main__":
     frame = None
     for (x0, x1, y0, y1, z0, z1, col, grp) in boxes:
         if grp == "frame" and z1 > 400 and 0 <= z0 < 510:      # uprights and top rails (the viewer's caps are replaced here)
+            if x0 >= 341: x0, x1 = x0 + (PX1 - 361), x1 + (PX1 - 361)      # right-hand members at the measured width
+            if x1 > 300 and x0 < 341: x1 = x1 + (PX1 - 361)                  # the rear cross rail spans the full width
             b = box(x0, x1, y0, y1, z0, min(z1, 510))
             frame = b if frame is None else frame.union(b)
-    sidetiles = box(-3, 0, 20, 330, 347, 500).union(box(361, 364, 20, 330, 347, 500))
+    sidetiles = box(-3, 0, 20, 330, 347, 500).union(box(PX1, PX1 + 3, 20, 330, 347, 500))
     scope = box(23, 338, 3, 111, 355, 507); scope_out = scope.translate((0, -100, 0))
     print(f"panel vs frame {vol(panel, frame):.4f} cm3 (0, sits on it); lowered 0.5 {vol(panel.translate((0, 0, -0.5)), frame):.4f} (>0); "
           f"vs side tiles {vol(panel, sidetiles):.4f} (0)")
     print(f"scope reveal: home {pb.zmin - 507:.1f} mm, pulled out 100 {pb.zmin - 507:.1f} mm; panel vs scope {vol(panel, scope):.4f} / {vol(panel, scope_out):.4f} (0)")
     caps = None
-    for (cx, cy) in [(10, 10), (351, 10), (10, 340), (351, 340)]:
+    for (cx, cy) in [(10, 10), (PX1 - 10, 10), (10, 340), (PX1 - 10, 340)]:
         c = cap().translate((cx, cy, Z0 + T))
         caps = c if caps is None else caps.union(c)
         # a Ø4.2 bore pin through the cap and the panel into the upright: 0 against both = the holes line up
