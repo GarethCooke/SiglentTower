@@ -69,7 +69,8 @@ JPULL_INSERT_CLR = 0.15 # insert-to-notch clearance per side (P7 dovetail figure
 DOVETAIL_CLR   = 0.15   # all-round clearance on every dovetail / puzzle tab — PASSED P7 2026-09-17 (cross, wall, beam all good)
 
 # P8 TPU foot
-SPIGOT_D       = 5.0    # spigot into the 2020 centre bore (~4.2 nominal); expect ~4.6
+SPIGOT_D       = 4.6    # spigot into the 2020 centre bore (~4.2 nominal) — PASSED P8 2026-10-16: the TPU plate's feet at 4.6 push
+                        # into the uprights and hold (glued in); the sweep was not needed. Cover flare 7.4 held too (tpu_parts.py)
 
 # P9 scope bumper cup / front-stand pocket — src/coupons/p9_cups_v2.py
 # v1 cup Ø32.6 was sized on the handover's "Ø32" — wrong. Calipers 2026-09-19 (width = scope width direction, depth =
