@@ -1,7 +1,8 @@
 # tpu_where.py — placement sheets for the TPU parts that are not obvious: one sheet per item, three views each.
 #   parts/tpu/tpu-where-1-stop-caps.png         sled stop caps ×2: front end of each scope rail's INNER slot
 #   parts/tpu/tpu-where-2-cover-left-psu.png    slot cover run A: left PSU rail, INNER-face slot
-#   parts/tpu/tpu-where-3-cover-rear-base.png   slot cover run B: rear base cross rail, TOP slot
+#   parts/tpu/tpu-where-3-cover-rear-base.png   slot cover run B: rear base cross rail, REAR slot (wiring v1 2026-10-16: the board holder
+#                                               sits on that face, so the right strip's feed runs in the rear slot, not the top — two pieces)
 #   parts/tpu/tpu-where-4-test-pieces.png       the spigot sweep and the cover sweep: where to try them, then bin
 # Frame coordinates throughout: x from the outside of the left upright, y from the front plane, z from the bench.
 import os, matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
@@ -115,39 +116,45 @@ def sheet_cover_left():
     finish(c, "3. Looking outward from inside the frame at the left side — the cover sits in the PSU rail's inner slot with the wires beneath it", "frame y (mm)", "frame z (mm)", (-10, 360), (-5, 130), ncol=4)
     plt.tight_layout(); fig.savefig(os.path.join(OUT, "tpu-where-2-cover-left-psu.png"), dpi=100); plt.close(fig)
 
-# ---------------------------------------------------------------- 3. cover run B: rear base cross rail, top slot
+# ---------------------------------------------------------------- 3. cover run B: rear base cross rail, REAR slot (v2 2026-10-16)
 def sheet_cover_rear():
     fig = plt.figure(figsize=(17, 12)); gs = fig.add_gridspec(2, 2)
     a = fig.add_subplot(gs[0, 0]); b = fig.add_subplot(gs[0, 1]); c = fig.add_subplot(gs[1, :])
     # a: section through the rear base rail at x 180, looking from the left side (y across, z up)
     rail_section(a, 340, 10)
-    cover_in_slot(a, 340, 10, "+v", label="slot cover: head flush with the rail's TOP face")
-    a.add_patch(C((340, 4), 1.3, fc=CAB, ec="k", zorder=3, label="wire under it (the right strip's data)"))
+    cover_in_slot(a, 340, 10, "+u", label="slot cover: head flush with the rail's REAR face")
+    a.add_patch(C((345, 10), 1.3, fc=CAB, ec="k", zorder=3, label="wires under it (the strips' feeds / the sill bundle)"))
     a.add_patch(R((280, 3), 23, 60, fc="#333", ec="k", alpha=0.5, label="bottom drawer (ends y 303) — in front"))
-    a.add_patch(R((280, 64), 23, 3, fc="#666", ec="k", label="drawer housing top z 64–67"))
-    a.add_patch(R((355, 0), 30, 60, fc="#eee", ec="k", label="power strip on the upright's rear face (further back, y 355+)"))
-    a.annotate("pushed in from ABOVE", (340, 20), (320, 45), arrowprops=dict(arrowstyle="->"), fontsize=9)
-    finish(a, "1. Looking from the LEFT side — section through the REAR base rail (y 330–350, z 0–20)\ncover in its TOP slot, wire underneath", "frame y (mm)", "frame z (mm)", (270, 390), (-8, 75))
+    a.add_patch(R((350, 0), 5, 44, fc="#2d6cdf", ec="k", alpha=0.5, label="board holder plate on the rear face (x 90–150 only)"))
+    a.add_patch(R((355, 75), 30, 60, fc="#eee", ec="k", label="power strip on the upright's rear face (further back, y 355+, from z 75)"))
+    a.annotate("pushed in from BEHIND", (350, 10), (365, 40), arrowprops=dict(arrowstyle="->"), fontsize=9)
+    finish(a, "1. Looking from the LEFT side — section through the REAR base rail (y 330–350, z 0–20)\ncover in its REAR slot, wires underneath (v2 2026-10-16: was the top slot)", "frame y (mm)", "frame z (mm)", (270, 390), (-8, 75))
     # b: plan view from above
     for x, y in ((0, 0), (341, 0), (0, 330), (341, 330)): b.add_patch(R((x, y), 20, 20, fc=ALD, ec="k", label="uprights" if (x, y) == (0, 0) else None))
     b.add_patch(R((0, 20), 20, 310, fc=AL, ec="k")); b.add_patch(R((341, 20), 20, 310, fc=AL, ec="k"))
     b.add_patch(R((20, 330), 321, 20, fc=AL, ec="k", label="rear base cross rail x 20–341"))
-    b.add_patch(R((20, 337.05), 321, 5.9, fc="white", ec="k", label="its top slot (mouth), centre y 340"))
-    b.add_patch(R((20, 3), 321, 300, fc="#333", ec="k", alpha=0.25, label="bottom drawer housing (in front, y to 303)"))
-    b.add_patch(R((20, 336), 321, 8, fc=BLUE, ec="k", label="COVER B: the whole length, x 20–341 (240 + 81)"))
-    b.add_patch(P([(10, 300), (10, 340), (20, 340), (341, 340), (351, 340), (351, 300)], closed=False, fc="none", ec=CAB, lw=1.8, alpha=0.9, label="wire: down the rear-left upright's inner slot, along the top slot, up the rear-right upright's inner slot"))
-    b.annotate("cover B, pushed into the top slot from above —\nnothing else lives in this slot (the rail's connectors are on its FRONT face)", (180, 336), (180, 250), ha="center", arrowprops=dict(arrowstyle="->"), fontsize=9)
-    finish(b, "2. Plan view from above — cover B lies in the top slot of the rear base rail, end to end", "frame x (mm)", "frame y (mm)", (-15, 375), (-10, 390))
+    b.add_patch(R((20, 3), 321, 300, fc="#333", ec="k", alpha=0.25, label="bottom drawer (in front, y to 303)"))
+    b.add_patch(R((90, 350), 60, 15, fc="#2d6cdf", ec="k", alpha=0.5, label="board holder on the rail's rear face, x 90–150"))
+    b.add_patch(R((25, 349), 65, 3, fc=BLUE, ec="k", label="COVER B1 x 25–90 (65) and B2 x 150–336 (186) in the REAR slot"))
+    b.add_patch(R((150, 349), 186, 3, fc=BLUE, ec="k"))
+    b.add_patch(P([(10, 300), (10, 340), (24, 340), (26, 352), (100, 352)], closed=False, fc="none", ec=CAB, lw=1.8, alpha=0.9, label="wires: down the rear-left upright's inner slot, under the rail, along the rear slot to the holder"))
+    b.add_patch(P([(140, 352), (336, 352), (338, 340), (351, 340), (351, 300)], closed=False, fc="none", ec=CAB, lw=1.8, alpha=0.9, label="right strip's feed: from the holder along the rear slot, under the rail, up the rear-right upright's inner slot"))
+    b.annotate("covers pushed into the REAR slot from behind —\nnothing else lives in it (the rail's connectors are on its FRONT face)", (240, 350), (180, 250), ha="center", arrowprops=dict(arrowstyle="->"), fontsize=9)
+    finish(b, "2. Plan view from above — covers B1 and B2 lie in the rear slot of the rear base rail either side of the board holder", "frame x (mm)", "frame y (mm)", (-15, 375), (-10, 390))
     # c: elevation from behind the frame (x reversed so left is left when you stand behind? keep frame x; say so)
     c.add_patch(R((0, 0), 20, 130, fc=ALD, ec="k", label="rear-left upright")); c.add_patch(R((341, 0), 20, 130, fc=ALD, ec="k", label="rear-right upright"))
     c.add_patch(R((20, 0), 321, 20, fc=AL, ec="k", label="rear base cross rail z 0–20"))
-    c.add_patch(R((20, 19), 321, 1.0, fc=BLUE, ec="k", label="COVER B flush with the rail's top face (seen edge-on)"))
+    c.add_patch(R((20, 7.05), 321, 5.9, fc="white", ec="k", label="the rail's REAR slot (mouth), centre z 10"))
+    c.add_patch(R((25, 7.05), 65, 5.9, fc=BLUE, ec="k", label="COVER B1 x 25–90 and B2 x 150–336, flush with the rear face"))
+    c.add_patch(R((150, 7.05), 186, 5.9, fc=BLUE, ec="k"))
+    c.add_patch(R((90, 0), 60, 44, fc="#2d6cdf", ec="k", alpha=0.4, label="board holder x 90–150, z 0–44 (wiring sheets in parts/wiring/)"))
     c.add_patch(R((7.05, 0), 5.9, 130, fc="white", ec="k", label="uprights' inner-face slots (the wire goes up/down these, under the LED strips)"))
     c.add_patch(R((348.05, 0), 5.9, 130, fc="white", ec="k"))
     c.add_patch(R((25, 75), 78, 55, fc="#eee", ec="k", alpha=0.8, label="power strip (rear face of the rear-left upright, z 75–425)"))
-    c.add_patch(P([(10, 120), (10, 22), (20, 20), (341, 20), (351, 22), (351, 120)], closed=False, fc="none", ec=CAB, lw=2.5, label="wire run"))
+    c.add_patch(P([(10, 120), (10, 2), (14, -3), (24, -3), (26, 10), (100, 10)], closed=False, fc="none", ec=CAB, lw=2.5, label="wire runs: down the uprights' inner slots, under the rail (6 mm, on the feet), along the rear slot to the holder"))
+    c.add_patch(P([(140, 10), (336, 10), (338, -3), (348, -3), (351, 2), (351, 120)], closed=False, fc="none", ec=CAB, lw=2.5))
     c.text(180, 110, "Seen from BEHIND the frame, drawn in frame x (left upright at x 0 is on the left here).", ha="center", fontsize=9, style="italic")
-    finish(c, "3. Rear elevation — the cover is the thin blue line on top of the base cross rail; the wire drops into the slot from the left upright and climbs out at the right", "frame x (mm)", "frame z (mm)", (-15, 375), (-5, 135), ncol=3)
+    finish(c, "3. Rear elevation — the covers sit in the rear slot either side of the board holder; the wires come under the rail from the uprights' inner slots", "frame x (mm)", "frame z (mm)", (-15, 375), (-8, 135), ncol=3)
     plt.tight_layout(); fig.savefig(os.path.join(OUT, "tpu-where-3-cover-rear-base.png"), dpi=100); plt.close(fig)
 
 # ---------------------------------------------------------------- 4. test pieces
