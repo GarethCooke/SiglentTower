@@ -17,7 +17,7 @@
 #
 # Fit: CA the splice's underside and front end; press it onto the beam top with its front end against the saddle's rear
 # face (and the peg in the hole on the left); hold 30 s. Both beams.
-# Print: flat as exported, 111.5 x 25.5 x 7.5, ~21 cm³, black ABS or PETG, two off; no brim, no support.
+# Print: flat as exported, 100 x 25.5 x 7.5, ~19 cm³, black ABS or PETG, two off; no brim, no support. (v1 was 111.5 and fouled the box.)
 import os, sys, cadquery as cq
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE, ".."))
 from parts.drawer_quarters import box
@@ -26,7 +26,8 @@ import parts.sled_bars as bars
 import parts.rear_box as rb
 
 X0, X1 = sb.X0, 46.0                           # 20.5–46: the outer strip, clear of the cup boss (46.5+)
-Y0, Y1 = bars.SADDLE[3] + 0.5, 200.0           # 88.5 (saddle ends at 88) to 200
+Y0, Y1 = bars.SADDLE[3] + 0.5, 188.5           # 88.5 (saddle ends at 88) to 188.5 — v1 ran to 200 and its rear end sat under the rear box's
+                                               # floor (x 50–341 from y 195, on the right beam's top); Gareth 2026-10-16: both too long
 Z0, H = sb.Z0 + sb.T, 7.5                      # on the beam top 346, 1.5 under the scope body at 355
 PEG_HOLE_D = sb.PEG_D + 0.3                    # 4.3 over the Ø4 channel peg at (33, 150)
 SCOPE_BODY = (27.7, 333.3, 3.0, 111.0, 355.0, 507.0)      # blue body inset 4.7 behind the bezel (P9 jigs)
@@ -63,12 +64,14 @@ if __name__ == "__main__":
     bb = L.val().BoundingBox()
     print(f"left splice x {bb.xmin}–{bb.xmax}, y {bb.ymin}–{bb.ymax}, z {bb.zmin}–{bb.zmax}: peg at (33, 150) in a Ø{PEG_HOLE_D} hole; cup boss starts x {sb.CUP_BOSS[0]}; scope body from z {SCOPE_BODY[4]}")
     # the costs: the box exit lane on the right (sled out 100 -> box at y 95–230) and the planned channel on the left
+    box_home = box(rb.X0, rb.X1, rb.Y0, rb.Y1, rb.Z0, rb.Z0 + rb.FLOOR)
+    print(f"splices vs the rear box AT HOME (floor x 50–341, y 195–330, z 346): left {vol(L, box_home):.3f} / right {vol(R, box_home):.3f} cm3 (0 — v1 at 200 long clashed here)")
     box_out = box(rb.X0, rb.X1, rb.Y0 - 100, rb.Y1 - 100, rb.Z0, rb.Z0 + rb.FLOOR)
     print(f"right splice vs the rear box crossing the beam with the sled out: {vol(R, box_out):.3f} cm3 (>0 — the box is lifted {H} mm over it; "
           f"lifted {H}: {vol(R, box_out.translate((0, 0, H))):.3f})")
     chan = box(20, 46, 140, 334, 346, 366)
     print(f"left splice vs the PLANNED cable channel (x 20–46 from y 140): {vol(L, chan):.3f} cm3 — the channel starts at y {Y1 + 1:.0f} when it is modelled")
-    p = for_print(L); pb = p.val().BoundingBox(); path = os.path.join(OUT, "sled-splice-v1.stl")
+    p = for_print(L); pb = p.val().BoundingBox(); path = os.path.join(OUT, "sled-splice-v2.stl")
     cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
-    print(f"sled-splice-v1  {pb.xlen:.1f} x {pb.ylen:.1f} x {pb.zlen:.1f}  {p.val().Volume()/1000:.1f} cm3  — print TWO, flat as exported (the hole is unused on the right)")
+    print(f"sled-splice-v2  {pb.xlen:.1f} x {pb.ylen:.1f} x {pb.zlen:.1f}  {p.val().Volume()/1000:.1f} cm3  — print TWO, flat as exported (the hole is unused on the right)")
     check(path)

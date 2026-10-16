@@ -51,7 +51,10 @@ CAV = (32.0, 58.0, 3.0, 9.0, 88.0, 98.0)
 LED_XS, LED_W, LED_Y0 = (34.6, 55.3), 5.3, 9.0          # pixel slots: 5.3 wide, from y 9 (the cavity) to the back, open to the bottom
 WIRE_CH = (6.0, 5.0, 13.5)                               # button wire channel under the bore: width, height above the bottom, from y
 RB_X0, RB_X1, RB_Y1 = 223.4, 253.4, 19.0
-RB_POCKET, RB_SLOT_Y = (231.7, 245.7, 3.0, 17.0, 88.0, 98.0), (8.5, 14.5)   # slotted: the upright's slot centre is y 10 or 13
+RB_WALL = 2.5                                            # v4: the right wall (v3 was 7.7 — an M5 x 10 through it reached only 2.3 into the T-nut)
+RB_POCKET, RB_SLOT_Y = (RB_X1 - RB_WALL - 14.0, RB_X1 - RB_WALL, 3.0, 17.5, 88.0, 98.0), (8.5, 14.5)   # head pocket x 236.9–250.9, open to the front; slotted hole: the upright's slot centre is y 10 or 13
+RB_KEY_D = 3.8                                           # v4: key access along the bolt axis from the block's LEFT end, a slot over the same y 8.5–14.5
+RB_PEG_HOLE_D = PEG_HOLE_D + 0.1                         # v4: 3.4 — Gareth 2026-10-16, the peg was tight
 
 def teardrop_x(yc, zc, r, x0, x1):
     """Round hole along x with a 45° peak toward +y (print 'up' when the block prints front face down)."""
@@ -105,8 +108,11 @@ def right_block():
     for yc in RB_SLOT_Y:                                                                          # slotted M5 hole y 8.5–14.5
         b = b.cut(teardrop_x(yc, BOLT_Z, HOLE_D / 2, x1 - 1, RB_X1 + 1))
     b = b.cut(box(x1 - 1, RB_X1 + 1, RB_SLOT_Y[0], RB_SLOT_Y[1], BOLT_Z - HOLE_D / 2, BOLT_Z + HOLE_D / 2))
+    for yc in RB_SLOT_Y:                                                                          # v4: key slot from the left end into the pocket
+        b = b.cut(teardrop_x(yc, BOLT_Z, RB_KEY_D / 2, RB_X0 - 1, x0 + 1))
+    b = b.cut(box(RB_X0 - 1, x0 + 1, RB_SLOT_Y[0], RB_SLOT_Y[1], BOLT_Z - RB_KEY_D / 2, BOLT_Z + RB_KEY_D / 2))
     for x in PEG_XS[1:]:
-        b = b.cut(cq.Workplane("XZ", origin=(x, T - 1, PEG_Z)).circle(PEG_HOLE_D / 2).extrude(-(PEG_HOLE_L + 1)))
+        b = b.cut(cq.Workplane("XZ", origin=(x, T - 1, PEG_Z)).circle(RB_PEG_HOLE_D / 2).extrude(-(PEG_HOLE_L + 1)))
     return b
 
 def frame_bits():
@@ -135,6 +141,12 @@ if __name__ == "__main__":
     key = cq.Workplane("YZ", origin=(LB_POCKET[0] + 2.7, 0, 0)).center(BOLT_Y, BOLT_Z).circle(3.46 / 2).extrude(LB_X1 + 10 - LB_POCKET[0] - 2.7)
     print(f"v4: head seated vs left block {vol(head, L):.3f} (0), head shifted 0.5 in y {vol(head.translate((0, 0.5, 0)), L):.3f} / z {vol(head.translate((0, 0, 0.5)), L):.3f} (>0: located); "
           f"key through to the head {vol(key, L):.3f} (0); head + key vs frame {vol(head, FR) + vol(key, FR):.3f} (0)")
+    for yc in (10.0, 13.0):   # right v4 (the two real bolt positions): a Ø7.5 head seated on the 2.5 wall at either slot position, a 3.46 key from x 200 to the head
+        headR = cq.Workplane("YZ", origin=(RB_POCKET[0], 0, 0)).center(yc, BOLT_Z).circle(7.5 / 2).extrude(RB_POCKET[1] - RB_POCKET[0]).translate((0, 0, 0))
+        headR = cq.Workplane("YZ", origin=(RB_POCKET[1] - 2.7, 0, 0)).center(yc, BOLT_Z).circle(7.5 / 2).extrude(2.7)
+        keyR = cq.Workplane("YZ", origin=(200.0, 0, 0)).center(yc, BOLT_Z).circle(3.46 / 2).extrude(RB_POCKET[1] - 2.7 - 200.0)
+        print(f"right v4, bolt at y {yc}: head vs block {vol(headR, R):.3f} (0), shifted 0.5 up/down {vol(headR.translate((0, 0, 0.5)), R):.3f}/{vol(headR.translate((0, 0, -0.5)), R):.3f} (0: the pocket clears a 7.5 head); "
+              f"key through to the head {vol(keyR, R):.3f} (0); head + key vs frame {vol(headR, FR) + vol(keyR, FR):.3f} (0); M5 x 10 in the T-nut: {10 - RB_WALL:.1f} mm")
     print(f"gaps: panel bottom {Z0} vs facia top 86 -> 1.0; panel top {Z1} vs PSU bottom 100 -> 1.0; panel right end {PX1} vs sub-frame upright 253.7 -> 0.3")
     # exports
     def export(part, name, rot=None, **kw):
@@ -149,4 +161,4 @@ if __name__ == "__main__":
         p = part.translate(shift); path = os.path.join(OUT, name + ".stl"); cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
         b2 = part.val().BoundingBox(); print(f"{name:22s} {b2.xlen:.1f} x {b2.ylen:.1f} x {b2.zlen:.1f}  {part.val().Volume()/1000:.1f} cm3"); check(path, min_rest_frac=0.2, max_down_frac=1.0)
     export(L, "sill-block-left-v4", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=2.5)     # front face down; the cavity roof and hex-to-bore step are short bridges
-    export(R, "sill-block-right-v3", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=1.2)    # front face down; the pocket roof is a 14 mm bridge
+    export(R, "sill-block-right-v4", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=1.2)    # front face down; the pocket roof is a 14 mm bridge
