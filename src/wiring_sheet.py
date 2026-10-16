@@ -44,7 +44,7 @@ def sheet_schematic():
     wire(ax, [(92, 96), (95, 96)], CDAT, 2); wire(ax, [(104, 96), (122, 96)], CDAT, 2, label="data (28 AWG)")
     wire(ax, [(92, 84), (95, 84)], CDAT, 2); wire(ax, [(104, 84), (117, 84), (117, 46), (122, 46)], CDAT, 2)
     wire(ax, [(92, 88), (119, 88), (119, 92), (122, 92)], CSW, 2, label="button switch (28 AWG) → D3; its other side to GND inside the block")
-    bx(ax, 94, 62, 12, 8, "1000 µF ×2\nacross 5 V / GND", fc="#fff", fs=6.5)
+    bx(ax, 94, 62, 12, 8, "1000 µF ×1\nacross 5 V / GND", fc="#fff", fs=6.5)
     ax.text(85, 56.5, "pigtail solder pads on the right-hand edge; 5 V and GND bussed along the bottom edge", ha="center", fontsize=7, style="italic")
     # 5 V and GND trunks down the right of the board, stubs to each load
     wire(ax, [(92, 102), (112, 102), (112, 44)], C5V, 2.5, label="5 V (24 AWG to the strips, 28 AWG to the sill)")
@@ -54,24 +54,24 @@ def sheet_schematic():
     wire(ax, [(112, 74), (100, 74), (100, 70)], C5V, 1.5); wire(ax, [(114, 76), (102, 76), (102, 70)], CGND, 1.5)   # caps hang on the trunks
     dot(112, 74, C5V); dot(114, 76, CGND)
     # loads
-    bx(ax, 122, 88, 38, 18, "SILL LEFT BLOCK (front left)\n5 mm WS2812 pixel = LED 0\n8 mm button with blue LED\n5 wires: 5 V · GND · data in · data out · switch", fc="#fdf3d6", fs=7.5)
-    bx(ax, 122, 64, 38, 14, "LEFT STRIP — 28 × WS2812B (LEDs 1–28)\nrear-left upright, inner face\nfed at its BOTTOM (z 20)", fc="#dff0ff", fs=7.5)
-    bx(ax, 122, 36, 38, 14, "RIGHT STRIP — 28 × WS2812B (LEDs 29–56)\nrear-right upright, inner face\nfed at its BOTTOM (z 20)", fc="#dff0ff", fs=7.5)
+    bx(ax, 122, 88, 38, 18, "SILL LEFT BLOCK (front left)\n2 × 5 mm WS2812 pixels = LEDs 0–1 (chained, one in each slot)\n8 mm button with blue LED\n5 wires: 5 V · GND · data in · data out · switch", fc="#fdf3d6", fs=7.5)
+    bx(ax, 122, 64, 38, 14, "LEFT STRIP — 28 × WS2812B (LEDs 2–29)\nrear-left upright, inner face\nfed at its BOTTOM (z 20)", fc="#dff0ff", fs=7.5)
+    bx(ax, 122, 36, 38, 14, "RIGHT STRIP — 28 × WS2812B (LEDs 30–57)\nrear-right upright, inner face\nfed at its BOTTOM (z 20)", fc="#dff0ff", fs=7.5)
     wire(ax, [(160, 94), (166, 94), (166, 74), (160, 74)], CDAT, 2)
-    ax.text(167, 84, "pixel data OUT →\nleft strip data IN\n(comes back down\nthe same slot)", fontsize=7, va="center", color=CDAT)
+    ax.text(167, 84, "pixel 2 data OUT →\nleft strip data IN\n(comes back down\nthe same slot)", fontsize=7, va="center", color=CDAT)
     ax.text(141, 86.2, "button LED: + to 5 V, − to GND inside the block (3–6 V type; always on)", ha="center", fontsize=6.8)
-    ax.text(141, 62.2, "bus 1 = RX (GPIO3): pixel + left strip = 29 LEDs", ha="center", fontsize=8, weight="bold")
+    ax.text(141, 62.2, "bus 1 = RX (GPIO3): 2 pixels + left strip = 30 LEDs", ha="center", fontsize=8, weight="bold")
     ax.text(141, 34.2, "bus 2 = D4 (GPIO2): right strip = 28 LEDs", ha="center", fontsize=8, weight="bold")
     ax.text(163, 79.5, "JST-SM 4-pin + 2-pin\n(the ones you have)", fontsize=6.8, va="top")
     ax.text(163, 69, "JST-SM 3-pin pair (on order)", fontsize=6.8, va="top"); ax.text(163, 41, "JST-SM 3-pin pair (on order)", fontsize=6.8, va="top")
     # WLED settings
     bx(ax, 2, 12, 80, 38, "", fc="#f7f7f7")
     ax.text(42, 47.5, "WLED settings (Config → LED Preferences)", ha="center", fontsize=9, weight="bold")
-    ax.text(4, 44.5, "LED outputs:\n  bus 1: WS281x, colour order GRB, GPIO 3, start 0, count 29\n  bus 2: WS281x, colour order GRB, GPIO 2, start 29, count 28\n"
-                     "Maximum PSU current: 1500 mA   (56 LEDs full white would draw 3.4 A — the limit dims them)\n"
+    ax.text(4, 44.5, "LED outputs:\n  bus 1: WS281x, colour order GRB, GPIO 3, start 0, count 30\n  bus 2: WS281x, colour order GRB, GPIO 2, start 30, count 28\n"
+                     "Maximum PSU current: 1500 mA   (58 LEDs full white would draw 3.5 A — the limit dims them)\n"
                      "Button 0: GPIO 0, type Pushbutton   (D3; WLED pulls it up, a press pulls it to GND)\n"
                      "Relay / status LED: none.   Serial debug is lost (RX drives bus 1) — updates go over the air.\n\n"
-                     "Segments (main page → Segments):\n  0 'halo'  LEDs 0–0      1 'left'  LEDs 1–28      2 'right'  LEDs 29–56\n"
+                     "Segments (main page → Segments):\n  0 'halo'  LEDs 0–1      1 'left'  LEDs 2–29      2 'right'  LEDs 30–57\n"
                      "Both strips are fed from the bottom, so both run upward — no 'reverse' needed.\n\n"
                      "First flash over the mini's own micro-USB at the desk BEFORE it goes in the holder, and put the\n"
                      "WiFi details in; everything after that is over the air (the micro-USB stays reachable in the holder).\n\n"
@@ -137,10 +137,10 @@ def sheet_runs():
     c.add_patch(R((20, 75.05), 310, 5.9, fc="white", ec="k", label="inner-face slot mouth, centre z 78"))
     for y0, y1 in ((20, 40), (310, 330)): c.add_patch(R((y0, 75.05), y1 - y0, 5.9, fc=RED, ec="k", alpha=0.5, label="hidden L-connector in the slot" if y0 == 20 else None))
     c.add_patch(R((45, 75), 260, 6, fc=BLUE, ec="k", label="cover A y 45–305 (one 240 + one 20)"))
-    c.add_patch(R((3, 87), 16.5, 12, fc="#777", ec="k", label="sill left block z 87–99: pixel legs and button wires leave its BOTTOM at x 34–58"))
+    c.add_patch(R((3, 87), 16.5, 12, fc="#777", ec="k", label="sill left block z 87–99: the two pixels' legs and the button wires leave its BOTTOM at x 34–58"))
     c.add_patch(R((336, 20), 8, 110, fc="#8bd", ec="k", alpha=0.6, label="LED strip on the rear-left upright's inner face, z 20–490, over its slot — fed at the BOTTOM"))
     c.add_patch(R((336, 20), 8, 3, fc=RED, ec="k", label="strip input (JST at z 20)"))
-    wire(c, [(19, 87), (19, 78), (20, 78), (20, 84), (42, 84), (42, 78), (308, 78), (308, 84), (330, 84), (335, 78), (340, 78), (340, -4), (355, -4)], CDAT, 2.5, label="SILL bundle: 5 wires (5 V, GND, data to the pixel, data back from it, switch) — to the board")
+    wire(c, [(19, 87), (19, 78), (20, 78), (20, 84), (42, 84), (42, 78), (308, 78), (308, 84), (330, 84), (335, 78), (340, 78), (340, -4), (355, -4)], CDAT, 2.5, label="SILL bundle: 5 wires (5 V, GND, data to the pixels, data back from them, switch) — to the board")
     wire(c, [(355, -2), (342, -2), (342, 20)], C5V, 2, label="left strip feed (5 V, GND) from the board")
     wire(c, [(338, 78), (338, 21)], CDAT, 1.5, ls="--", label="the pixel's data-back wire peels off the bundle and becomes the strip's data in")
     c.text(175, 110, "Bundle length block → board ≈ 510 mm: cut the five wires at 650. Cover A: 240 + 20 with scissors, stop 25 short of each rail end.\n"
@@ -160,7 +160,7 @@ def sheet_board():
     a.add_patch(R((11.3, 38), 8, 3, fc="#999", ec="k", label="micro-USB (points up, out of the holder's open top)"))
     a.text(15.8, 23, "D1 mini\n\n5V  G  D4  D3\nRX", ha="center", va="center", color="white", fontsize=8)
     a.add_patch(R((32, 33), 7, 2.5, fc="#dcb", ec="k", label="330 Ω ×2 (RX → bus 1, D4 → bus 2)")); a.add_patch(R((32, 28), 7, 2.5, fc="#dcb", ec="k"))
-    a.add_patch(C((36, 20), 4.5, fc="#345", ec="k", label="1000 µF ×2 across 5 V / GND, one by each strip's pads (stand 20 tall, toward the rear)")); a.add_patch(C((36, 9), 4.5, fc="#345", ec="k"))
+    a.add_patch(C((36, 20), 4.5, fc="#345", ec="k", label="1000 µF ×1 across 5 V / GND by the USB-in pads (stands ~12 tall, toward the rear)"))
     for z, lab in ((35.5, "SILL 4+2: 5V G Dout Dback · SW"), (22, "LEFT strip 3: 5V G D"), (11, "RIGHT strip 3: 5V G D"), (6, "USB in: 5V G")):
         a.add_patch(R((43, z - 1.5), 6, 3, fc=YEL, ec="k", label="pigtail solder pads on the right-hand edge" if z == 35.5 else None)); a.text(50.5, z, lab, fontsize=7.5, va="center")
     a.add_patch(R((0, 0.5), 50, 1.2, fc=RED, ec="none", alpha=0.6, label="5 V bus along the bottom edge; GND bus the row above")); a.add_patch(R((0, 2.2), 50, 1.2, fc=BLK, ec="none", alpha=0.5))
