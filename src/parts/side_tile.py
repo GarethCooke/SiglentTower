@@ -97,7 +97,7 @@ def notch(y_lo, y_hi):
     return sc.box(-T - 1, 1, y_lo - NOTCH_PAD, y_hi + NOTCH_PAD, -1, NOTCH_D)
 
 
-def tile(length, height, roots_lo, roots_hi, notches_lo=(), notches_hi=(), open_hi=False, cutouts=(), hexes=True):
+def tile(length, height, roots_lo, roots_hi, notches_lo=(), notches_hi=(), open_hi=False, cutouts=(), hexes=True, keep=()):
     """Tile in slot_clip's frame: face at x = -T, back at 0, y along the rail, z across it with z = 0 the LOWER shared
     slot centreline and z = height the upper one. `roots_*` are finger roots on each edge (all running +y); `notches_*`
     are the NEIGHBOUR's finger spans on that edge, relieved. `open_hi` leaves the top edge plain.
@@ -114,7 +114,7 @@ def tile(length, height, roots_lo, roots_hi, notches_lo=(), notches_hi=(), open_
             assert r + sc.FINGER_L <= n0 - NOTCH_PAD or r >= n1 + NOTCH_PAD, \
                 f"upper-edge finger at {r} overlaps the neighbour's {n0}-{n1}: they would occupy the same slot"
     t = plate(length, height)
-    h = hex_holes(length, height, keep=cutouts) if hexes else None
+    h = hex_holes(length, height, keep=tuple(cutouts) + tuple(keep)) if hexes else None    # `keep`: solid windows that are NOT cut (glue pads, legs)
     if h is not None:
         t = t.cut(h)
     for r in roots_lo:
