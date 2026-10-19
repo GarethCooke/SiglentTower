@@ -1,5 +1,9 @@
 # door_set.py — the right side's band 4 (ROADMAP Stage 7, HANDOVER §5, D11): the fold-down DOOR, the FIXED REAR TILE,
-# and the two frame-side MAGNET holders. v1 2026-10-18.
+# and the two frame-side MAGNET holders. v1 2026-10-18; v2 2026-10-19 (rear tile, bracket, tab): v1 was exported from the RAIL
+# FRAME, which is a MIRROR of the real frame (x runs the other way), so the three chiral parts printed as mirror images —
+# Gareth spotted the rear tile's leg at the wrong end. Every export now goes through to_frame() first. The door's bosses,
+# pads and finger slot are symmetric end to end, so the mirrored door-v1 print works (only the hex grid's 4 / 10.5 end
+# margins are swapped); door-v2 is the right-hand file for the record, rear-tile / bracket / tab v2 are the reprints.
 #
 # Everything here is built in the RAIL FRAME that skin_check.py uses for the right side: x = 0 is the rails' and
 # uprights' OUTER face (frame x 361), +x goes INTO the frame (frame x = 361 - x), y = frame y, z = frame z. The tiles lie
@@ -160,20 +164,32 @@ def vol(a, b):
     try: return a.intersect(b).val().Volume() / 1000
     except Exception: return 0.0
 
+def to_frame(part):
+    """Rail frame -> the REAL frame (x_frame = 361 - x). The rail frame is a mirror image; a chiral part exported from it
+    prints as the wrong hand (v1 did). Everything below exports from the real frame."""
+    return part.mirror("YZ", (dh.FACE_X / 2, 0, 0))
+
 def printable_tile(t):
-    """Face down: the visible face (x = -T) on the bed. x -> z (as side_tile.printable)."""
-    p = t.rotate((0, 0, 0), (0, 1, 0), -90); bb = p.val().BoundingBox()
+    """Real frame: face at x 364 (outward) goes on the bed, features rise. Rotate +90 about y: x -> -z, so the face is lowest."""
+    p = to_frame(t).rotate((0, 0, 0), (0, 1, 0), 90); bb = p.val().BoundingBox()
     return p.translate((-bb.xmin, -bb.ymin, -bb.zmin))
 
 def printable_bracket(b):
-    """Plate face (y = 20) down: +y -> +z."""
-    p = b.rotate((0, 0, 0), (1, 0, 0), 90); bb = p.val().BoundingBox()
+    """Real frame: plate face (y = 20) down: +y -> +z."""
+    p = to_frame(b).rotate((0, 0, 0), (1, 0, 0), 90); bb = p.val().BoundingBox()
     return p.translate((-bb.xmin, -bb.ymin, -bb.zmin))
 
 def printable_tab(t):
-    """Lying on its back face (x = 6.5): -x -> +z, so the pocket (at x 3.5, opening toward -x) faces up."""
-    p = t.rotate((0, 0, 0), (0, 1, 0), 90); bb = p.val().BoundingBox()
+    """Real frame: the tab lies on its inboard face (x 354.5), pocket (opening toward +x) up: rotate -90 about y, x -> +z."""
+    p = to_frame(t).rotate((0, 0, 0), (0, 1, 0), -90); bb = p.val().BoundingBox()
     return p.translate((-bb.xmin, -bb.ymin, -bb.zmin))
+
+def hand_check(part, printed, name):
+    """Prove the printed part is the real part: un-rotate the print and compare it with to_frame(part) by symmetric
+    difference (0 = identical). Catches a mirrored export."""
+    f = to_frame(part); fb = f.val().BoundingBox(); pb = printed.val().BoundingBox()
+    v_f = f.val().Volume(); v_p = printed.val().Volume()
+    return abs(v_f - v_p) < 1e-3, v_f, v_p
 
 if __name__ == "__main__":
     from printcheck import check
@@ -206,10 +222,19 @@ if __name__ == "__main__":
     print("swing worst: " + ", ".join(f"{k} {v:.4f}" for k, v in worst.items()) + "  (all 0)")
     d180 = swing(door_asm, 180); print(f"door open 180: hangs at frame x {dh.FACE_X - d180.val().BoundingBox().xmax:.1f}..{dh.FACE_X - d180.val().BoundingBox().xmin:.1f}, z down to {d180.val().BoundingBox().zmin:.0f}; box exit lane vs open door {vol(d180, S['box_exit']):.4f} (0)")
     # exports
-    for name, p, kw in (("door-v1", printable_tile(D), dict(min_rest_frac=0.25, max_down_frac=0.25)),
-                        ("rear-tile-v1", printable_tile(F), dict(min_rest_frac=0.25, max_down_frac=0.25)),
-                        ("magnet-bracket-front-v1", printable_bracket(B), dict(min_rest_frac=0.3, max_down_frac=0.6)),
-                        ("magnet-tab-rear-v1", printable_tab(TB), dict(min_rest_frac=0.3, max_down_frac=0.2))):
+    # chirality, in the REAL frame: the leg must be at the REAR end (y 327-330) rising INWARD (x < 361); the bracket's leg
+    # 3.5 off the door (x 357.5); the tab's pocket at z 479
+    Ff = to_frame(F); legf = Ff.intersect(cq.Workplane("XY").box(30, 10, 60, centered=False).translate((335, 325, 335)))
+    lb = legf.val().BoundingBox(); print(f"real frame: rear tile's leg x {lb.xmin:.1f}-{lb.xmax:.1f}, y {lb.ymin:.1f}-{lb.ymax:.1f}, z {lb.zmin:.1f}-{lb.zmax:.1f} (expect x 342-361, y 327-330)")
+    Bf = to_frame(B); bl = Bf.intersect(cq.Workplane("XY").box(30, 30, 30, centered=False).translate((340, 27, 465))).val().BoundingBox()
+    print(f"real frame: bracket leg x {bl.xmin:.1f}-{bl.xmax:.1f} (expect 351.5-357.5), y {bl.ymin:.1f}-{bl.ymax:.1f}")
+    for name, part, p, kw in (("door-v2", D, printable_tile(D), dict(min_rest_frac=0.25, max_down_frac=0.25)),      # v1 (printed) is its mirror: same bosses, pads and slot, only the hex grid's end margins swap (4 / 10.5) — no reprint
+                              ("rear-tile-v2", F, printable_tile(F), dict(min_rest_frac=0.25, max_down_frac=0.25)),
+                              ("magnet-bracket-front-v2", B, printable_bracket(B), dict(min_rest_frac=0.3, max_down_frac=0.6)),
+                              ("magnet-tab-rear-v2", TB, printable_tab(TB), dict(min_rest_frac=0.3, max_down_frac=0.2))):
         path = os.path.join(OUT, f"{name}.stl"); cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
         bb = p.val().BoundingBox()
         print(f"{name:24s} {bb.xlen:6.1f} x {bb.ylen:6.1f} x {bb.zlen:5.1f}  {p.val().Volume()/1000:5.1f} cm3"); check(path, **kw)
+    # the door is symmetric end to end: its mirror is itself (so door-v1 as printed is right)
+    Dm = D.mirror("XZ", (0, (DOOR_Y0 + DOOR_Y1) / 2, 0))
+    print(f"door vs its own end-to-end mirror: symmetric difference {(D.val().Volume() - D.intersect(Dm).val().Volume())/1000:.4f} cm3 — the hex grid's end margins (4 vs 10.5) are all of it; bosses, pads and slot are symmetric, so the mirrored v1 print works")
