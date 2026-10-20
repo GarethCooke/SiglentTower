@@ -1,5 +1,6 @@
 # Door hinge — the two production knuckles (HANDOVER §5, PRINT-RULES §2 "Door hinge knuckles", ROADMAP §3 P5).
-# v1 2026-09-22. Replaces the P5 v1 coupon, which was a generic block with its bore on the pads' mid-thickness: the two
+# v1 2026-09-22; v2 2026-10-20 BOTH leaves (TILE_Z0 347 -> 338: the door's edge comes down to 7 above the rail; the
+# frame leaf's riser moves out to x 364.3 so the lower door clears it). Replaces the P5 v1 coupon, which was a generic block with its bore on the pads' mid-thickness: the two
 # leaves could not fold, so the bores sat one pad-thickness apart and the pin would not pass. A butt hinge's axis lies
 # OUTSIDE both leaves, and in this frame it has to lie outboard of the door's outer face as well.
 #
@@ -45,7 +46,10 @@ FACE_X   = 361.0          # right rails / uprights outer face
 PANEL_T  = 3.0            # side tile / door panel thickness -> panel x 361–364
 RAIL_Z0, RAIL_Z1 = 311.0, 331.0
 SLOT_Z   = 321.0          # scope rail's outer-slot centreline
-TILE_Z0  = 347.0          # door panel's bottom edge (= box floor)
+TILE_Z0  = 338.0          # door panel's bottom edge. v1: 347 (HANDOVER's box floor) left a 16 mm band open under the door.
+                          # v2 2026-10-20 (Gareth): 338 — the shelf (335–338) clears the frame plate's top (333) and the right
+                          # sled front rest's plate on the rail top (z 331–334, x 341–359, y 21–61, under the FRONT hinge) by
+                          # 1; lower than this and the shelf lands on the rest. 7 above the rail, 4 above the fixed tile's edge.
 
 # ---- hinge ----
 AXIS_X, AXIS_Z = 369.0, 341.0
@@ -62,7 +66,9 @@ PLATE_T  = 6.0            # x 361–367; M5 x 12 leaves 6 in the T-nut
 PLATE_Z1 = 333.0          # 2 above the rail's top: still r 8.25 from the axis, so outside the door's swept band, and
                           # it is what gives the standing print a bed face worth the name (6 x 22)
 BOLT_D   = 5.5
-RISER_X0, RISER_X1 = 363.0, AXIS_X + BARREL_D / 2      # 363–373, climbing from the plate's top to the barrel
+RISER_X0, RISER_X1 = 364.3, AXIS_X + BARREL_D / 2      # 364.3–373, climbing from the plate's top to the barrel. v2 2026-10-20: was 363 —
+                                                       # with the door's edge at 338 its outer face (364) ran into the riser at z 338–341;
+                                                       # 364.3 clears it, and the door's swept bottom corner never passes x 364 below z 346
 # No full-length arm above the rail: everything the door sweeps through must live in the frame leaf's own y-third.
 # The plate itself is safe — its nearest corner (366, 331) is r 10.4 from the axis, outside the door's swept band.
 
@@ -167,7 +173,7 @@ if __name__ == "__main__":
     sys.path.insert(0, os.path.join(HERE, ".."))
     from printcheck import check
     OUT = os.path.normpath(os.path.join(HERE, "..", "..", "parts")); os.makedirs(OUT, exist_ok=True)
-    for name, part in (("hinge-door-v1", door_leaf()), ("hinge-frame-v1", frame_leaf())):
+    for name, part in (("hinge-door-v2", door_leaf()), ("hinge-frame-v2", frame_leaf())):      # v2 pair: door leaf shelf 335–338, frame riser from x 364.3
         p = printable(part)
         path = os.path.join(OUT, f"{name}.stl")
         cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)

@@ -10,7 +10,7 @@
 # at x -3..0 (face at -3). The hinge leaves come from door_hinge.py (frame coordinates) mirrored into this frame.
 #
 # Band 4 on the right (z 347 -> 499, y 20 -> 330) is split at y 250: the door (230 long) and the fixed tile (80).
-#   DOOR  x -3..0, y 20–250, z 347–499 (152 tall: bottom edge = the hinge's shelf at rail top + 16, top edge 1 under the
+#   DOOR  x -3..0, y 20–250, z 338–499 (v3, 161 tall: bottom edge = door leaf v2's shelf at rail top + 7, top edge 1 under the
 #         top rail's slot centreline; it is not clipped — it swings — so its height only has to clear). Hex pattern as the
 #         side tiles. On its BACK: two 12 x 12 x 3 MAGNET BOSSES with Ø10.4 x 2.2 pockets at (y 34, z 479) and (y 236,
 #         z 479), printed with the door; solid glue pads where the two door hinge leaves go (y 23–47 / 223–247,
@@ -43,7 +43,7 @@ from fit import MAG_POCKET_D, MAG_POCKET_H
 
 T = st.T
 # band 4 right
-DOOR_Y0, DOOR_Y1, DOOR_Z0, DOOR_H = 20.0, 250.0, dh.TILE_Z0, 152.0        # 347 -> 499
+DOOR_Y0, DOOR_Y1, DOOR_Z0, DOOR_H = 20.0, 250.0, dh.TILE_Z0, 161.0        # v3 2026-10-20: 338 -> 499 (v1/v2 were 347 -> 499, 152 tall)
 FIX_Y0, FIX_Y1, FIX_Z0, FIX_H = 250.0, 330.0, 334.0, 166.0               # 334 -> 500 (3 clear of the rail top; 2 if the top rail reads 488.7)
 # magnets
 MAG_Y = (34.0, 236.0); MAG_Z = 479.0; BOSS = 12.0; BOSS_H = 3.0; MAG_GAP = 0.5
@@ -158,7 +158,9 @@ def surroundings():
         band3 = band3.cut(box(-T - 1, 1, y0 - 0.5, y1 + 0.5, dh.RAIL_Z0 - 0.5, dh.SLOT_Z + 3.25 + 1))
     box_home = box(20, 311, 195, 330, 346, 456)                      # rear box at home (frame x 50-341)
     box_exit = box(-60, 311, 95, 230, 353.5, 463.5)                  # box leaving to the right, lifted 7.5 over the splice
-    return dict(scope=scope, top=top, uprights=uprights, band3=band3, box_home=box_home, box_exit=box_exit)
+    rest = box(2, 20, 21, 61, 331, 334).union(box(20, 23.3, 21, 61, 334, 337))   # right sled front rest v2 (gap 2.0): plate on the rail top + lip to z 337, under the FRONT hinge
+    foot = box(10, 26.6, 28, 330, 316, 341)                          # right sled T-foot + web envelope, home to full pull (inside / just inboard of the rail)
+    return dict(scope=scope, top=top, uprights=uprights, band3=band3, box_home=box_home, box_exit=box_exit, rest=rest, foot=foot)
 
 def vol(a, b):
     try: return a.intersect(b).val().Volume() / 1000
@@ -207,6 +209,7 @@ if __name__ == "__main__":
     probes2 = [box(BOSS_H, BOSS_H + MAG_GAP + 0.1, y - BOSS / 2, y + BOSS / 2, MAG_Z - BOSS / 2, MAG_Z + BOSS / 2) for y in MAG_Y]
     print(f"magnet gap: {MAG_GAP} of air in front of each boss vs bracket / tab {vol(probes[0], B):.4f} / {vol(probes[1], TB):.4f} (0); 0.1 more {vol(probes2[0], B):.4f} / {vol(probes2[1], TB):.4f} (>0: the holder faces are there)")
     print(f"door on its shelf: lowered 0.5 vs door leaves {vol(D.translate((0, 0, -0.5)), DL[0].union(DL[1])):.4f} (>0: sits on the shelves)")
+    print(f"door leaves (closed) vs the front sled rest {vol(DL[0], S['rest']):.4f} / lowered 0.5 {vol(DL[0].translate((0, 0, -0.5)), S['rest']):.4f} (0 / 0: 1 mm clear of the rest's plate); vs the foot {vol(DL[0], S['foot']) + vol(DL[1], S['foot']):.4f}")
     print(f"fixed tile: lifted 0.5 vs top rail {vol(F.translate((0, 0, 0.5)), S['top']):.4f} (fingers in the slot: >0 collides) / pulled 0.5 off the face {vol(F.translate((-0.5, 0, 0)), S['top']):.4f} (>0: barbs hold); "
           f"leg vs upright {vol(F, S['uprights']):.4f}; leg pushed 0.5 into the upright {vol(F.translate((0, 0.5, 0)), S['uprights']):.4f} (>0: flat on its face)")
     print(f"bracket: pushed 0.5 into the upright {vol(B.translate((0, -0.5, 0)), S['uprights']):.4f} (>0: flat on its face); tongue vs top rail {vol(B, S['top']):.4f} (0: in the slot); tongue shifted 0.5 in x {vol(B.translate((0.5, 0, 0)), S['top']):.4f} (>0: located)")
@@ -228,7 +231,7 @@ if __name__ == "__main__":
     lb = legf.val().BoundingBox(); print(f"real frame: rear tile's leg x {lb.xmin:.1f}-{lb.xmax:.1f}, y {lb.ymin:.1f}-{lb.ymax:.1f}, z {lb.zmin:.1f}-{lb.zmax:.1f} (expect x 342-361, y 327-330)")
     Bf = to_frame(B); bl = Bf.intersect(cq.Workplane("XY").box(30, 30, 30, centered=False).translate((340, 27, 465))).val().BoundingBox()
     print(f"real frame: bracket leg x {bl.xmin:.1f}-{bl.xmax:.1f} (expect 351.5-357.5), y {bl.ymin:.1f}-{bl.ymax:.1f}")
-    for name, part, p, kw in (("door-v2", D, printable_tile(D), dict(min_rest_frac=0.25, max_down_frac=0.25)),      # v1 (printed) is its mirror: same bosses, pads and slot, only the hex grid's end margins swap (4 / 10.5) — no reprint
+    for name, part, p, kw in (("door-v3", D, printable_tile(D), dict(min_rest_frac=0.25, max_down_frac=0.25)),      # v3: edge at 338 with door leaf v2; v1/v2 (347) withdrawn
                               ("rear-tile-v2", F, printable_tile(F), dict(min_rest_frac=0.25, max_down_frac=0.25)),
                               ("magnet-bracket-front-v2", B, printable_bracket(B), dict(min_rest_frac=0.3, max_down_frac=0.6)),
                               ("magnet-tab-rear-v2", TB, printable_tab(TB), dict(min_rest_frac=0.3, max_down_frac=0.2))):
