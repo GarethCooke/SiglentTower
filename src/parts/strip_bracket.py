@@ -1,4 +1,5 @@
 # Addtam strip brackets (D8, HANDOVER §7, ROADMAP Stage 8). v1 2026-09-22; lower bracket v2 2026-09-26.
+# 2026-10-23: upper v2 / lower v5 — same parts WITH the M5 hole + counterbore (every earlier export had none; see bracket()).
 #
 # The 4-way strip hangs VERTICALLY on the rear face of the rear-left upright, cable end down, on two printed brackets
 # bolted into that upright's rear slot. Its keyhole slots run across the body, so the keyholes alone cannot hold it
@@ -81,10 +82,12 @@ def bracket(peg_z, shelf=False):
     body = box(0.0, PLATE_W, 0.0, PLATE_T, z0, z0 + PLATE_H)
     body = body.union(box(PLATE_W, ARM_X1, 0.0, PLATE_T, peg_z - ARM_H / 2, peg_z + ARM_H / 2))
     body = body.union(peg(peg_z))
-    hole = (cq.Workplane("XZ").workplane(offset=-PLATE_T - 1).center(PLATE_W / 2, peg_z)
-            .circle(BOLT_D / 2).extrude(-(PLATE_T + 2)))
-    cb = (cq.Workplane("XZ").workplane(offset=-PLATE_T - 1).center(PLATE_W / 2, peg_z)
-          .circle(CBORE_D / 2).extrude(-(CBORE_H + 1)))
+    # v2 fix (2026-10-23): the hole and counterbore were built on an XZ workplane offset the wrong way (XZ's normal is
+    # -y, so offset -6 put them at y 6-13, OUTSIDE the 5 mm plate) and cut nothing — every bracket printed so far had
+    # no bolt hole. Built along +y explicitly now, and asserted below.
+    yax = cq.Vector(0, 1, 0)
+    hole = cq.Workplane("XY").add(cq.Solid.makeCylinder(BOLT_D / 2, PLATE_T + 2, cq.Vector(PLATE_W / 2, -1, peg_z), yax))
+    cb = cq.Workplane("XY").add(cq.Solid.makeCylinder(CBORE_D / 2, CBORE_H + 1, cq.Vector(PLATE_W / 2, PLATE_T - CBORE_H, peg_z), yax))
     body = body.cut(hole).cut(cb)
     if shelf:
         # v2 (2026-09-26): the brace goes UNDER the shelf, where nothing else lives (v1's stood on it, inside the strip's
@@ -101,6 +104,8 @@ def bracket(peg_z, shelf=False):
              .polyline([(PLATE_T, z_sh), (PLATE_T + GUSSET_H, z_sh), (PLATE_T, z_sh - GUSSET_H)])
              .close().extrude(min(PLATE_W, CABLE_GAP[0] - 0.5)))                        # brace stays clear of the cable's drop
         body = body.union(g)
+    probe = cq.Workplane("XY").add(cq.Solid.makeCylinder(BOLT_D / 2 - 0.1, PLATE_T, cq.Vector(PLATE_W / 2, 0, peg_z), yax))
+    assert body.intersect(probe).val().Volume() < 1e-6, "bolt hole missing"
     return body
 
 
@@ -115,8 +120,8 @@ if __name__ == "__main__":
     sys.path.insert(0, os.path.join(HERE, ".."))
     from printcheck import check
     OUT = os.path.normpath(os.path.join(HERE, "..", "..", "parts")); os.makedirs(OUT, exist_ok=True)
-    parts = {"strip-bracket-upper-v1": bracket(PEG_Z[1], shelf=False),
-             "strip-bracket-lower-v4": bracket(PEG_Z[0], shelf=True)}
+    parts = {"strip-bracket-upper-v2": bracket(PEG_Z[1], shelf=False),
+             "strip-bracket-lower-v5": bracket(PEG_Z[0], shelf=True)}
     for name, b in parts.items():
         p = printable(b)
         bb = p.val().BoundingBox()
