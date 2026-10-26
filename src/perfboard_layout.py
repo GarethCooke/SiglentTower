@@ -1,5 +1,5 @@
 # perfboard_layout.py — the lighting perfboard (D10 rev 5, 2026-10-25): XIAO ESP32-S3, SN74AHCT125N, SR3200, 2 x 330R,
-# 1000 uF, USB pigtail pads, four 2.54 mm locking pin headers along the bottom edge. 50 x 40 board = 19 x 15 holes.
+# 1000 uF, USB pigtail header, three 2.54 mm locking pin headers along the bottom edge (5-pin sill, 3-pin L, 3-pin R) and a 2-pin for the USB pigtail. 50 x 40 board = 19 x 15 holes.
 # Component side shown; every wire runs on the back. Output: parts/wiring/perfboard-layout.png
 import os, matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -45,10 +45,14 @@ for (c0, c1, name) in ((3, 7, "R1 330 Ω"), (11, 15, "R2 330 Ω")):
     ax.plot([c0, c1], [4, 4], color=GRY, lw=2, zorder=3)
     ax.add_patch(Rectangle((c0 + 1.1, 3.55), c1 - c0 - 2.2, 0.9, fc="#dcb", ec=BLK, zorder=4)); pin(c0, 4, "#bbb"); pin(c1, 4, "#bbb")
     lab((c0 + c1) / 2, 4.95, name, fontsize=7)
+# Wi-Fi antenna: the XIAO's flat antenna stuck to the board between the XIAO and the headers (rows 2-4, cols A-I),
+# component side; its lead goes up to the u.FL socket at the XIAO's lower-left corner. The only metal near it is the
+# rail behind the board, ~10 mm away; the frame is an open lattice.
+ax.add_patch(Rectangle((-0.6, 1.4), 8.8, 2.2, fc="#fff", ec=BLK, lw=1.2, ls="--", zorder=5, alpha=0.9))
+lab(3.8, 2.5, "Wi-Fi antenna stuck here\nlead up to the XIAO's socket, lower-left corner", fontsize=6.8)
 # pin headers on row 1 (latch ramp towards the board edge)
-HDR = [("4-pin S", [(1, RED, "5V"), (2, GRN, "data"), (3, BLU, "back"), (4, BLK, "GND")]),
-       ("2-pin", [(6, YEL, "sw"), (7, None, "—")]),
-       ("3-pin L", [(9, RED, "5V"), (10, BLK, "GND"), (11, BLU, "data")]),
+HDR = [("5-pin S (sill)", [(1, RED, "5V"), (2, GRN, "data"), (3, BLU, "back"), (4, BLK, "GND"), (5, YEL, "sw")]),
+       ("3-pin L", [(8, RED, "5V"), (9, BLK, "GND"), (10, BLU, "data")]),
        ("3-pin R", [(13, RED, "5V"), (14, BLK, "GND"), (15, GRN, "data")])]
 for name, pins in HDR:
     cs = [p[0] for p in pins]
@@ -56,25 +60,26 @@ for name, pins in HDR:
     for c, col, t in pins:
         pin(c, 0, col or "#ddd"); lab(c, -0.85, t, fontsize=6.3)
     lab((min(cs) + max(cs)) / 2, 0.95, name, fontsize=7.5, weight="bold")
-# USB pigtail pads P15 / R15
-pin(15, 14, RED); pin(17, 14, BLK); lab(16, 14.75, "USB pigtail: 5V P15 · GND R15", fontsize=7)
+# USB pigtail: a 2-pin locking header at P15 (5V) / Q15 (GND), crimped like the other plugs
+ax.add_patch(Rectangle((14.4, 13.45), 2.2, 1.1, fc="#f2f2f2", ec=BLK, zorder=4))
+pin(15, 14, RED); pin(16, 14, BLK); lab(15.5, 14.85, "2-pin PWR (USB pigtail)", fontsize=7, weight="bold"); lab(15, 13.15, "5V", fontsize=6.3); lab(16, 13.15, "GND", fontsize=6.3)
 
 WIRES = [  # (colour, from (c,r), to (c,r), what)
     (RED, (15, 14), (13, 14), "pigtail 5V → diode anode"),
     (RED, (15, 14), (16, 12), "pigtail 5V → capacitor +"),
     (RED, (16, 12), (13, 12), "capacitor + → chip pin 14 (5V)"),
     (RED, (16, 12), (13, 0), "capacitor + → R plug 5V"),
-    (RED, (13, 0), (9, 0), "R plug 5V → L plug 5V"),
-    (RED, (9, 0), (1, 0), "L plug 5V → sill plug 5V"),
+    (RED, (13, 0), (8, 0), "R plug 5V → L plug 5V"),
+    (RED, (8, 0), (1, 0), "L plug 5V → sill plug 5V"),
     (RED, (8, 14), (7, 13), "diode stripe end → XIAO 5V"),
-    (BLK, (17, 14), (16, 10), "pigtail GND → capacitor −"),
+    (BLK, (16, 14), (16, 10), "pigtail GND → capacitor −"),
     (BLK, (16, 10), (14, 0), "capacitor − → R plug GND"),
-    (BLK, (14, 0), (10, 0), "R plug GND → L plug GND"),
-    (BLK, (10, 0), (4, 0), "L plug GND → sill plug GND"),
+    (BLK, (14, 0), (9, 0), "R plug GND → L plug GND"),
+    (BLK, (9, 0), (4, 0), "L plug GND → sill plug GND"),
     (BLK, (7, 12), (10, 12), "XIAO GND → chip pin 1"),
     (BLK, (10, 12), (10, 9), "chip pin 1 → pin 4"),
     (BLK, (10, 9), (10, 6), "chip pin 4 → pin 7"),
-    (BLK, (10, 6), (10, 0), "chip pin 7 → L plug GND"),
+    (BLK, (10, 6), (9, 0), "chip pin 7 → L plug GND"),
     (BLK, (13, 7), (13, 8), "chip pin 9 → pin 10"),
     (BLK, (13, 8), (13, 10), "chip pin 10 → pin 12 (skip pin 11)"),
     (BLK, (13, 10), (13, 11), "chip pin 12 → pin 13"),
@@ -85,11 +90,11 @@ WIRES = [  # (colour, from (c,r), to (c,r), what)
     (GRN, (3, 4), (2, 0), "R1 → sill plug data"),
     (GRN, (10, 7), (11, 4), "chip pin 6 → R2"),
     (GRN, (15, 4), (15, 0), "R2 → R plug data"),
-    (BLU, (3, 0), (11, 0), "sill plug 'back' → L plug data"),
-    (YEL, (1, 9), (6, 0), "XIAO D4 → 2-pin switch"),
+    (BLU, (3, 0), (10, 0), "sill plug 'back' → L plug data"),
+    (YEL, (1, 9), (5, 0), "XIAO D4 → sill plug switch"),
 ]
 for i, (col, a, b, _) in enumerate(WIRES, 1):
-    ax.plot([a[0], b[0]], [a[1], b[1]], color=col, lw=1.6, alpha=0.55, zorder=2, ls=(0, (4, 2)))
+    ax.plot([a[0], b[0]], [a[1], b[1]], color=col, lw=1.8, alpha=0.8, zorder=5.5, ls=(0, (4, 2)))
 # table
 tb.set_xlim(0, 1); tb.set_ylim(0, 1)
 tb.text(0, 0.985, "Wires on the back — solder in this order", fontsize=12, weight="bold", va="top")
@@ -103,8 +108,8 @@ for i, (col, a, b, what) in enumerate(WIRES, 1):
     y -= 0.03
 tb.text(0, y - 0.01,
         "Parts first: XIAO pins in B8–B14 and H8–H14 (USB-C at the top edge) · chip in K7–K13 / N7–N13, notch at the top ·\n"
-        "SR3200 I15 (stripe) – N15 · 1000 µF + Q13, − Q11 · R1 D5–H5 · R2 L5–P5 · headers: B1–E1, G1–H1, J1–L1, N1–P1 ·\n"
-        "pigtail pads P15 (5V) and R15 (GND).  Before the XIAO goes in: 5 V on the pigtail pads, meter reads 5 V at N13 and\n"
+        "SR3200 I15 (stripe) – N15 · 1000 µF + Q13, − Q11 · R1 D5–H5 · R2 L5–P5 · headers: B1–F1 (5-pin), I1–K1 and N1–P1 (3-pin), P15–Q15 (2-pin PWR) ·\n"
+        "pigtail 2-pin header P15–Q15 · XIAO on two 7-way female headers so it unplugs · antenna stuck at rows 2–4.\nBefore the XIAO goes in: 5 V on the pigtail header, meter reads 5 V at N13 and\n"
         "at each plug's 5V pin, and about 4.4 V at H14 (after the diode).",
         fontsize=8.3, va="top")
 os.makedirs(OUT, exist_ok=True)

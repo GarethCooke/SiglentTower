@@ -1,4 +1,5 @@
-# wiring_connections.py — every connection in the lighting, on one sheet (D10 rev 4, 2026-10-25).
+# wiring_connections.py — every connection in the lighting, on one sheet (D10 rev 5, 2026-10-25: XIAO ESP32-S3 + SiglentGlow
+# firmware instead of the D1 mini + WLED; 5 V into the XIAO through an SR3200 Schottky; pins D0 / D1 / D4).
 # SN74AHCT125N level shifter on both data lines; strips are 15 LEDs each (30/m strip); every plug is a 2.54 mm locking
 # pin header (KF2510 type) soldered on the board with a crimped housing on the cable (SN-28B crimper): sill bundle on a
 # 4-pin (red, green, blue, black) + 2-pin (yellow), strips on 3-pin L and R.
@@ -40,7 +41,7 @@ def path(pts, c, lw=2.6, hops=()):
         X.append(x1); Y.append(y1)
     ax.plot(X, Y, color=c, lw=lw, solid_capstyle="round", solid_joinstyle="round", zorder=3)
 
-ax.text(1, 115.5, "Lighting — every connection (D10 rev 4, 2026-10-25)", fontsize=15, weight="bold")
+ax.text(1, 115.5, "Lighting — every connection (D10 rev 5, 2026-10-25: XIAO ESP32-S3)", fontsize=15, weight="bold")
 ax.text(1, 112, "Wire colours are the real ones:  red 5 V · black GND · green data · blue data back from the sill lights · yellow button switch.     "
         "● = soldered together     bump = wires cross, NOT joined     red tag = board 5 V, black tag = board GND",
         fontsize=9.5)
@@ -60,16 +61,23 @@ ax.add_patch(Rectangle((44, 34), 4, 5, fc="#cc0", ec=BLK, zorder=4)); txt(46, 41
 tag(51.5, 38, "5V", RED); tag(51.5, 35, "GND", BLK)
 ax.add_patch(Circle((60, 36.5), 2.6, fc="#345", ec=BLK, zorder=4)); txt(60, 36.5, "1000\nµF", ha="center", fontsize=6.5, color="w")
 txt(63.5, 38.5, "+ leg → 5V", fontsize=8); txt(63.5, 34.5, "striped leg → GND", fontsize=8)
-# D1 mini
+# XIAO ESP32-S3 (pins drawn by the labels printed on the board, not in their physical order)
 box(44, 49, 13, 51, fc="#2b6cb0", ec=BLK)
-txt(48.5, 74, "WEMOS D1 mini", ha="center", color="w", weight="bold", rotation=90, fontsize=10)
+txt(48.5, 74, "SEEED XIAO ESP32-S3", ha="center", color="w", weight="bold", rotation=90, fontsize=9.5)
 P = {}
-for i, p in enumerate(["5V", "G", "D4", "D3", "D2", "D1", "RX", "TX"]):
+for i, p in enumerate(["5V", "GND", "D1", "D4", "3V3", "D2", "D0", "D3"]):
     y = 96 - i * 6; P[p] = y
     ax.add_patch(Rectangle((57, y - 0.9), 2.4, 1.8, fc="#cc0", ec=BLK, zorder=4))
     txt(56.2, y, p, ha="right", color="w", weight="bold", fontsize=9.5)
-tag(62.2, P["5V"], "5V", RED); tag(62.4, P["G"], "GND", BLK)
-for p in ("D2", "D1", "TX"): txt(60.3, P[p], "empty", fontsize=7.5, color="#888")
+# 5 V into the XIAO through the Schottky (stripe towards the XIAO)
+path([(59.4, P["5V"]), (68, P["5V"])], RED)
+ax.add_patch(plt.Polygon([(65.6, P["5V"] - 1.3), (65.6, P["5V"] + 1.3), (62.6, P["5V"])], fc=BLK, ec=BLK, zorder=6))
+ax.add_patch(Rectangle((61.9, P["5V"] - 1.3), 0.6, 2.6, fc=BLK, ec=BLK, zorder=6))
+tag(70.5, P["5V"], "5V", RED)
+txt(63, P["5V"] + 3.2, "SR3200 Schottky\nstripe → XIAO", ha="center", fontsize=6.8)
+tag(62.4, P["GND"], "GND", BLK)
+for p in ("3V3", "D2", "D3"): txt(60.3, P[p], "empty", fontsize=7.5, color="#888")
+txt(50.5, 46.5, "D5–D10 empty", ha="center", fontsize=7.5, color="#555")
 # chip
 CX0, CX1, CY0, CY1 = 71, 84, 63, 85
 ax.add_patch(Rectangle((CX0, CY0), CX1 - CX0, CY1 - CY0, fc="#333", ec=BLK, zorder=4))
@@ -89,10 +97,10 @@ txt(105, 27.5, "grey = pin header soldered on the board · dark = crimped housin
     ha="center", fontsize=8, style="italic")
 # board wiring
 txt((CX0 + CX1) / 2, 60.3, "chip pin 14 → 5V\npins 1 4 7 9 10 12 13 → GND\npins 8, 11 empty", ha="center", fontsize=7.5)
-path([(59.4, P["D4"]), (65, P["D4"]), (65, IN5), (CX0, IN5)], GRN)
-path([(59.4, P["RX"]), (67, P["RX"]), (67, IN2), (CX0, IN2)], GRN)
+path([(59.4, P["D1"]), (65, P["D1"]), (65, IN5), (CX0, IN5)], GRN)
+path([(59.4, P["D0"]), (67, P["D0"]), (67, IN2), (CX0, IN2)], GRN)
 YSW = 91
-path([(59.4, P["D3"]), (68.5, P["D3"]), (68.5, YSW), (100, YSW), (100, J2["sw"]), (103, J2["sw"])], YEL, hops=[(87.5, YSW)])
+path([(59.4, P["D4"]), (68.5, P["D4"]), (68.5, YSW), (100, YSW), (100, J2["sw"]), (103, J2["sw"])], YEL, hops=[(87.5, YSW)])
 for yout, ydst in ((IN5, J4["data"]), (IN2, J1["grn"])):
     path([(CX1, yout), (87.5, yout), (87.5, ydst), (90, ydst)], GRN)
     ax.add_patch(Rectangle((90, ydst - 1), 6.5, 2, fc="#dcb", ec=BLK, zorder=5)); txt(93.25, ydst + 2, "330 Ω", ha="center", fontsize=7.5)
@@ -150,14 +158,14 @@ path([(126, J2["sw"]), (bx0 + 4, J2["sw"]), (bx0 + 4, 76.4)], YEL, hops=[(bx0 + 
 path([(bx0 + 1.5, 74), (bx0 + 1.5, RR)], RED); dot(bx0 + 1.5, RR, RED); txt(bx0 - 2.6, 78.2, "LED +", fontsize=6.5)
 path([(bx0 + 8, 69), (bx0 + 8, RB)], BLK); dot(bx0 + 8, RB, BLK); txt(bx0 + 8.4, 61.8, "LED − & switch 2 (linked)", fontsize=6.3, ha="right")
 
-# ---------------------------------------------------------------- WLED
+# ---------------------------------------------------------------- firmware
 box(2, 7, 176, 15, fc="#f6f6f6")
-txt(4, 19.5, "WLED  (Config → LED Preferences)", weight="bold", fontsize=10)
+txt(4, 19.5, "Firmware: SiglentGlow (IguanaPlatform, like MorayGlow) — brief: SiglentGlow-BRIEF.md", weight="bold", fontsize=10)
 ax.text(4, 16.8,
-        "Output 1:  WS281x · GRB · GPIO 3 (RX) · start 0 · length 17      ← the 2 sill lights (0–1), then the left strip (2–16)\n"
-        "Output 2:  WS281x · GRB · GPIO 2 (D4) · start 17 · length 15     ← the right strip (17–31)\n"
-        "Maximum current: 1500 mA        Button 0: GPIO 0 (D3), Pushbutton        Segments: halo 0–1 · left 2–16 · right 17–31\n"
-        "Short press = on/off; long press = next preset.  Everything after the first USB flash is over Wi-Fi (RX is the LED output, so no serial console).",
+        "D0 (GPIO1) → bus 1: 17 LEDs = 2 sill lights (0–1) + left strip (2–16)      D1 (GPIO2) → bus 2: 15 LEDs = right strip\n"
+        "D4 (GPIO5) ← button: short press = on/off · hold 5 s = factory reset (sill lights count down in red)      current limit 1500 mA\n"
+        "Set-up: join Wi-Fi 'SiglentGlow-XXXXXX' (password siglentglow) → pick your network → http://siglentglow.local → MQTT on /settings.html\n"
+        "The XIAO's USB-C is for the first flash at the desk; after that, updates go over Wi-Fi.  The LEDs take 5 V straight from the pigtail, never through the XIAO.",
         fontsize=8.8, va="top", family="monospace", zorder=6)
 
 os.makedirs(OUT, exist_ok=True)
