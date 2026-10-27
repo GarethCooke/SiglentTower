@@ -9,7 +9,8 @@ RED, BLK, GRN, BLU, YEL, GRY = "#d62728", "#222", "#2ca02c", "#1f5fd6", "#d49a00
 fig = plt.figure(figsize=(19, 10.5)); ax = fig.add_axes([0.01, 0.06, 0.52, 0.86]); tb = fig.add_axes([0.55, 0.06, 0.44, 0.86])
 ax.set_xlim(-1.6, 19.6); ax.set_ylim(-2.6, 15.6); ax.set_aspect("equal"); ax.axis("off"); tb.axis("off")
 fig.text(0.01, 0.955, "Lighting perfboard — component side, USB-C at the top (as it sits in the holder)", fontsize=15, weight="bold")
-fig.text(0.01, 0.925, "Columns A–S left to right, rows 1–15 bottom to top. Parts sit on this side; every wire in the table runs on the back.", fontsize=10)
+fig.text(0.01, 0.925, "Columns A–S left to right, rows 1–15 bottom to top. Parts sit on this side; every wire in the table runs on the back.   "
+         "AS BUILT 2026-10-26: the same arrangement on a 50 × 70 board (more rows between the parts — follow the picture, not the board's own letters), XIAO ESP32-S3 Plus soldered in.", fontsize=9.5)
 COLS = "ABCDEFGHIJKLMNOPQRS"
 def h(c, r): return f"{COLS[c]}{r + 1}"
 ax.add_patch(FancyBboxPatch((-0.9, -0.9), 19.8, 15.8, boxstyle="round,pad=0.1", fc="#e8dcc0", ec="#9a8a60", lw=1.5))
@@ -109,7 +110,7 @@ for i, (col, a, b, what) in enumerate(WIRES, 1):
 tb.text(0, y - 0.01,
         "Parts first: XIAO pins in B8–B14 and H8–H14 (USB-C at the top edge) · chip in K7–K13 / N7–N13, notch at the top ·\n"
         "SR3200 I15 (stripe) – N15 · 1000 µF + Q13, − Q11 · R1 D5–H5 · R2 L5–P5 · headers: B1–F1 (5-pin), I1–K1 and N1–P1 (3-pin), P15–Q15 (2-pin PWR) ·\n"
-        "pigtail 2-pin header P15–Q15 · XIAO on two 7-way female headers so it unplugs · antenna stuck at rows 2–4.\nBefore the XIAO goes in: 5 V on the pigtail header, meter reads 5 V at N13 and\n"
+        "pigtail 2-pin header P15–Q15 · XIAO soldered in (as built) · antenna stuck below the XIAO.\nBefore the XIAO goes in: 5 V on the pigtail header, meter reads 5 V at N13 and\n"
         "at each plug's 5V pin, and about 4.4 V at H14 (after the diode).",
         fontsize=8.3, va="top")
 os.makedirs(OUT, exist_ok=True)
