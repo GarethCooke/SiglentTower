@@ -1,5 +1,25 @@
 # Sill panel + end blocks (ROADMAP D10, Stage 8 trim):
 #
+# v7 LEFT BLOCK (2026-10-27, Gareth: push the LED further through, and clips on the left to tuck the wires under): flange
+# seat 6 deep (dome 4.1 into the cavity); under each LED a LEG SLOT opens the rear of its counterbore to the block's bottom
+# (6.6 wide, y 14.5–19.5) so the legs bend straight down; and a WIRE GROOVE runs along the block's bottom from x 27 to 61,
+# y 14.5–19 inside, 3 deep, with a 2.5 mouth between two 1 mm lips (dovetail: the wires push in and stay) — it joins the
+# two leg slots and the button's wire channel, and the bundle leaves it at the left end to drop down the upright's
+# inner-face slot. In the front-face-down print the groove is a 3 mm-deep horizontal slot in a vertical wall with a
+# 2.5 mm bridged roof and 0.8 mm lips: no support.
+# v6 LEFT BLOCK (2026-10-27, same day): bore Ø5.7 (v5's 5.3 printed tight), flange seat Ø6.6 x 4 (dome 2.1 into the cavity).
+# v5 LEFT BLOCK ONLY (2026-10-27, Gareth): the pixels go in from the REAR, pre-wired, so they can come out again. v3/v4's
+# slots open to the bottom meant soldering the legs in place. The 2026-10-12 note that put the slots there ("the PSU cradle
+# is 0.5 behind the block — no room for legs") was a crude envelope: psu_cradle.py's left front cradle is a 40 saddle at
+# y 31–71 on the rail (x -3..23) with its 30-wide arm at y 36–66; behind the block at x 26–68, z 87–99 nothing is nearer
+# than y 36, and the PSU's feet start at y 40.5. So v5 runs a Ø5.3 BORE along y from the light cavity (y 9) out of the
+# back face (y 19.5) at each pixel position, with a Ø6.2 x 2.5 counterbore in the back face for the LED's flange: the
+# 5 mm WS2812 pushes in from behind until its flange seats, its dome 0.6 into the cavity; the four legs, soldered to
+# their wires beforehand, bend down 90° right behind the block and drop into the open space over the drawer (z 63–87)
+# and across to the left PSU rail's inner slot. 16.5 mm between the block's back and the cradle arm for the bend. Pull
+# the pixel out backwards to change it. Both bores are vertical in the front-face-down print; the counterbores open
+# upward (the back face is the top of the print). The bottom slots are gone; the button's wire channel stays.
+#
 # v4 LEFT BLOCK ONLY (2026-10-14, from the v3 print, Gareth): (1) the head pocket was a 9.5 x 10 box with the bolt at y 10
 # in a y 3-13 pocket - the head could not sit flat on the wall and the bolt went in at an angle. v4 seats the head in a
 # round counterbore CBORE_D (10, takes the ISO 7380 M5 head at 9.5) coaxial with the hole, open to the front (a U: the
@@ -48,8 +68,15 @@ BODY_D = 9.0
 BOLT_Y, BOLT_Z, HOLE_D, CBORE_D, CBORE_H = 10.0, 93.0, 5.5, 10.0, 5.0
 KEY_D = 3.6                                              # v4: key access along the bolt axis from the block's right end (3 mm key corners 3.46)
 CAV = (32.0, 58.0, 3.0, 9.0, 88.0, 98.0)
-LED_XS, LED_W, LED_Y0 = (34.6, 55.3), 5.3, 9.0          # pixel slots: 5.3 wide, from y 9 (the cavity) to the back, open to the bottom
+LED_XS, LED_W, LED_Y0 = (34.6, 55.3), 5.3, 9.0          # pixel positions; v3/v4: slots 5.3 wide from y 9 to the back, open to the bottom
+LED_BORE_D, LED_FLANGE_D, LED_FLANGE_H = 5.7, 6.6, 6.0   # v7 2026-10-27: seat 6 deep (Gareth: further through) -> dome 4.1 into the cavity, 1.9 short of the window
+                                                         # v6 2026-10-27 (Gareth: the v5 LED would not push all the way in): bore 5.3 -> 5.7 — a small
+                                                         # vertical bore prints ~0.3 under size (fit.HOLE_SHRINK) and a 5 mm LED body is Ø5.0 —
+                                                         # and the flange seat 2.5 -> 4.0 deep so the dome stands 2.1 into the cavity, not 0.6.
+                                                         # (5 mm LED: body Ø5, flange Ø5.8, 8.6 flange to dome tip)
 WIRE_CH = (6.0, 5.0, 13.5)                               # button wire channel under the bore: width, height above the bottom, from y
+LEG_SLOT = (LED_FLANGE_D, 14.5, 93.0)                     # v7: per LED, a slot this wide from y 14.5 to the back, open to the bottom up to z 93
+GROOVE = dict(x0=27.0, x1=61.0, y0=14.5, y1=19.0, depth=3.0, mouth=(15.5, 18.0), lip=0.8)   # v7: wire groove along the bottom face
 RB_X0, RB_X1, RB_Y1 = 223.4, 253.4, 19.0
 RB_WALL = 2.5                                            # v4: the right wall (v3 was 7.7 — an M5 x 10 through it reached only 2.3 into the T-nut)
 RB_POCKET, RB_SLOT_Y = (RB_X1 - RB_WALL - 14.0, RB_X1 - RB_WALL, 3.0, 17.5, 88.0, 98.0), (8.5, 14.5)   # head pocket x 236.9–250.9, open to the front; slotted hole: the upright's slot centre is y 10 or 13
@@ -93,8 +120,14 @@ def left_block():
     b = b.cut(cav.cut(boss))                                                                  # light cavity either side of the boss
     b = b.cut(hex_prism(NUT_AF, T - 1, T + NUT_T, BTN_X, BTN_Z))                              # captive nut pocket on the window's back
     b = b.cut(cq.Workplane("XZ", origin=(BTN_X, LB_Y1 + 1, BTN_Z)).circle(BODY_D / 2).extrude(LB_Y1 + 2))      # body bore, through
-    for x in LED_XS:                                                                          # pixel slots open to the bottom
-        b = b.cut(box(x - LED_W / 2, x + LED_W / 2, LED_Y0, LB_Y1 + 1, Z0 - 1, BTN_Z + LED_W / 2))
+    for x in LED_XS:                                                                          # v5: pixel bores from the REAR
+        b = b.cut(cq.Workplane("XZ", origin=(x, LB_Y1 + 1, BTN_Z)).circle(LED_BORE_D / 2).extrude(LB_Y1 + 1 - LED_Y0 + 1))       # Ø5.3, y 9 -> back face
+        b = b.cut(cq.Workplane("XZ", origin=(x, LB_Y1 + 1, BTN_Z)).circle(LED_FLANGE_D / 2).extrude(LED_FLANGE_H + 1))         # flange seat
+        w, y0, z1 = LEG_SLOT
+        b = b.cut(box(x - w / 2, x + w / 2, y0, LB_Y1 + 1, Z0 - 1, z1))                                                    # v7: leg slot, open to the bottom
+    g = GROOVE                                                                                 # v7: wire groove along the bottom, dovetail mouth
+    b = b.cut(box(g["x0"], g["x1"], g["y0"], g["y1"], Z0 + g["lip"], Z0 + g["depth"]))
+    b = b.cut(box(g["x0"], g["x1"], g["mouth"][0], g["mouth"][1], Z0 - 1, Z0 + g["lip"] + 0.01))
     w, h, y0 = WIRE_CH                                                                        # button wires: channel under the bore, open to the bottom
     b = b.cut(box(BTN_X - w / 2, BTN_X + w / 2, y0, LB_Y1 + 1, Z0 - 1, Z0 + h))
     for x in PEG_XS[:1]:
@@ -148,6 +181,28 @@ if __name__ == "__main__":
         print(f"right v4, bolt at y {yc}: head vs block {vol(headR, R):.3f} (0), shifted 0.5 up/down {vol(headR.translate((0, 0, 0.5)), R):.3f}/{vol(headR.translate((0, 0, -0.5)), R):.3f} (0: the pocket clears a 7.5 head); "
               f"key through to the head {vol(keyR, R):.3f} (0); head + key vs frame {vol(headR, FR) + vol(keyR, FR):.3f} (0); M5 x 10 in the T-nut: {10 - RB_WALL:.1f} mm")
     print(f"gaps: panel bottom {Z0} vs facia top 86 -> 1.0; panel top {Z1} vs PSU bottom 100 -> 1.0; panel right end {PX1} vs sub-frame upright 253.7 -> 0.3")
+    # v5: the pixels behind the block vs the REAL left front PSU cradle (psu_cradle v3 at the front-left position: saddle centre
+    # frame (10, 51), rail top 88) and the PSU's front-left foot
+    import parts.psu_cradle as pc
+    cradle = pc.cradle(pc.REACH_V3).rotate((0, 0, 0), (0, 0, 1), -90).translate((10.0, 51.0, 88.0))
+    foot = cq.Workplane("XY", origin=(61.75, 51.0, 92.0)).circle(10.75).extrude(12)
+    cb = cradle.val().BoundingBox(); print(f"left front PSU cradle as modelled: x {cb.xmin:.1f}–{cb.xmax:.1f}, y {cb.ymin:.1f}–{cb.ymax:.1f}, z {cb.zmin:.1f}–{cb.zmax:.1f} (its arm starts at y 36, not 20)")
+    for x in LED_XS:
+        led = box(x - 3.1, x + 3.1, LED_Y0 - 0.6, LB_Y1 + 3.0, BTN_Z - 3.1, BTN_Z + 3.1)                 # body + flange + 3 of leg before the bend
+        legs = box(x - 3.5, x + 3.5, LB_Y1 + 0.5, LB_Y1 + 5.0, 70.0, BTN_Z + 3.1)                     # the four legs bent down behind the block
+        print(f"pixel at x {x}: flange + leg bend behind the block vs block {vol(box(x - 3.1, x + 3.1, LB_Y1 + 0.01, LB_Y1 + 3.0, BTN_Z - 3.1, BTN_Z + 3.1), L):.4f}, legs vs block {vol(legs, L):.4f}, LED + legs vs cradle {vol(led, cradle) + vol(legs, cradle):.4f}, vs PSU foot {vol(led, foot) + vol(legs, foot):.4f} (all 0); "
+              f"room behind the block to the cradle's arm: {36.0 - LB_Y1:.1f} mm")
+    bore_probe = cq.Workplane("XZ", origin=(LED_XS[0], LB_Y1 + 0.5, BTN_Z)).circle(2.65).extrude(LB_Y1 + 0.5 - LED_Y0 + 1)   # a Ø5.3 body (LED Ø5 + a printed bore 0.3 under)
+    print(f"a Ø5.3 body pushed through the bore from the back: {vol(bore_probe, L):.4f} (0: clear passage even if the bore prints 0.3 under)")
+    led_real = cq.Workplane("XZ", origin=(LED_XS[0], LB_Y1 - LED_FLANGE_H, BTN_Z)).circle(2.5).extrude(8.6)          # body from the flange seat forward
+    g = GROOVE; bundle = box(g["x0"] + 0.5, g["x1"] - 0.5, g["y0"] + 0.3, g["y1"] - 0.3, Z0 + g["lip"] + 0.2, Z0 + g["depth"] - 0.2)
+    print(f"wire groove: a {g['y1'] - g['y0'] - 0.6:.1f} x {g['depth'] - g['lip'] - 0.4:.1f} bundle inside it vs block {vol(bundle, L):.4f} (0); pushed 1.0 toward the mouth {vol(bundle.translate((0, 0, -1.0)), L):.4f} (>0: the lips hold it); "
+          f"groove vs the bolt pocket / key hole: groove y {g['y0']}–{g['y1']} from x {g['x0']}, pocket x 22.5–31 reaches y 13.6 at z 89.5, key hole y ≤ 11.8")
+    for x in LED_XS:
+        legs_down = box(x - 2.2, x + 2.2, LB_Y1 - LED_FLANGE_H + 1.0, LB_Y1 - 0.5, Z0 + 0.2, BTN_Z)                     # the four legs (1.27 pitch, 3.8 span, inside the Ø5.8 flange) from the flange straight down to the groove
+        print(f"LED at x {x}: legs from the flange down to the groove vs block {vol(legs_down, L):.4f} (0: the leg slot is open under the counterbore)")
+    lb = led_real.val().BoundingBox(); print(f"LED seated on its flange: body y {lb.ymin:.1f}–{lb.ymax:.1f}, cavity back wall at y {LED_Y0}: dome {LED_Y0 - lb.ymin:.1f} into the cavity; "
+          f"counterbores vs the key hole / wire channel / peg hole: Ø{LED_FLANGE_D} at x {LED_XS[0] - LED_FLANGE_D/2:.1f}–{LED_XS[0] + LED_FLANGE_D/2:.1f} and {LED_XS[1] - LED_FLANGE_D/2:.1f}–{LED_XS[1] + LED_FLANGE_D/2:.1f}, y {LB_Y1 - LED_FLANGE_H}–{LB_Y1} (channel x 42–48, peg 62.4–65.7, key hole y ≤ 11.8)")
     # exports
     def export(part, name, rot=None, **kw):
         p = part if rot is None else part.rotate((0, 0, 0), rot[0], rot[1])
@@ -160,5 +215,5 @@ if __name__ == "__main__":
     for part, name in ((P, "sill-panel-v3"), (W, "sill-panel-window-v3")):
         p = part.translate(shift); path = os.path.join(OUT, name + ".stl"); cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
         b2 = part.val().BoundingBox(); print(f"{name:22s} {b2.xlen:.1f} x {b2.ylen:.1f} x {b2.zlen:.1f}  {part.val().Volume()/1000:.1f} cm3"); check(path, min_rest_frac=0.2, max_down_frac=1.0)
-    export(L, "sill-block-left-v4", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=2.5)     # front face down; the cavity roof and hex-to-bore step are short bridges
+    export(L, "sill-block-left-v7", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=2.5)     # front face down; the cavity roof and hex-to-bore step are short bridges
     export(R, "sill-block-right-v4", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=1.2)    # front face down; the pocket roof is a 14 mm bridge
