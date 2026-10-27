@@ -1,31 +1,26 @@
 # Sill panel + end blocks (ROADMAP D10, Stage 8 trim):
 #
-# v9 LEFT BLOCK (2026-10-27, Gareth: once it is all wired up there is no room to push a pixel in from the back — fit it
-# from UNDERNEATH with the wires still attached, or it is a nightmare every time the button/light unit comes out):
-# each pixel now drops UP into a slot open to the block's BOTTOM, pointing forward: a BODY SLOT 5.5 wide (round top at
-# the axis height z 93) from inside the cavity's back wall (y 8) to y 13.5, which cuts that wall away so the dome stands
-# 4.1 into the cavity as before; a FLANGE SLOT 6.0 wide from y 13.5 THROUGH TO THE BACK FACE, whose front shoulder (the
-# 5.5 body slot) is the flange's forward stop; and the v7 LEG SLOT (6.6 wide, y 15 to the back, open to the bottom and
-# the back face, up to z 93.5) for the four legs bent straight down. Fitting: drawer out; hold the pre-wired pixel
-# under the block pointing forward with its flange 3–4 mm behind the stop (the dome tip is then inside the body
-# slot, clear of the cavity floor, which stays at y 3–8), push it straight up until the body meets the slot's round top,
-# then slide it forward until the flange meets the stop — the dome goes 4.1 into the cavity. The slots are open at the
-# back so the flange can go up anywhere behind the stop; the cavity floor is why it cannot go straight up in its final
-# position.
-# Retention: no snap — the M5 key hole (Ø3.6 along x at y 10, z 93) crosses the body slot exactly where a retention
-# lip would have to sit (0.7 below the axis), so lips there would be cut away. Instead the flange slot is a snug slide
-# (6.0 → ~5.75 printed on the Ø5.8 flange; the 0.6–0.9 walls either side spring) and the pixel is captive every other
-# way: dome in the cavity, flange against its stop, legs in their slot, and the wires held in the groove right under
-# the legs (which also resists it sliding back). It weighs 0.3 g; the only loads are the wires'. If a printed flange
-# slot is loose, a strip of Kapton on the flange; if tight, one swipe of a needle file. The wires then tuck into the v7 WIRE GROOVE along the bottom
-# face (x 27–61, y 14.5–19 inside, 3 deep, dovetail mouth 2.5 between 0.8 lips),
-# which the button's wire channel also feeds, and leave it at the left end for the left PSU rail's inner slot. The v5–v8
-# rear bores and v8's back-face clip rails are gone: the back face is closed except for the leg slots. Drawer out to
-# reach under the block. In the front-face-down print every slot is a channel along print z with vertical walls and
-# a half-round profile; the mouth lip and lead-in are vertical faces: no support. Order of fitting unchanged: bolt the
-# block (key from its right end — the key hole still crosses the body slots), panel on, then the pixels from below;
-# a pixel comes out without the key, the block does not come off without the pixels out.
-# v8 LEFT BLOCK (2026-10-27, superseded the same day): two clip rails on the back face for rear-inserted pixels.
+# v10 LEFT BLOCK + WINDOW v4 (2026-10-27, Gareth, 17:03: the BUTTON's wires — "I can't push them in from the front
+# because they won't fit. There needs to be a small gap at the bottom as you look at it from the front when it is
+# mounted"): a WIRE SLIT 3.2 wide (x 43.4–46.6) runs from the block's bottom face up to the button's axis, from the front
+# face right through to the back, and the same slit is notched into the bottom edge of the clear WINDOW under its hole.
+# So the pre-wired button goes in from the FRONT with its four wires hanging down through the notch and the slit; as it
+# is pushed home the wires trail rearward along the open-bottom slit, and when the thread meets the captive nut the
+# tail is already over the wire channel (y 13.5–19.5), where the wires drop out of the bottom as before. The nut stays
+# captive: the slit takes 3.2 of its pocket's 10.6 floor. From the front the notch shows under the bezel as a 3.2 ×
+# ~1 mm nick in the clear window, 1 mm above the facia. Pixels as v8: pushed in from the REAR, pre-wired, and the two
+# clip rails on the back face hold their wires. In the print the slit is a channel along print z with vertical walls;
+# the window's notch is a 3.2 mm bridge 1.8 above the bed. Nothing else changes (v8 geometry otherwise).
+# v9 LEFT BLOCK (2026-10-27, superseded the same day — a misreading: pixels fitted from underneath; it was the button's
+# wires that needed the way in from below).
+# v8 LEFT BLOCK (2026-10-27): the pixels' legs and the button's tags leave through the BACK face (y 19.5), the top of the
+# front-face-down print, so v7's leg slots and bottom groove were dropped and two CLIP RAILS went on the back face on
+# the clear strip left of the left pixel, x 22–30, standing 5.5 off the back face, one along the top edge (z 96.2–98)
+# with its lip pointing down and one along the bottom edge (z 88–89.8) with its lip pointing up, lips 2.2 long with a
+# 2.0 mouth between their tips, every lip underside a 45° slope (no support). The wires from both pixels run left along
+# the back face, push in through the mouth one at a time and lie under the lips, then drop off the left end of the
+# block to the left PSU rail's inner slot. Flange seat 6 deep as v7 (dome 4.1 into the cavity); the rails are 1.3 left
+# of the pixel's counterbore, so a pixel still pulls out backwards.
 # v7 LEFT BLOCK (2026-10-27, superseded the same day): leg slots to the bottom + a wire groove along the bottom face —
 # wrong face: the legs leave through the back.
 # v6 LEFT BLOCK (2026-10-27, same day): bore Ø5.7 (v5's 5.3 printed tight), flange seat Ø6.6 x 4 (dome 2.1 into the cavity).
@@ -96,10 +91,8 @@ LED_BORE_D, LED_FLANGE_D, LED_FLANGE_H = 5.7, 6.6, 6.0   # v7 2026-10-27: seat 6
                                                          # and the flange seat 2.5 -> 4.0 deep so the dome stands 2.1 into the cavity, not 0.6.
                                                          # (5 mm LED: body Ø5, flange Ø5.8, 8.6 flange to dome tip)
 WIRE_CH = (6.0, 5.0, 13.5)                               # button wire channel under the bore: width, height above the bottom, from y
-LED_SLOT_W, LED_SLOT_Y0 = 5.5, 8.0                        # v9: body slot (round top at z 93) from inside the cavity's back wall to the flange slot
-FL_SLOT = (6.0, LB_Y1 - LED_FLANGE_H, LB_Y1 + 1.0)   # v9: flange slot width (6.0 prints ~5.75: a snug slide on the Ø5.8 flange), y0 (13.5: the flange's forward stop), y1 (through the back face — the pixel goes up with its flange behind the stop, then slides forward)
-LEG_SLOT = (6.6, FL_SLOT[1] + 1.5, 93.5)                  # v7/v9: per LED, a slot this wide from y 15 to the back, open to the bottom, up to z 93.5 (the legs bend down right behind the flange)
-GROOVE = dict(x0=27.0, x1=61.0, y0=14.5, y1=19.0, depth=3.0, mouth=(15.5, 18.0), lip=0.8)   # v7/v9: wire groove along the bottom face
+CLIP = dict(x0=22.0, x1=30.0, h=5.5, post=1.8, reach=2.2, tip=1.5, z_lo=88.0, z_hi=98.0)   # v8: two clip rails on the back face (see header)
+SLIT_W = 3.2                                              # v10: the button's wire slit, bottom face up to the axis, front face through to the back; window notched the same
 RB_X0, RB_X1, RB_Y1 = 223.4, 253.4, 19.0
 RB_WALL = 2.5                                            # v4: the right wall (v3 was 7.7 — an M5 x 10 through it reached only 2.3 into the T-nut)
 RB_POCKET, RB_SLOT_Y = (RB_X1 - RB_WALL - 14.0, RB_X1 - RB_WALL, 3.0, 17.5, 88.0, 98.0), (8.5, 14.5)   # head pocket x 236.9–250.9, open to the front; slotted hole: the upright's slot centre is y 10 or 13
@@ -122,7 +115,8 @@ def panel():
 
 def window():
     w = box(WIN_X0, WIN_X1, 0, T, Z0, Z1)
-    return w.cut(cq.Workplane("XZ", origin=(BTN_X, T + 1, BTN_Z)).circle(BTN_HOLE_D / 2).extrude(T + 2))
+    w = w.cut(cq.Workplane("XZ", origin=(BTN_X, T + 1, BTN_Z)).circle(BTN_HOLE_D / 2).extrude(T + 2))
+    return w.cut(box(BTN_X - SLIT_W / 2, BTN_X + SLIT_W / 2, -1, T + 1, Z0 - 1, BTN_Z))        # v4 (v10): wire notch from the hole to the bottom edge
 
 def hex_prism(af, y0, y1, xc, zc):
     """Hexagon (flats top and bottom) of across-flats af, along y."""
@@ -143,24 +137,31 @@ def left_block():
     b = b.cut(cav.cut(boss))                                                                  # light cavity either side of the boss
     b = b.cut(hex_prism(NUT_AF, T - 1, T + NUT_T, BTN_X, BTN_Z))                              # captive nut pocket on the window's back
     b = b.cut(cq.Workplane("XZ", origin=(BTN_X, LB_Y1 + 1, BTN_Z)).circle(BODY_D / 2).extrude(LB_Y1 + 2))      # body bore, through
-    for x in LED_XS:                                                                          # v9: pixel slots from BELOW
-        b = b.cut(u_slot(x, LED_SLOT_W / 2, LED_SLOT_Y0, FL_SLOT[1], Z0 - 1))                                             # body slot, open to the bottom
-        b = b.cut(u_slot(x, FL_SLOT[0] / 2, FL_SLOT[1], FL_SLOT[2], Z0 - 1))                                              # flange slot, open to the bottom
-        w, y0, z1 = LEG_SLOT
-        b = b.cut(box(x - w / 2, x + w / 2, y0, LB_Y1 + 1, Z0 - 1, z1))                                                    # leg slot, open to the bottom and the back
-    g = GROOVE                                                                                 # v7/v9: wire groove along the bottom, dovetail mouth
-    b = b.cut(box(g["x0"], g["x1"], g["y0"], g["y1"], Z0 + g["lip"], Z0 + g["depth"]))
-    b = b.cut(box(g["x0"], g["x1"], g["mouth"][0], g["mouth"][1], Z0 - 1, Z0 + g["lip"] + 0.01))
+    for x in LED_XS:                                                                          # v5–v8: pixel bores from the REAR
+        b = b.cut(cq.Workplane("XZ", origin=(x, LB_Y1 + 1, BTN_Z)).circle(LED_BORE_D / 2).extrude(LB_Y1 + 1 - LED_Y0 + 1))       # Ø5.7, y 9 -> back face
+        b = b.cut(cq.Workplane("XZ", origin=(x, LB_Y1 + 1, BTN_Z)).circle(LED_FLANGE_D / 2).extrude(LED_FLANGE_H + 1))         # flange seat Ø6.6 x 6
+    b = b.union(clip_rails())                                                                  # v8: wire clips on the back face
     w, h, y0 = WIRE_CH                                                                        # button wires: channel under the bore, open to the bottom
     b = b.cut(box(BTN_X - w / 2, BTN_X + w / 2, y0, LB_Y1 + 1, Z0 - 1, Z0 + h))
+    b = b.cut(box(BTN_X - SLIT_W / 2, BTN_X + SLIT_W / 2, T - 1, LB_Y1 + 1, Z0 - 1, BTN_Z))   # v10: the button's wire slit, front to back, open to the bottom
     for x in PEG_XS[:1]:
         b = b.cut(cq.Workplane("XZ", origin=(x, T - 1, PEG_Z)).circle(PEG_HOLE_D / 2).extrude(-(PEG_HOLE_L + 1)))
     return b
 
-def u_slot(xc, r, y0, y1, z_bottom):
-    """A slot along y of half-width r, open downward from z_bottom, with a half-round top at the pixel axis height BTN_Z."""
-    return (box(xc - r, xc + r, y0, y1, z_bottom, BTN_Z)
-            .union(cq.Workplane("XZ", origin=(xc, y1, BTN_Z)).circle(r).extrude(y1 - y0)))
+def clip_rail(z_post0, z_post1, down):
+    """One clip rail on the back face: a post x0–x1 by z_post0–z_post1 rising CLIP['h'] off y LB_Y1, with a lip at its top
+    reaching CLIP['reach'] toward -z (down=True) or +z, tip CLIP['tip'] thick, underside a 45° slope back to the post."""
+    c = CLIP; y_top = LB_Y1 + c["h"]
+    post = box(c["x0"], c["x1"], LB_Y1 - 0.01, y_top, z_post0, z_post1)
+    zi = z_post0 if down else z_post1; sgn = -1 if down else 1               # the post's inner face and the lip direction
+    tip = zi + sgn * c["reach"]
+    lip = (cq.Workplane("YZ").polyline([(y_top, zi), (y_top, tip), (y_top - c["tip"], tip), (y_top - c["tip"] - c["reach"], zi)])
+           .close().extrude(c["x1"] - c["x0"]).translate((c["x0"], 0, 0)))
+    return post.union(lip)
+
+def clip_rails():
+    c = CLIP
+    return clip_rail(c["z_hi"] - c["post"], c["z_hi"], True).union(clip_rail(c["z_lo"], c["z_lo"] + c["post"], False))
 
 def right_block():
     b = box(RB_X0, RB_X1, T, RB_Y1, Z0, Z1)
@@ -220,26 +221,25 @@ if __name__ == "__main__":
         legs = box(x - 3.5, x + 3.5, LB_Y1 + 0.5, LB_Y1 + 5.0, 70.0, BTN_Z + 3.1)                     # the four legs bent down behind the block
         print(f"pixel at x {x}: flange + leg bend behind the block vs block {vol(box(x - 3.1, x + 3.1, LB_Y1 + 0.01, LB_Y1 + 3.0, BTN_Z - 3.1, BTN_Z + 3.1), L):.4f}, legs vs block {vol(legs, L):.4f}, LED + legs vs cradle {vol(led, cradle) + vol(legs, cradle):.4f}, vs PSU foot {vol(led, foot) + vol(legs, foot):.4f} (all 0); "
               f"room behind the block to the cradle's arm: {36.0 - LB_Y1:.1f} mm")
-    # v9 proofs: a Ø5 × 8.6 body with its Ø5.8 × 1 flange seated in the slots (dome 4.1 into the cavity), the legs from the flange
-    # straight down to the groove, the wire bundle in the groove, and the insertion path from below
-    body = cq.Workplane("XZ", origin=(LED_XS[0], FL_SLOT[1], BTN_Z)).circle(2.5).extrude(8.6)                     # y 4.9–13.5
-    flange = cq.Workplane("XZ", origin=(LED_XS[0], FL_SLOT[1] + 1.0, BTN_Z)).circle(2.9).extrude(1.0)             # y 13.5–14.5
-    pixel = body.union(flange)
-    g = GROOVE; bundle = box(g["x0"] + 0.5, g["x1"] - 0.5, g["y0"] + 0.3, g["y1"] - 0.3, Z0 + g["lip"] + 0.2, Z0 + g["depth"] - 0.2)
-    print(f"v9 pixel seated: body + flange vs block {vol(pixel, L):.4f} (0); pushed up 0.5 {vol(pixel.translate((0, 0, 0.5)), L):.4f} (>0: the round top stops it); "
-          f"pushed forward 0.5 {vol(pixel.translate((0, -0.5, 0)), L):.4f} (>0: the flange meets its stop); "
-          f"flange slot {FL_SLOT[0]} (~{FL_SLOT[0] - 0.25:.2f} printed) on a 5.8 flange: snug slide; a Ø5.8 flange shifted 0.3 sideways {vol(flange.translate((0.3, 0, 0)), L):.4f} (>0: the walls touch it)")
-    path = [(3.5, -10.0), (3.5, -5.0), (3.5, -2.0), (3.5, 0.0), (2.0, 0.0), (0.5, 0.0)]       # (y back from the stop, z below seated): up with the flange 3.5 behind the stop, then forward
-    print("insertion path (pixel vs block, 0 all the way): " + ", ".join(f"y+{dy} z{dz:+.0f}: {vol(pixel.translate((0, dy, dz)), L):.4f}" for dy, dz in path)
-          + f"; straight up in the seated position instead: z-3 {vol(pixel.translate((0, 0, -3)), L):.4f} (>0: the cavity floor, y 3–8, is in the dome's way — hence the slide); "
-          f"pixel 10 below vs frame {vol(pixel.translate((0, 3, -10)), FR):.4f} / cradle {vol(pixel.translate((0, 3, -10)), cradle):.4f} (0: the drawer space under the block is free)")
-    for x in LED_XS:
-        legs_down = box(x - 2.2, x + 2.2, LEG_SLOT[1] + 0.2, LEG_SLOT[1] + 1.2, Z0 + 0.2, BTN_Z)                  # the four legs bent down right behind the flange slot
-        print(f"LED at x {x}: legs from the flange down to the groove vs block {vol(legs_down, L):.4f} (0: the leg slot is open under the flange slot)")
-    print(f"wire groove: a {g['y1'] - g['y0'] - 0.6:.1f} x {g['depth'] - g['lip'] - 0.4:.1f} bundle inside it vs block {vol(bundle, L):.4f} (0); pushed 1.0 toward the mouth {vol(bundle.translate((0, 0, -1.0)), L):.4f} (>0: the lips hold it); "
-          f"groove vs the bolt pocket / key hole: groove y {g['y0']}–{g['y1']} from x {g['x0']}, pocket x 22.5–31 reaches y 13.6 at z 89.5, key hole y ≤ 11.8")
-    print(f"slots vs the head seat (x ≤ 31, y 5–15) and the hex boss (x 38.5–51.5): left body slot x {LED_XS[0] - LED_SLOT_W/2:.2f}–{LED_XS[0] + LED_SLOT_W/2:.2f}, flange slot {LED_XS[0] - FL_SLOT[0]/2:.2f}–{LED_XS[0] + FL_SLOT[0]/2:.2f}; "
-          f"right body slot {LED_XS[1] - LED_SLOT_W/2:.2f}–{LED_XS[1] + LED_SLOT_W/2:.2f}; the key hole (y 8.2–11.8, z 91.2–94.8) crosses both body slots: key first, pixels after")
+    # v8 proofs: the clip rails; v10 proofs: the button's wire slit
+    c = CLIP; mouth_z0, mouth_z1 = c["z_lo"] + c["post"] + c["reach"], c["z_hi"] - c["post"] - c["reach"]
+    bundle = box(c["x0"] + 0.5, c["x1"] - 0.5, LB_Y1 + 0.2, LB_Y1 + 1.6, c["z_lo"] + c["post"] + 0.2, c["z_hi"] - c["post"] - 0.2)   # a 1.4-thick layer of wires lying flat on the face between the posts, under both lips
+    wire = box(c["x0"] + 0.5, c["x1"] - 0.5, LB_Y1 + 0.01, LB_Y1 + c["h"] + 1, mouth_z0 + 0.3, mouth_z1 - 0.3)               # a 1.4 wire pushed in through the mouth
+    rails = clip_rails()
+    print(f"clip rails: x {c['x0']}–{c['x1']}, {c['h']} off the back face (y {LB_Y1}–{LB_Y1 + c['h']}), posts z {c['z_lo']}–{c['z_lo'] + c['post']} and {c['z_hi'] - c['post']}–{c['z_hi']}, "
+          f"mouth z {mouth_z0:.1f}–{mouth_z1:.1f} ({mouth_z1 - mouth_z0:.1f}); a {bundle.val().BoundingBox().zlen:.1f} x 1.4 layer of wires under the lips vs block {vol(bundle, L):.4f} (0); "
+          f"pulled 1.5 off the face {vol(bundle.translate((0, 1.5, 0)), L):.4f} (>0: the lips hold it); a 1.4 wire through the mouth {vol(wire, L):.4f} (0); "
+          f"rails vs cradle {vol(rails, cradle):.4f} / PSU foot {vol(rails, foot):.4f} / frame {vol(rails, FR):.4f} (0); rails to the left pixel's counterbore: {LED_XS[0] - LED_FLANGE_D / 2 - c['x1']:.1f}")
+    led_real = cq.Workplane("XZ", origin=(LED_XS[0], LB_Y1 - LED_FLANGE_H, BTN_Z)).circle(2.5).extrude(8.6)          # body from the flange seat forward
+    lb = led_real.val().BoundingBox(); print(f"LED seated on its flange: body y {lb.ymin:.1f}–{lb.ymax:.1f}, cavity back wall at y {LED_Y0}: dome {LED_Y0 - lb.ymin:.1f} into the cavity")
+    # v10: four Ø1.2 wires as a 2.4 x 2.4 bundle hanging through the notch and the slit, at every stage of the button going in
+    wires = box(BTN_X - 1.2, BTN_X + 1.2, -0.5, LB_Y1 + 0.5, Z0 - 0.6, Z0 + 1.8)                                      # z 86.4–88.8: through the notch (top 88.8) and under the bore (88.5)
+    nut = hex_prism(10.0, T, T + 2.5, BTN_X, BTN_Z).cut(cq.Workplane("XZ", origin=(BTN_X, T + 3, BTN_Z)).circle(4.0).extrude(4))   # an M8 nut, 10 AF x 2.5, in its pocket
+    under_nut = box(BTN_X - 1.2, BTN_X + 1.2, T + 0.01, T + 3.5, BTN_Z - 5.0 - 2.4, BTN_Z - 5.0)                       # the same bundle dipping to z 85.6–88 where it passes under the nut (free air below the block)
+    print(f"v10 wire slit {SLIT_W} wide: a 2.4 x 2.4 bundle along the whole slit vs window {vol(wires, W):.4f} / block {vol(wires, L):.4f} / panel {vol(wires, P):.4f} (0); "
+          f"where it passes the nut it dips under the nut's bottom flat (z {BTN_Z - 5.0:.1f}): that bundle vs nut {vol(under_nut, nut):.4f} / block {vol(under_nut, L):.4f} / facia (y 0–3, top 86) {vol(under_nut, FR):.4f} (0); "
+          f"nut vs block {vol(nut, L):.4f} (0), nut pulled down 0.5 {vol(nut.translate((0, 0, -0.5)), L):.4f} (>0: still captive — the slit takes {SLIT_W} of the pocket's 10.6 floor); "
+          f"notch in the window: {SLIT_W} wide x {BTN_Z - BTN_HOLE_D / 2 - Z0:.1f} tall under the Ø{BTN_HOLE_D} hole; facia top 86 is 1.0 below the window's bottom edge")
     # exports
     def export(part, name, rot=None, **kw):
         p = part if rot is None else part.rotate((0, 0, 0), rot[0], rot[1])
@@ -249,8 +249,8 @@ if __name__ == "__main__":
     # panel + window standing on the bottom edge (frame z up stays up): as modelled
     # panel + window share ONE origin so they load as a multi-part object with the window in its cut-out
     bb = P.val().BoundingBox(); shift = (-bb.xmin, -bb.ymin, -bb.zmin)
-    for part, name in ((P, "sill-panel-v3"), (W, "sill-panel-window-v3")):
+    for part, name in ((P, "sill-panel-v3"), (W, "sill-panel-window-v4")):
         p = part.translate(shift); path = os.path.join(OUT, name + ".stl"); cq.exporters.export(p, path, tolerance=0.01, angularTolerance=0.1)
         b2 = part.val().BoundingBox(); print(f"{name:22s} {b2.xlen:.1f} x {b2.ylen:.1f} x {b2.zlen:.1f}  {part.val().Volume()/1000:.1f} cm3"); check(path, min_rest_frac=0.2, max_down_frac=1.0)
-    export(L, "sill-block-left-v9", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=2.5)     # front face down; the cavity roof and hex-to-bore step are short bridges
+    export(L, "sill-block-left-v10", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=2.5)     # front face down; the cavity roof and hex-to-bore step are short bridges
     export(R, "sill-block-right-v4", rot=((1, 0, 0), 90), min_rest_frac=0.3, max_down_frac=1.2)    # front face down; the pocket roof is a 14 mm bridge
