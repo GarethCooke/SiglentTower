@@ -100,8 +100,8 @@ txt((CX0 + CX1) / 2, 60.3, "chip pin 14 → 5V\npins 1 4 7 9 10 12 13 → GND\np
 path([(59.4, P["D1"]), (65, P["D1"]), (65, IN5), (CX0, IN5)], GRN)
 path([(59.4, P["D0"]), (67, P["D0"]), (67, IN2), (CX0, IN2)], GRN)
 path([(59.4, P["D4"]), (68.5, P["D4"]), (68.5, 61), (99, 61), (99, J1["sw"]), (103, J1["sw"])], YEL, hops=[(68.5, IN2)])
-for yout, ydst in ((IN5, J4["data"]), (IN2, J1["grn"])):
-    path([(CX1, yout), (87.5, yout), (87.5, ydst), (90, ydst)], GRN)
+for yout, ydst, xv in ((IN5, J4["data"], 86.0), (IN2, J1["grn"], 88.5)):   # separate risers: pins 6 and 3 are NOT joined
+    path([(CX1, yout), (xv, yout), (xv, ydst), (90, ydst)], GRN)
     ax.add_patch(Rectangle((90, ydst - 1), 6.5, 2, fc="#dcb", ec=BLK, zorder=5)); txt(93.25, ydst + 2, "330 Ω", ha="center", fontsize=7.5)
     path([(96.5, ydst), (103, ydst)], GRN)
 for d in (J4, J3):
