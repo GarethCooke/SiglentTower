@@ -64,7 +64,7 @@ Reveals: 3 from the front plane to everything inside, 3 from the scope top to th
 - **Beams:** two 39.5 × 9 bars at x 20.5–60 and 301–340.5, z 337–346, y 12–330, each split at y 165 into a front half (v2) and a rear half (v1) on a P7 tab, CA'd (D6). The front half carries the rear-bumper D cup (25.9 × 24 + 0.3, 6 deep, floor 341, flat to the rear) and the front-stand pocket (44 × 23.1 + 0.6 / 1.0, 2.5 deep, open at the front); the rear half the cross-bar sockets. Two Ø4 pegs on the left beam's top at (33, 150) and (33, 290) key the splice and the channel. (v18: Ø32.6 cups on arms, lipped front pads.)
 - **Front bar v3:** 315 × 12 × 18 at y 0–12, z 337–355, dark grey PETG, 120 × 6 pull notch lined in blue. Each beam's front edge carries a 68 mm tongue (x 28–96 and mirror) that enters a closed pocket in the bar's rear face as the bar slides on from the front, so the stand pad's edge is held above and below; 25.5 × 76 saddles lie on the beams behind the bar, CA'd (the M3 holes unused). This stops the beams rolling inwards under the scope.
 - **Cross bars v2:** between the beams at y 190–210 and 308–335, z 337–346, black ABS, P7 tabs CA'd; guide lips at y 189–194 (chamfered at the right end) and 331–336 hold the box with 2 mm of play.
-- **Front rests v2:** a 3 mm plate on each scope rail's top at y 21–61, one M5 × 10 countersunk into the top slot, with a lip rising to z 337 beside the rail's inner edge; the beam's outer wall rides on it through the whole travel, so the front is carried under the stand as the rear is on the foot. Six STLs with the lip sized to a rail-to-beam gap of 0.5–3.0; the gap fitted is not recorded.
+- **Front rests v2:** a 3 mm plate on each scope rail's top at y 21–61, one M5 × 10 countersunk into the top slot, with a lip rising to z 337 beside the rail's inner edge; the beam's outer wall rides on it through the whole travel, so the front is carried under the stand as the rear is on the foot. Six STLs with the lip sized to a rail-to-beam gap of 0.5–3.0; **the 3.0 is fitted** on both rails (Gareth, 2026-11-03 — the largest, the measured gap at the front).
 - **Splice bars v2:** 100 × 25.5 × 7.5 CA'd along each beam's outer strip at y 88.5–188.5, bridging the P7 joint and the span ahead of the foot (the front still sagged on the rests alone). The right one stands in the box's exit lane: the box is lifted 7.5 as it crosses the right beam.
 - **Cable channel v1:** a U-trough on the left beam, x 20.5–47, y 201–334, floor 346, walls to 366, 20.5 inside for the scope's mains, LAN and USB; front top corners chamfered 10; rear end open into the loop behind the frame; keyed by the (33, 290) peg, CA'd. (v18: from y 140 with wedge tabs and a rear ramp, both dropped.)
 - **Travel 92** (v18: 100): home is the foot against the rear upright; a TPU stop cap (8 mm of cover profile) pressed into the front end of each scope rail's inner slot takes the foot at full pull. No T-nut stops. Level, stops hold (2026-10-23). PTFE dry lube.
@@ -166,7 +166,7 @@ Every printed part on the tower. Orientation is as exported (z = 0 on the bed); 
 | Sled front bar | v3 | sled_bars.py | sled-front-bar-v3 | dark grey PETG | 1 | front face down, diagonal, brim | CA on tongues and saddles |
 | Sled-bar pull liner | v1 | pull_inserts.py | inserts/sled-bar-pull-liner-v1 | dark blue PETG | 1 | as plated | CA |
 | Cross bar front / rear | v2 | sled_bars.py | sled-cross-bar-front-v2, sled-cross-bar-rear-v2 | black ABS | 1 + 1 | flat, lips up, outer brim | CA on the tabs |
-| Sled front rest | v2, gap as measured | sled_front_rest.py | sled-front-rest-v2-gap<g> | black PETG | 2 (one STL, turned) | bottom face down | M5 × 10 countersunk + T each, scope rail top slot |
+| Sled front rest | v2, gap 3.0 | sled_front_rest.py | sled-front-rest-v2-gap<g> | black PETG | 2 (one STL, turned) | bottom face down | M5 × 10 countersunk + T each, scope rail top slot |
 | Sled splice bar | v2 | sled_splice.py | sled-splice-v2 | black ABS / PETG | 2 | flat | CA |
 | Cable channel | v1 | cable_channel.py | cable-channel-v1 | black ABS | 1 | floor down | CA over the beam's peg |
 | Sled stop cap | v1 | tpu_parts.py | tpu/sled-stop-cap-v1 | blue TPU | 2 | flat | press-fit in the slot's front end |
@@ -211,7 +211,7 @@ Counted from this table: 47 M5 × 10 button / cap head (4 into the uprights' bor
 | sled-cross-bar-front-v1, -rear-v1 | the v2 bars |
 | sled-skid-v1 and its plan; front rest v1 (never exported) | sled-front-rest-v2 |
 | sled-splice-v1 (111.5 long) | sled-splice-v2 (the printed pair cut to 100) |
-| sled-front-rest-v2-gap*, the five unused gaps † | the one matching the measured gap |
+| sled-front-rest-v2-gap0.5 … gap2.5, the five unused gaps † | sled-front-rest-v2-gap3.0 |
 | sill-panel-v1, -v2; sill-panel-window-v1…v4; sill-block-left-v1…v9; sill-block-right-v1…v3 | sill-panel-v3, left block v10, right block v4 |
 | strip-bracket-upper-v1, lower-v2 / v3 / v4, strip-brackets-plate | upper-v2, lower-v5 (with the bolt hole) |
 | tile-band1-v1, band2-LF / LR-v1, band3-LF / LR / RF / RR-v1; tiles-plate-A / B / C / F | the v2 tiles; plates A2–E2 |
