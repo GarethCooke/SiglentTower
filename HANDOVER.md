@@ -28,7 +28,7 @@ Overall 362 × 350 × 510 by tape (v18: 361; the model stays 361 and only the to
 
 **As measured (2026-10-13/14) and what absorbed each difference:**
 - Rail gaps by caliper, rail face to rail face — right: base→PSU 45.4, PSU→AWG 139.5, AWG→scope 65.8, scope→top 158; left: 51.2, 135, 65.5, 157 (spacers 48 / 139.5 / 63.5 / 159). The side tiles were reprinted to these bands (§5); the left scope rail's top reads 331.7. Nothing else depends on them.
-- The sub-frame's front upright is flush with the front plane, and its left face is at x 253.7 (model 251, set 3 back). Only the sill panel bridges to it, so only the sill panel changed (233.4 long); the column drawer and mini slot are placed from the sub-frame's own rails. The viewer still shows the model position (Stage 9).
+- The sub-frame's front upright is flush with the front plane, and its left face is at x 253.7 (model 251, set 3 back). Only the sill panel bridges to it, so only the sill panel changed (233.4 long); the column drawer and mini slot are placed from the sub-frame's own rails. The viewer and the layout sheet (v16) show the measured position.
 - Width 362 by tape: the top panel is 362 wide with 1.5 mm slotted corner holes.
 
 **Connectors as fitted:** 40 hidden L-connectors on the faces that look into the frame (side rails ↔ uprights on the inner faces, rear cross rails on the front faces, inner rails on their right faces, ties on their front faces; never an outer face, where the tile fingers live), and the 8 cast brackets: four under the scope rails, one at each end in the rail's bottom slot at x 3–17 (the scope rails take no hidden connector: the sled feet own the inner slot and the tile fingers the outer), one lying flat between the front tie and the right PSU rail's inner face at y 23–43, three spare. M5 × 8 for every cast bracket, M5 × 10 for every printed part on a drop-in T-nut. **Build method:** each side built flat on the bench with all five rails at once — base and top flush with the upright ends, PSU / AWG / scope rails on the 48 / 139.5 / 63.5 spacers, a sled T-foot already in each scope rail's inner slot — then the sides stood up and joined by the rear cross rails, the sub-frame built as a ladder and slid in from the front (`frame-assembly-3d.html`). Checks 2026-10-01/02: diagonals equal, 321 at the front, 510 overall, no wobble.
@@ -192,32 +192,32 @@ Every printed part on the tower. Orientation is as exported (z = 0 on the bed); 
 
 Counted from this table: 47 M5 × 10 button / cap head (4 into the uprights' bores, no T-nut), 9 M5 × 10 countersunk, 2 M5 × 12, 54 T-nuts, M5 × 8 for the cast brackets, 4 M3 × 10, 4 Ø10 × 2 magnets, the button and its nut.
 
-**Plates** (STLs that bundle parts for one print): `cradles-v2-plate` (src/cradle_plate.py), `sled-absplus-plate` (src/sled_plate.py), `inserts/pull-inserts-plate-v3`, `tiles/tiles-plate-A2…E2` (src/tiles_plates.py) and `tiles-plate-D` / `E` (v1, kept for the band-2 right tiles), `top/top-plate-v1`, `tpu/tpu-plate-v1`. Per-night Bambu projects are under `bambu/`.
+**Plates** (STLs that bundle parts for one print): `cradles-v2-plate` (src/cradle_plate.py), `sled-absplus-plate` (src/sled_plate.py — the 2026-09-24 plate, so it carries the v1 front halves; the fitted v2 halves are their own STLs), `inserts/pull-inserts-plate-v3`, `tiles/tiles-plate-A2…E2` (src/tiles_plates.py) and `tiles-plate-D` / `E` (v1, kept for the band-2 right tiles), `top/top-plate-v1`, `tpu/tpu-plate-v1`. Per-night Bambu projects are under `bambu/`.
 
-**Withdrawn** (superseded files; † = still in the tree):
+**Withdrawn** (superseded files — removed from the tree 2026-11-05, all in git history; ‡ = kept, see the note):
 
 | File | Replaced by |
 |---|---|
-| awg-cradle-left-v1 †, awg-cradle-right-v1 † | the v2 cradles (arms 5, plate 4) |
-| psu-cradle-v3 as the right pair † (stays as the left pair) | psu-cradle-right-v4 (rear), psu-cradle-right-front-v5 (front) |
-| column/column-drawer-v1 †, column-drawer-v2 | column-drawer-v3 (the v1 print stands, window cut by hand) |
-| column/column-pull-insert-v1 †, drawer/drawer-pull-insert-v1 †, inserts/pull-insert-column-v1, pull-insert-mini-v1, pull-inserts-plate-v1 / v2 | inserts/pull-insert-*-v2, pull-inserts-plate-v3 |
-| door/door-v1 † (printed and fitted first), door-v2 | door/door-v3 |
-| door/rear-tile-v1, magnet-bracket-front-v1, magnet-tab-rear-v1 (printed as the wrong hand); door/rear-tile-v2.3mf † | the v2 STLs |
+| awg-cradle-left-v1, awg-cradle-right-v1 | the v2 cradles (arms 5, plate 4) |
+| psu-cradle-v3 as the right pair ‡ (the file stays: it is the left pair) | psu-cradle-right-v4 (rear), psu-cradle-right-front-v5 (front) |
+| column/column-drawer-v1, column-drawer-v2 | column-drawer-v3 (the v1 print stands, window cut by hand) |
+| column/column-pull-insert-v1, drawer/drawer-pull-insert-v1, inserts/pull-insert-column-v1, pull-insert-mini-v1, pull-inserts-plate-v1 / v2 | inserts/pull-insert-*-v2, pull-inserts-plate-v3 |
+| door/door-v1 (printed and fitted first), door-v2 | door/door-v3 |
+| door/rear-tile-v1, magnet-bracket-front-v1, magnet-tab-rear-v1 (printed as the wrong hand); door/rear-tile-v2.3mf ‡ (a Bambu project, moved to bambu/parts/door/) | the v2 STLs |
 | hinge-door-v1, hinge-frame-v1 | hinge-door-v2, hinge-frame-v2 |
 | mini/mini-slot-runner-v1, -v2 | mini-slot-runner-v3 |
-| sled-beam-left-front-v1 †, sled-beam-right-front-v1 † | the v2 front halves |
-| sled-front-bar-v1, sled-front-bar-v2 † | sled-front-bar-v3 |
+| sled-beam-left-front-v1, sled-beam-right-front-v1 | the v2 front halves |
+| sled-front-bar-v1, sled-front-bar-v2 | sled-front-bar-v3 |
 | sled-cross-bar-front-v1, -rear-v1 | the v2 bars |
 | sled-skid-v1 and its plan; front rest v1 (never exported) | sled-front-rest-v2 |
 | sled-splice-v1 (111.5 long) | sled-splice-v2 (the printed pair cut to 100) |
-| sled-front-rest-v2-gap0.5 … gap2.5, the five unused gaps † | sled-front-rest-v2-gap3.0 |
+| sled-front-rest-v2-gap0.5 … gap2.5, the five unused gaps (`sled_front_rest.py` makes any gap) | sled-front-rest-v2-gap3.0 |
 | sill-panel-v1, -v2; sill-panel-window-v1…v4; sill-block-left-v1…v9; sill-block-right-v1…v3 | sill-panel-v3, left block v10, right block v4 |
 | strip-bracket-upper-v1, lower-v2 / v3 / v4, strip-brackets-plate | upper-v2, lower-v5 (with the bolt hole) |
 | tile-band1-v1, band2-LF / LR-v1, band3-LF / LR / RF / RR-v1; tiles-plate-A / B / C / F | the v2 tiles; plates A2–E2 |
 | wiring/board-holder-v1, wiring-1-schematic.png, wiring-3-board.png, breadboard-test.png | board-enclosure-v1 + lid; wiring-4-connections, perfboard-layout, board-enclosure-plan |
-| tpu/spigots-sweep-v1 †, cover-sweep-7.0 / 7.4 / 8.0-v1 † | test pieces on the TPU plate, not fitted (4.6 and 7.4 held) |
-| scope-tray-plan.png † (D13); sled-mechanism-v2.pdf; page 2 of bench-stack-layout-v15.pdf | withdrawn 2026-10-15; the sled sheets (§13) and this document |
+| tpu/spigots-sweep-v1, cover-sweep-7.0 / 7.4 / 8.0-v1 (still on tpu-plate-v1 as printed) | test pieces on the TPU plate, not fitted (4.6 and 7.4 held) |
+| scope-tray-plan.png ‡ (D13, the sheet stays as the record of the proposal); sled-mechanism-v2.pdf; page 2 of bench-stack-layout-v15.pdf | withdrawn 2026-10-15; the sled sheets (§13) and this document |
 
 **Jigs** (tooling, all printed in yellow PETG):
 
@@ -266,9 +266,9 @@ Counted from this table: 47 M5 × 10 button / cap head (4 into the uprights' bor
 
 | File | Shows | Script |
 |---|---|---|
-| `bench-stack-3d.html` | interactive 3D model of the whole stack, design geometry and colours (the sub-frame still at the model position) | boxes in `src/viewer_boxes.json`, edited in place |
+| `bench-stack-3d.html` | interactive 3D model of the whole stack as built (2026-11-05): sub-frame at x 253.7 and flush, sill panel to 253.4, door on the D11 axis with its edge at 338, top panel over the frame with the caps on it, no lids, strip at z 75–425, the board enclosure, splices and front rests; sliders for the drawers, the sled (92), the box and the door | boxes in `src/viewer_boxes.json` (kept identical to the `BOXES` line in the HTML), the rest hand-built in the HTML, edited in place |
 | `frame-assembly-3d.html` | the frame going together step by step, spacers and feet where they are used | `src/frame_assembly_viewer.py` |
-| `bench-stack-layout-v15.pdf`; `bench-stack-impression.png` | dimensioned layout, design stage (page 1 current for the frame); isometric impression | `src/layout_gen.py`; `src/impression_gen.py` |
+| `bench-stack-layout-v16.pdf` (+ `.svg`); `bench-stack-impression.png` | dimensioned layout AS BUILT (2026-11-05): front and side elevations, plan, cut list as cut, levels, the parts summary and where the bench overruled the model (v15, the design sheet, is in git history); isometric impression | `src/layout_gen.py` (SVG; PDF by `rsvg-convert -f pdf`); `src/impression_gen.py` |
 | `sled-mechanism-v2.pdf`, `drawer-quarters-v1.pdf/.svg`, `front-options-A-vs-B.pdf`, `front-switch-options.pdf` | design-stage sheets, superseded by the part sheets below | `src/sled_mechanism_gen.py`, `src/drawer_quarters_gen.py`, `src/switch_options_gen.py` |
 | `parts/awg-mount-sheet.png` | the AWG on its cradles: elevation at the front pair and plan | `src/awg_mount_sheet.py` |
 | `parts/column/column-plan.png` | section through the column bay: drawer, four strips, rails | `src/column_plan.py` |

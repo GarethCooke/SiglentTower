@@ -58,7 +58,8 @@ The CAD, the check scripts, the sheets and the paperwork were written by Claude 
 | `coupons/`, `jigs/` | The nine coupons and the assembly jigs (rail spacers, seating jigs) |
 | `bambu/` | Bambu Studio projects for the plates that were printed |
 | `parts/wiring/` | The lighting: every connection, the runs on the frame, the perfboard hole by hole, the board enclosure |
-| [`bench-stack-3d.html`](bench-stack-3d.html) | Interactive 3D model of the design (three.js, self-contained): sliders for the drawers, the sled, the box and the door |
+| [`bench-stack-3d.html`](bench-stack-3d.html) | Interactive 3D model of the tower as built (three.js, self-contained): sliders for the drawers, the sled, the box and the door |
+| [`bench-stack-layout-v16.pdf`](bench-stack-layout-v16.pdf) | The dimensioned layout as built: front and side elevations, plan, levels, cut list |
 | [`frame-assembly-3d.html`](frame-assembly-3d.html) | Step-by-step viewer of the frame assembly |
 
 ## Building one
