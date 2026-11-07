@@ -57,7 +57,7 @@ The CAD, the check scripts, the sheets and the paperwork were written by Claude 
 | `parts/` | The exported STLs and the check sheets (PNG), by area: `drawer/`, `column/`, `mini/`, `door/`, `tiles/`, `top/`, `sill/`, `inserts/`, `tpu/`, `wiring/` |
 | `coupons/`, `jigs/` | The nine coupons and the assembly jigs (rail spacers, seating jigs) |
 | `bambu/` | Bambu Studio projects for the plates that were printed, one a night |
-| `publish/` | **`SiglentTower-complete.3mf`** — every part on 37 plates in one Bambu Studio project, one material per plate, jigs last (`src/publish_3mf.py` makes it); `PLATES.md` lists the plates and the settings to set when slicing; `plates-sheet.png` shows every layout |
+| `publish/` | **`SiglentTower-complete.3mf`** — every part on 36 plates in one Bambu Studio project, one material per plate, jigs last (`src/publish_3mf.py` makes it); `PLATES.md` lists the plates and the settings to set when slicing; `plates-sheet.png` shows every layout |
 | `parts/wiring/` | The lighting: every connection, the runs on the frame, the perfboard hole by hole, the board enclosure |
 | [`bench-stack-3d.html`](bench-stack-3d.html) | Interactive 3D model of the tower as built (three.js, self-contained): sliders for the drawers, the sled, the box and the door |
 | [`bench-stack-layout-v16.pdf`](bench-stack-layout-v16.pdf) | The dimensioned layout as built: front and side elevations, plan, levels, cut list |
@@ -67,7 +67,7 @@ The CAD, the check scripts, the sheets and the paperwork were written by Claude 
 
 1. Read [`HANDOVER.md`](HANDOVER.md) §1–§9 for what the tower is, then §10 for the parts index: every STL, its material, its orientation and the hardware it takes.
 2. Cut the extrusion from [`CUT-TABLE.md`](CUT-TABLE.md); the rail heights come from the printed spacers at assembly, not from the cuts.
-3. Print the 37 plates of `publish/SiglentTower-complete.3mf` in order — they are grouped by filament, with the `SiglentTower fit 0.20` profile described in [`ROADMAP.md`](ROADMAP.md) §2 on every plate and the few settings the file cannot carry listed in `publish/PLATES.md`. TPU prints once, last.
+3. Print the 36 plates of `publish/SiglentTower-complete.3mf` in order — they are grouped by filament, with the `SiglentTower fit 0.20` profile described in [`ROADMAP.md`](ROADMAP.md) §2 on every plate and the few settings the file cannot carry listed in `publish/PLATES.md`. TPU prints once, last.
 4. Assemble per the frame viewer and the sheets under `parts/`; wire the lighting from `parts/wiring/wiring-4-connections.png`.
 
 A step-by-step build guide and a write-up are the remaining close-out items (ROADMAP Stage 9).
