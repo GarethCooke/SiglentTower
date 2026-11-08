@@ -6,48 +6,50 @@ One Bambu Studio project with every printed part of the tower, one plate per pri
 
 **One material per plate** (Gareth, 2026-11-06): no plate mixes filaments, so no purge tower — except the two objects that are two-colour by design, each on its own plate: the bottom facia with its logo inlay (26) and the sill panel with its clear window (27).
 
+**Skirt loops 0 in the profile** (plate 13's column drawer leaves no room for one; the brims do that job).
+
 **Settings that are in the file, per object:** outer brim 5 mm with 0.1 gap on every ABS+ and ABS part that had one; outer brim 15 mm, gap 0 and outer wall 60 mm/s on the thin standing parts (the three facias and the four top tiles); ironing on the top surfaces of the runners; no brim and no support on the TPU; 2 walls and 15 % infill on the jigs.
 **Settings that are NOT in the file** (filament- or plate-level — set them when you slice): dry ABS+ and TPU first; ABS and ABS+ with the door closed; the thin-part plates (25, 26, 27, 28) with the skirt off, bed 80 °C, part fan 30 % max; the cradle plate (06) and the runner plates (02, 03, 05) with Quality → Bridge counterbore holes → Sacrificial layer; TPU from the external spool holder with the Generic TPU preset.
 
 | Plate | Object | Turned | Centre x, y | Slot | Per-object settings |
 |---|---|---|---|---|---|
-| 01 | sled-foot-210.stl | 0° | 127.0, 8.5 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
-| 01 | sled-foot-210.stl | 0° | 127.0, 25.6 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
-| 01 | sled-beam-left-front-v2.stl | 0° | 39.8, 120.6 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
-| 01 | sled-beam-right-front-v2.stl | 0° | 119.2, 120.6 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
-| 01 | sled-beam-left-rear-v1.stl | 0° | 180.8, 118.6 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
-| 01 | sled-beam-right-rear-v1.stl | 0° | 224.2, 118.6 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
-| 02 | drawer-runner-300-v1.stl | 0° | 137.3, 117.3 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1, ironing_type top |
-| 03 | drawer-runner-300-v1.stl | 0° | 137.3, 117.3 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1, ironing_type top |
+| 01 | sled-foot-210.stl | 0° | 131.8, 37.1 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
+| 01 | sled-foot-210.stl | 0° | 131.8, 54.1 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
+| 01 | sled-beam-left-front-v2.stl | 0° | 46.7, 163.0 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
+| 01 | sled-beam-right-front-v2.stl | 0° | 125.2, 162.2 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
+| 01 | sled-beam-left-rear-v1.stl | 0° | 185.4, 160.5 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
+| 01 | sled-beam-right-rear-v1.stl | 0° | 229.1, 160.2 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
+| 02 | drawer-runner-300-v1.stl | 0° | 129.9, 128.2 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1, ironing_type top |
+| 03 | drawer-runner-300-v1.stl | 0° | 133.9, 126.6 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1, ironing_type top |
 | 04 | column-strip-upper-v1.stl | 45° | 117.4, 117.4 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
 | 04 | column-strip-upper-v1.stl | 45° | 138.6, 138.6 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
 | 05 | column-strip-lower-v1.stl | 45° | 112.8, 112.8 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
 | 05 | mini-slot-runner-v3.stl | 45° | 134.0, 134.0 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1, ironing_type top |
 | 05 | column-strip-lower-short-v1.stl | 45° | 155.2, 155.2 | 1 | brim_type outer_only, brim_width 5, brim_object_gap 0.1 |
-| 06 | psu-cradle-v3.stl | 0° | 22.0, 70.8 | 3 | brim_type outer_only, brim_width 5 |
-| 06 | psu-cradle-v3.stl | 0° | 22.0, 152.4 | 3 | brim_type outer_only, brim_width 5 |
-| 06 | psu-cradle-right-v4.stl | 0° | 66.0, 114.4 | 3 | brim_type outer_only, brim_width 5 |
-| 06 | psu-cradle-right-front-v5.stl | 0° | 66.0, 38.8 | 3 | brim_type outer_only, brim_width 5 |
-| 06 | awg-cradle-left-v2.stl | 0° | 27.2, 202.2 | 3 | brim_type outer_only, brim_width 5 |
-| 06 | awg-cradle-left-v2.stl | 0° | 71.2, 160.2 | 3 | brim_type outer_only, brim_width 5 |
-| 06 | awg-cradle-right-v2.stl | 0° | 21.2, 233.2 | 3 | brim_type outer_only, brim_width 5 |
-| 06 | awg-cradle-right-v2.stl | 0° | 63.6, 233.2 | 3 | brim_type outer_only, brim_width 5 |
+| 06 | psu-cradle-v3.stl | 0° | 148.0, 117.2 | 3 | brim_type outer_only, brim_width 5 |
+| 06 | psu-cradle-v3.stl | 0° | 212.0, 117.2 | 3 | brim_type outer_only, brim_width 5 |
+| 06 | psu-cradle-right-v4.stl | 0° | 84.0, 62.8 | 3 | brim_type outer_only, brim_width 5 |
+| 06 | psu-cradle-right-front-v5.stl | 0° | 84.0, 195.2 | 3 | brim_type outer_only, brim_width 5 |
+| 06 | awg-cradle-left-v2.stl | 0° | 206.8, 187.0 | 3 | brim_type outer_only, brim_width 5 |
+| 06 | awg-cradle-left-v2.stl | 0° | 206.8, 225.0 | 3 | brim_type outer_only, brim_width 5 |
 | 07 | sled-cross-bar-front-v2.stl | -45° | 116.7, 116.7 | 3 | brim_type outer_only, brim_width 5 |
 | 07 | sled-cross-bar-rear-v2.stl | -45° | 136.8, 136.8 | 3 | brim_type outer_only, brim_width 5 |
-| 08 | cable-channel-v1.stl | 0° | 15.2, 98.5 | 3 | brim_type no_brim |
-| 08 | sled-splice-v2.stl | 0° | 45.2, 52.0 | 3 | brim_type no_brim |
-| 08 | sled-splice-v2.stl | 0° | 45.2, 156.0 | 3 | brim_type no_brim |
-| 08 | hinge-door-v2.stl | 0° | 11.5, 187.0 | 3 | brim_type no_brim |
-| 08 | hinge-door-v2.stl | 0° | 35.5, 228.0 | 3 | brim_type no_brim |
-| 08 | hinge-frame-v2.stl | 0° | 80.0, 19.0 | 3 | brim_type no_brim |
-| 08 | hinge-frame-v2.stl | 0° | 68.0, 57.0 | 3 | brim_type no_brim |
-| 08 | magnet-bracket-front-v2.stl | 0° | 12.0, 229.0 | 3 | brim_type no_brim |
-| 08 | magnet-tab-rear-v2.stl | 0° | 59.5, 227.0 | 3 | brim_type no_brim |
+| 08 | awg-cradle-right-v2.stl | 0° | 63.3, 148.0 | 3 | brim_type outer_only, brim_width 5 |
+| 08 | awg-cradle-right-v2.stl | 0° | 63.3, 212.0 | 3 | brim_type outer_only, brim_width 5 |
+| 08 | cable-channel-v1.stl | 0° | 218.7, 165.5 | 3 | brim_type no_brim |
+| 08 | sled-splice-v2.stl | 0° | 119.2, 182.0 | 3 | brim_type no_brim |
+| 08 | sled-splice-v2.stl | 0° | 168.7, 182.0 | 3 | brim_type no_brim |
+| 08 | hinge-door-v2.stl | 0° | 135.5, 46.0 | 3 | brim_type no_brim |
+| 08 | hinge-door-v2.stl | 0° | 178.5, 46.0 | 3 | brim_type no_brim |
+| 08 | hinge-frame-v2.stl | 0° | 60.0, 45.0 | 3 | brim_type no_brim |
+| 08 | hinge-frame-v2.stl | 0° | 96.0, 45.0 | 3 | brim_type no_brim |
+| 08 | magnet-bracket-front-v2.stl | 0° | 222.0, 56.0 | 3 | brim_type no_brim |
+| 08 | magnet-tab-rear-v2.stl | 0° | 78.9, 89.6 | 3 | brim_type no_brim |
 | 09 | drawer-Q1-v1.stl | 0° | 84.8, 111.0 | 4 | — |
 | 10 | drawer-Q2-v1.stl | 0° | 84.8, 111.0 | 4 | — |
 | 11 | drawer-Q3-v1.stl | 0° | 84.8, 111.0 | 4 | — |
 | 12 | drawer-Q4-v1.stl | 0° | 84.8, 111.0 | 4 | — |
-| 13 | column-drawer-v3.stl | 45° | 128.0, 128.0 | 4 | brim_type outer_only, brim_width 5 |
+| 13 | column-drawer-v3.stl | 45° | 126.3, 132.4 | 4 | brim_type outer_only, brim_width 5 |
 | 14 | mini-slot-body-v1.stl | 45° | 128.0, 128.0 | 4 | brim_type outer_only, brim_width 5 |
 | 14 | sled-front-rest-v2-gap3.0.stl | 0° | 40.0, 42.0 | 4 | — |
 | 14 | sled-front-rest-v2-gap3.0.stl | 0° | 72.0, 42.0 | 4 | — |
@@ -129,6 +131,6 @@ One Bambu Studio project with every printed part of the tower, one plate per pri
 | 36 | awg-pad-standin.stl | 0° | 217.0, 12.0 | 4 | wall_loops 2, sparse_infill_density 15%, brim_type no_brim |
 | 36 | awg-pad-standin.stl | 0° | 241.0, 12.0 | 4 | wall_loops 2, sparse_infill_density 15%, brim_type no_brim |
 
-Plate names in the project: 01 ABS+ black — sled T-feet ×2, beam halves ×4 (feet standing; outer brim 5); 02 ABS+ black — bottom drawer runner (1 of 2; leg top down, ironing on top); 03 ABS+ black — bottom drawer runner (2 of 2); 04 ABS+ black — column guide strips upper ×2 (rail face down, diagonal); 05 ABS+ black — column guide strips lower right + lower left short, mini-slot runner v3 (diagonal; ironing on the runner's top); 06 ABS black — cradles — PSU left v3 ×2, right rear v4, right front v5, AWG left v2 ×2, right v2 ×2 (sacrificial layer in the cups); 07 ABS black — sled cross bars front + rear v2 (flat, lips up, diagonal); 08 ABS black — cable channel, splices ×2, hinge leaves 2 + 2, magnet bracket, magnet tab; 09 PETG black — bottom drawer quarter Q1; 10 PETG black — bottom drawer quarter Q2; 11 PETG black — bottom drawer quarter Q3; 12 PETG black — bottom drawer quarter Q4; 13 PETG black — column drawer v3 (floor down, diagonal, outer brim 5; ~24 h); 14 PETG black — mini-slot body (diagonal, outer brim 5) + sled front rests ×2 + hinge pins; 15 PETG black — tiles A2 — band2-LF + band1-LF; 16 PETG black — tiles B2 — band2-LR + band1-LR; 17 PETG black — tiles C2 — band3-LF + band3-LR; 18 PETG black — tiles D2 — band3-RF + band1-R; 19 PETG black — tiles E2 — band3-RR + band1-R; 20 PETG black — tile band2-RF + door set fixed rear tile v2; 21 PETG black — tile band2-RR + lighting board enclosure + lid; 22 PETG black — tile band4-LF (legs stand 19); 23 PETG black — tile band4-LR; 24 PETG black — door v3 (face down); 25 PETG black — top panel — four tiles standing (thin-part settings); 26 PETG dark grey + dark blue logo inlay — bottom drawer facia (standing, diagonal, thin-part settings); 27 PETG dark grey + natural window — sill panel (standing, diagonal, brim 5); 28 PETG dark grey — column facia + mini-slot facia (standing, thin-part settings); 29 PETG dark grey — sled front bar v3 (front face down, diagonal, outer brim 5); 30 PETG dark grey — rear box left half (floor down, outer brim 5); 31 PETG dark grey — rear box right half; 32 PETG dark blue — pull inserts bottom, column, mini v2 + sled-bar liner + upright caps ×4 (supports on, build plate only); 33 PETG any colour (hidden parts) — box braces ×2, strip brackets upper v2 + lower v5, sill blocks left v10 + right v4; 34 TPU blue 95A — frame feet ×4, AWG pads 2 + 2, sled stop caps ×2, slot covers ×6 (no brim, no support; dried, external spool); 35 JIG — any colour, any PETG or PLA — rail spacers 48, 63.5, 139.5, 159 ×2 each + the 3.0 web gauge; 36 JIG — any colour, any PETG or PLA — seating jigs PSU L, PSU R, AWG L, AWG R + AWG pad stand-ins ×4.
+Plate names in the project: 01 ABS+ black — sled T-feet ×2, beam halves ×4 (feet standing; outer brim 5); 02 ABS+ black — bottom drawer runner (1 of 2; leg top down, ironing on top); 03 ABS+ black — bottom drawer runner (2 of 2); 04 ABS+ black — column guide strips upper ×2 (rail face down, diagonal); 05 ABS+ black — column guide strips lower right + lower left short, mini-slot runner v3 (diagonal; ironing on the runner's top); 06 ABS black — cradles — PSU left v3 ×2, right rear v4, right front v5, AWG left v2 ×2 (sacrificial layer in the cups); 07 ABS black — sled cross bars front + rear v2 (flat, lips up, diagonal); 08 ABS black — AWG right cradles v2 ×2, cable channel, splices ×2, hinge leaves 2 + 2, magnet bracket, magnet tab; 09 PETG black — bottom drawer quarter Q1; 10 PETG black — bottom drawer quarter Q2; 11 PETG black — bottom drawer quarter Q3; 12 PETG black — bottom drawer quarter Q4; 13 PETG black — column drawer v3 (floor down, diagonal, outer brim 5; ~24 h); 14 PETG black — mini-slot body (diagonal, outer brim 5) + sled front rests ×2 + hinge pins; 15 PETG black — tiles A2 — band2-LF + band1-LF; 16 PETG black — tiles B2 — band2-LR + band1-LR; 17 PETG black — tiles C2 — band3-LF + band3-LR; 18 PETG black — tiles D2 — band3-RF + band1-R; 19 PETG black — tiles E2 — band3-RR + band1-R; 20 PETG black — tile band2-RF + door set fixed rear tile v2; 21 PETG black — tile band2-RR + lighting board enclosure + lid; 22 PETG black — tile band4-LF (legs stand 19); 23 PETG black — tile band4-LR; 24 PETG black — door v3 (face down); 25 PETG black — top panel — four tiles standing (thin-part settings); 26 PETG dark grey + dark blue logo inlay — bottom drawer facia (standing, diagonal, thin-part settings); 27 PETG dark grey + natural window — sill panel (standing, diagonal, brim 5); 28 PETG dark grey — column facia + mini-slot facia (standing, thin-part settings); 29 PETG dark grey — sled front bar v3 (front face down, diagonal, outer brim 5); 30 PETG dark grey — rear box left half (floor down, outer brim 5); 31 PETG dark grey — rear box right half; 32 PETG dark blue — pull inserts bottom, column, mini v2 + sled-bar liner + upright caps ×4 (supports on, build plate only); 33 PETG any colour (hidden parts) — box braces ×2, strip brackets upper v2 + lower v5, sill blocks left v10 + right v4; 34 TPU blue 95A — frame feet ×4, AWG pads 2 + 2, sled stop caps ×2, slot covers ×6 (no brim, no support; dried, external spool); 35 JIG — any colour, any PETG or PLA — rail spacers 48, 63.5, 139.5, 159 ×2 each + the 3.0 web gauge; 36 JIG — any colour, any PETG or PLA — seating jigs PSU L, PSU R, AWG L, AWG R + AWG pad stand-ins ×4.
 
 Hardware the plates need, from HANDOVER §10: 47 M5 × 10 button head (4 into the uprights' bores, no T-nut), 9 M5 × 10 countersunk, 2 M5 × 12, 54 drop-in T-nuts, M5 × 8 for the 8 cast brackets, 4 M3 × 10, 4 Ø10 × 2 magnets, the 8 mm button and its nut, CA glue.

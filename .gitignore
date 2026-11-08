@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 Claude outputs/
 .DS_Store
+publish/makerworld/SiglentTower-STLs.zip

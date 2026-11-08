@@ -104,27 +104,31 @@ def footprint(w, d, rot):
 def plates():
   return [
  ("01 ABS+ black — sled T-feet ×2, beam halves ×4 (feet standing; outer brim 5)",
-  [P("sled-foot-210.stl", 2, ext=1, **ABSP), P("sled-beam-left-front-v2.stl", ext=1, **ABSP), P("sled-beam-right-front-v2.stl", ext=1, **ABSP),
-   P("sled-beam-left-rear-v1.stl", ext=1, **ABSP), P("sled-beam-right-rear-v1.stl", ext=1, **ABSP)]),
- ("02 ABS+ black — bottom drawer runner (1 of 2; leg top down, ironing on top)", [P("drawer/drawer-runner-300-v1.stl", ext=1, **ABSP, **IRON)]),
- ("03 ABS+ black — bottom drawer runner (2 of 2)", [P("drawer/drawer-runner-300-v1.stl", ext=1, **ABSP, **IRON)]),
+  [P("sled-foot-210.stl", ext=1, at=(131.8, 37.1), **ABSP), P("sled-foot-210.stl", ext=1, at=(131.8, 54.1), **ABSP),           # positions as Gareth arranged
+   P("sled-beam-left-front-v2.stl", ext=1, at=(46.7, 163.0), **ABSP), P("sled-beam-right-front-v2.stl", ext=1, at=(125.2, 162.2), **ABSP),   # the plate in Studio, 2026-11-07
+   P("sled-beam-left-rear-v1.stl", ext=1, at=(185.4, 160.5), **ABSP), P("sled-beam-right-rear-v1.stl", ext=1, at=(229.1, 160.2), **ABSP)]),
+ ("02 ABS+ black — bottom drawer runner (1 of 2; leg top down, ironing on top)", [P("drawer/drawer-runner-300-v1.stl", ext=1, at=(129.9, 128.2), **ABSP, **IRON)]),
+ ("03 ABS+ black — bottom drawer runner (2 of 2)", [P("drawer/drawer-runner-300-v1.stl", ext=1, at=(133.9, 126.6), **ABSP, **IRON)]),
  ("04 ABS+ black — column guide strips upper ×2 (rail face down, diagonal)",
   diag(P("column/column-strip-upper-v1.stl", ext=1, **ABSP), P("column/column-strip-upper-v1.stl", ext=1, **ABSP))),
  ("05 ABS+ black — column guide strips lower right + lower left short, mini-slot runner v3 (diagonal; ironing on the runner's top)",
   diag(P("column/column-strip-lower-v1.stl", ext=1, **ABSP), P("mini/mini-slot-runner-v3.stl", ext=1, **ABSP, **IRON), P("column/column-strip-lower-short-v1.stl", ext=1, **ABSP), shift=(6, 6))),
- ("06 ABS black — cradles — PSU left v3 ×2, right rear v4, right front v5, AWG left v2 ×2, right v2 ×2 (sacrificial layer in the cups)",
-  [P("psu-cradle-v3.stl", 2, ext=3, **BRIM5), P("psu-cradle-right-v4.stl", ext=3, **BRIM5), P("psu-cradle-right-front-v5.stl", ext=3, **BRIM5),
-   P("awg-cradle-left-v2.stl", 2, ext=3, **BRIM5), P("awg-cradle-right-v2.stl", 2, ext=3, **BRIM5)]),
+ ("06 ABS black — cradles — PSU left v3 ×2, right rear v4, right front v5, AWG left v2 ×2 (sacrificial layer in the cups)",
+  [P("psu-cradle-v3.stl", ext=3, at=(148.0, 117.2), **BRIM5), P("psu-cradle-v3.stl", ext=3, at=(212.0, 117.2), **BRIM5),            # as arranged in Studio 2026-11-07
+   P("psu-cradle-right-v4.stl", ext=3, at=(84.0, 62.8), **BRIM5), P("psu-cradle-right-front-v5.stl", ext=3, at=(84.0, 195.2), **BRIM5),
+   P("awg-cradle-left-v2.stl", ext=3, at=(206.8, 187.0), **BRIM5), P("awg-cradle-left-v2.stl", ext=3, at=(206.8, 225.0), **BRIM5)]),
  ("07 ABS black — sled cross bars front + rear v2 (flat, lips up, diagonal)",
   diag(P("sled-cross-bar-front-v2.stl", ext=3, **BRIM5), P("sled-cross-bar-rear-v2.stl", ext=3, **BRIM5))),
- ("08 ABS black — cable channel, splices ×2, hinge leaves 2 + 2, magnet bracket, magnet tab",
-  [P("cable-channel-v1.stl", ext=3, **NOBRIM), P("sled-splice-v2.stl", 2, ext=3, **NOBRIM), P("hinge-door-v2.stl", 2, ext=3, **NOBRIM), P("hinge-frame-v2.stl", 2, ext=3, **NOBRIM),
-   P("door/magnet-bracket-front-v2.stl", ext=3, **NOBRIM), P("door/magnet-tab-rear-v2.stl", ext=3, **NOBRIM)]),
+ ("08 ABS black — AWG right cradles v2 ×2, cable channel, splices ×2, hinge leaves 2 + 2, magnet bracket, magnet tab",
+  [P("awg-cradle-right-v2.stl", ext=3, at=(63.3, 148.0), **BRIM5), P("awg-cradle-right-v2.stl", ext=3, at=(63.3, 212.0), **BRIM5),        # as arranged in Studio 2026-11-07
+   P("cable-channel-v1.stl", ext=3, at=(218.7, 165.5), **NOBRIM), P("sled-splice-v2.stl", ext=3, at=(119.2, 182.0), **NOBRIM), P("sled-splice-v2.stl", ext=3, at=(168.7, 182.0), **NOBRIM),
+   P("hinge-door-v2.stl", ext=3, at=(135.5, 46.0), **NOBRIM), P("hinge-door-v2.stl", ext=3, at=(178.5, 46.0), **NOBRIM), P("hinge-frame-v2.stl", ext=3, at=(60.0, 45.0), **NOBRIM), P("hinge-frame-v2.stl", ext=3, at=(96.0, 45.0), **NOBRIM),
+   P("door/magnet-bracket-front-v2.stl", ext=3, at=(222.0, 56.0), **NOBRIM), P("door/magnet-tab-rear-v2.stl", ext=3, at=(78.9, 89.6), **NOBRIM)]),
  ("09 PETG black — bottom drawer quarter Q1", [P("drawer/drawer-Q1-v1.stl")]),
  ("10 PETG black — bottom drawer quarter Q2", [P("drawer/drawer-Q2-v1.stl")]),
  ("11 PETG black — bottom drawer quarter Q3", [P("drawer/drawer-Q3-v1.stl")]),
  ("12 PETG black — bottom drawer quarter Q4", [P("drawer/drawer-Q4-v1.stl")]),
- ("13 PETG black — column drawer v3 (floor down, diagonal, outer brim 5; ~24 h)", diag(P("column/column-drawer-v3.stl", **BRIM5))),
+ ("13 PETG black — column drawer v3 (floor down, diagonal, outer brim 5; ~24 h)", diag(P("column/column-drawer-v3.stl", **BRIM5), shift=(-1.7, 4.4))),
  ("14 PETG black — mini-slot body (diagonal, outer brim 5) + sled front rests ×2 + hinge pins",
   diag(P("mini/mini-slot-body-v1.stl", **BRIM5)) + [P("sled-front-rest-v2-gap3.0.stl", at=(40, 42)), P("sled-front-rest-v2-gap3.0.stl", at=(72, 42)), P("door/hinge-pins-v1.stl", at=(40, 78))]),
  ("15 PETG black — tiles A2 — band2-LF + band1-LF", [P("tiles/tile-band2-LF-v2.stl"), P("tiles/tile-band1-LF-v2.stl")]),
@@ -199,6 +203,8 @@ def build():
         project_settings = z.read("Metadata/project_settings.config")
     ps = json.loads(project_settings)
     assert ps.get("print_settings_id") == "SiglentTower fit 0.20", "template is not on the SiglentTower profile"
+    ps["skirt_loops"] = "0"           # the column drawer's 247 mm diagonal leaves no room for a skirt (Gareth, 2026-11-07); every part that needs first-layer help has its brim
+    project_settings = json.dumps(ps, indent=4).encode()
     today = datetime.date.today().isoformat()
     PLATES = plates()
     assert len(PLATES) <= 36, "Bambu Studio allows at most 36 plates (MAX_PLATES_COUNT) — a 37th crashes it on load (2026-11-07)"
@@ -221,8 +227,9 @@ def build():
         inst_xml = []
         for it in placed:
             cx, cy = it["x"] + it["w"] / 2, it["y"] + it["d"] / 2
-            assert MARGIN - 0.01 <= it["x"] and it["x"] + it["w"] <= BED - MARGIN + 0.01 and MARGIN - 0.01 <= it["y"] and it["y"] + it["d"] <= BED - MARGIN + 0.01, (pname, it["name"])
-            assert it["x"] >= EXCLUDE[0] or it["y"] >= EXCLUDE[1] or it["rot"] % 90, ("in the exclusion corner", pname, it["name"])
+            m = 0 if it["at"] else MARGIN                 # a position placed in Studio only has to be on the bed
+            assert m - 0.01 <= it["x"] and it["x"] + it["w"] <= BED - m + 0.01 and m - 0.01 <= it["y"] and it["y"] + it["d"] <= BED - m + 0.01, (pname, it["name"])
+            assert it["x"] >= EXCLUDE[0] or it["y"] >= EXCLUDE[1] or it["rot"] % 90 or it["at"], ("in the exclusion corner", pname, it["name"])   # an explicit position was placed in Studio
             obj_id += 1; oid = obj_id
             objects.append(dict(id=oid, it=it, plate=pi + 1))
             a = math.radians(it["rot"]); c, s = math.cos(a), math.sin(a)
@@ -282,6 +289,7 @@ def write_plan(rows, today, PLATES):
              "One Bambu Studio project with every printed part of the tower, one plate per print, in filament order; the jigs last. Made by `src/publish_3mf.py` from the fitted STLs in `parts/` (and `jigs/`, `coupons/spacers/`); re-run it after any part changes. Print profile `SiglentTower fit 0.20` on every plate (ROADMAP §2 has the settings). Coupons are not in it.",
              "", "**Filament slots** (the project has five; set your own spools against them): 1 black ABS+ (eSUN — the sliding pairs and long thin bars), 2 dark blue PETG (the accents; it also stands in for the clear window on plate 28), 3 black ABS, 4 PETG in the colour the plate name says (black, dark grey, white, yellow — any PETG profile), 5 blue TPU 95A.",
              "", "**One material per plate** (Gareth, 2026-11-06): no plate mixes filaments, so no purge tower — except the two objects that are two-colour by design, each on its own plate: the bottom facia with its logo inlay (26) and the sill panel with its clear window (27).",
+             "", "**Skirt loops 0 in the profile** (plate 13's column drawer leaves no room for one; the brims do that job).",
              "", "**Settings that are in the file, per object:** outer brim 5 mm with 0.1 gap on every ABS+ and ABS part that had one; outer brim 15 mm, gap 0 and outer wall 60 mm/s on the thin standing parts (the three facias and the four top tiles); ironing on the top surfaces of the runners; no brim and no support on the TPU; 2 walls and 15 % infill on the jigs.",
              "**Settings that are NOT in the file** (filament- or plate-level — set them when you slice): dry ABS+ and TPU first; ABS and ABS+ with the door closed; the thin-part plates (25, 26, 27, 28) with the skirt off, bed 80 °C, part fan 30 % max; the cradle plate (06) and the runner plates (02, 03, 05) with Quality → Bridge counterbore holes → Sacrificial layer; TPU from the external spool holder with the Generic TPU preset.",
              "", "| Plate | Object | Turned | Centre x, y | Slot | Per-object settings |", "|---|---|---|---|---|---|"]
