@@ -51,13 +51,15 @@ The CAD, the check scripts, the sheets and the paperwork were written by Claude 
 
 | Path | What it is |
 |---|---|
-| [`HANDOVER.md`](HANDOVER.md) | **Start here.** The tower as built: every level, part, clearance and decision, with a parts index of every STL fitted |
+| [`docs/BUILD-GUIDE.md`](docs/BUILD-GUIDE.md) | **Building one? Start here.** Shopping list, tools, cut sheet, what to print, then the build in order — frame, measuring your frame, cradles, drawers, sled and box, skin, trim, lighting — every step numbered with its check, and a symptom → fix table |
+| [`HANDOVER.md`](HANDOVER.md) | **The record.** The tower as built: every level, part, clearance and decision, with a parts index of every STL fitted |
 | [`ROADMAP.md`](ROADMAP.md) | The build log: stages, print jobs, what failed and what replaced it, decisions D1–D15, coupon results |
 | [`PRINT-RULES.md`](PRINT-RULES.md) | The print rules and the design-for-print review of every part |
 | [`CUT-TABLE.md`](CUT-TABLE.md) | The extrusion cut sheet, by jig setting |
 | `src/fit.py` | Every tuned clearance and measured dimension, with the coupon that set it |
 | `src/parts/*.py` | One CadQuery script per part; `python src/parts/<part>.py` exports its STL(s) and runs the print check |
 | `src/*_check.py` | The boolean proofs: parts against the frame and each other |
+| `docs/build-guide/` | The build guide's own diagrams (the frame flat on the bench, the drawer quarters' order, the sled's order), drawn by `src/build_guide_sheets.py` |
 | `parts/` | The exported STLs and the check sheets (PNG), by area: `drawer/`, `column/`, `mini/`, `door/`, `tiles/`, `top/`, `sill/`, `inserts/`, `tpu/`, `wiring/` |
 | `coupons/`, `jigs/` | The nine coupons and the assembly jigs (rail spacers, seating jigs) |
 | `bambu/` | Bambu Studio projects for the plates that were printed, one a night |
@@ -69,12 +71,14 @@ The CAD, the check scripts, the sheets and the paperwork were written by Claude 
 
 ## Building one
 
-1. Read [`HANDOVER.md`](HANDOVER.md) §1–§9 for what the tower is, then §10 for the parts index: every STL, its material, its orientation and the hardware it takes.
-2. Cut the extrusion from [`CUT-TABLE.md`](CUT-TABLE.md); the rail heights come from the printed spacers at assembly, not from the cuts.
-3. Print the 36 plates of `publish/SiglentTower-complete.3mf` in order — they are grouped by filament, with the `SiglentTower fit 0.20` profile described in [`ROADMAP.md`](ROADMAP.md) §2 on every plate and the few settings the file cannot carry listed in `publish/PLATES.md`. TPU prints once, last.
-4. Assemble per the frame viewer and the sheets under `parts/`; wire the lighting from `parts/wiring/wiring-4-connections.png`.
+Follow [`docs/BUILD-GUIDE.md`](docs/BUILD-GUIDE.md). In short:
 
-A step-by-step build guide and a write-up are the remaining close-out items (ROADMAP Stage 9).
+1. Cut the extrusion from [`CUT-TABLE.md`](CUT-TABLE.md); the rail heights come from the printed spacers at assembly, not from the cuts.
+2. Print the 36 plates of `publish/SiglentTower-complete.3mf` in order — jigs first, TPU once, last — with the few settings the file cannot carry from `publish/PLATES.md`.
+3. Build the frame flat, one side at a time, from the guide and [`frame-assembly-3d.html`](frame-assembly-3d.html); then **measure it** — the side tiles, sill panel and top panel are re-exported to your rail gaps before they print.
+4. Cradles, drawers, sled and box, skin, trim, lighting, each with its check sheet under `parts/`.
+
+[`HANDOVER.md`](HANDOVER.md) has the why behind every number. The write-up is the remaining close-out item (ROADMAP Stage 9).
 
 ## Running the scripts
 

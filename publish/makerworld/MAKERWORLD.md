@@ -71,7 +71,7 @@ Frame 362 × 350 × 510 mm (525 on its feet with the caps), black 2020, 8 × 1 m
 
 ### Build order
 
-Each side of the frame is built flat on the bench with all five of its rails at once, the heights set by the printed spacers and a sled foot already in each scope rail; then the two sides are joined with the rear cross rails and the inner sub-frame slides in from the front. Then: cradles (the seating jigs set them front-to-back), the instruments, the drawers, the sled and its box, the skin, the trim (feet, covers, caps, sill, brackets), the lighting. The repository's `HANDOVER.md` has every level and every part; the `parts/` sheets show each assembly.
+Each side of the frame is built flat on the bench with all five of its rails at once, the heights set by the printed spacers and a sled foot already in each scope rail; then the two sides are joined with the rear cross rails and the inner sub-frame slides in from the front. Then: cradles (the seating jigs set them front-to-back), the instruments, the drawers, the sled and its box, the skin, the trim (feet, covers, caps, sill, brackets), the lighting. The repository's `docs/BUILD-GUIDE.md` is the step-by-step — every step numbered with its check, and a "measure your frame" chapter before the tiles print; `HANDOVER.md` has every level and every part; the `parts/` sheets show each assembly.
 
 ### How it was designed
 
@@ -82,6 +82,7 @@ Claude did the CAD, the proofs and the paperwork — Claude's Cowork for the des
 ### Links
 
 - Repository (scripts, STLs, sheets, the as-built record): https://github.com/GarethCooke/SiglentTower
+- The build guide — shopping list, cut sheet, what to print, then every step with its check: https://github.com/GarethCooke/SiglentTower/blob/main/docs/BUILD-GUIDE.md
 - Project page with photos and the interactive 3D model (drag to rotate; sliders move the drawers, sled, box and door): https://garethcooke.com/projects/siglenttower
 - Licence: design, documents and media CC BY 4.0; code MIT.
 
