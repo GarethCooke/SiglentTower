@@ -5,7 +5,8 @@ Everything the listing needs is in this folder and in `publish/SiglentTower-comp
 ## Before uploading
 
 1. Slice every plate of `publish/SiglentTower-complete.3mf` in Bambu Studio (Slice all plates) with your real filaments against the five slots — MakerWorld only accepts a print profile whose plates are sliced. Slot 1 black ABS+, 2 dark blue PETG, 3 black ABS, 4 the PETG the plate name says, 5 TPU 95A.
-2. Upload from Bambu Studio (File → Upload to MakerWorld) so the project and the sliced profile go together, or from the website with the .3mf as the model file.
+2. The clip in `video/` is the 360 × 480 copy that came through chat. If you have the phone's original, drop it in `video/` and rebuild with `ffmpeg -i <original> -an -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p -movflags +faststart video/access-sequence.mp4` (rotation is applied automatically) — same name, so the listing and the README GIF do not change.
+3. Upload from Bambu Studio (File → Upload to MakerWorld) so the project and the sliced profile go together, or from the website with the .3mf as the model file.
 
 ## The form
 
@@ -16,6 +17,7 @@ Everything the listing needs is in this folder and in `publish/SiglentTower-comp
 | Description | → Description, the whole section |
 | Model files | `publish/SiglentTower-complete.3mf` (every mesh is in it; add the `parts/` STLs as well if you want them downloadable one by one — `publish/makerworld/make-stl-zip.cmd` builds the zip) |
 | Print profile | the sliced project from step 1, profile name `SiglentTower fit 0.20` |
+| Video | `video/access-sequence.mp4` (16 s, silent: button, sled out, door down, box out) — upload it first in the gallery so it is the hero; `video/access-sequence-poster.jpg` if a cover frame is asked for |
 | Cover image | `photos/tower-front.jpg` |
 | Gallery, in this order | `photos/tower-lit.jpg`, `photos/sled-out.jpg`, `photos/box-out.jpg`, `photos/drawers.jpg`, `photos/board.jpg`, `diagrams/layout-as-built.png`, `diagrams/drawer-quarters-plan.png`, `diagrams/door-plan.png`, `diagrams/skin-sheet.png`, `diagrams/wiring-4-connections.png`, `diagrams/plates-sheet.png` |
 | Licence | CC BY 4.0 (matches `LICENSE-DESIGN.md`) |
@@ -24,6 +26,8 @@ Everything the listing needs is in this folder and in `publish/SiglentTower-comp
 | Print settings notes | → Print notes |
 
 ## Captions for the gallery
+
+- access-sequence (video) — The access sequence: lights on, scope forward on its sled, door down, the storage box out sideways.
 
 - tower-front — The finished tower: scope on its sled at the top, AWG and PSU below, three drawers, the logo on the bottom drawer.
 - tower-lit — The backlight on: light through the hex tiles and at the sill button.

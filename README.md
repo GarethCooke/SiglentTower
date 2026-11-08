@@ -12,6 +12,10 @@
   <img src="docs/photos/box-out.webp" alt="The rear storage box drawn out sideways through the door" width="31%">
 </p>
 
+<p align="center">
+  <img src="docs/photos/access-sequence.gif" alt="The access sequence: lights on, the scope forward on its sled, the door down, the storage box out sideways" width="240">
+</p>
+
 ## What it is
 
 Three Siglent instruments — SDS1104X-E scope, SDG2082X AWG, SPD3303X-E PSU — stacked on a bench 350 mm wide with shelves directly above and 60 mm free behind. Nothing can be lifted out, so everything comes out forwards or sideways:
