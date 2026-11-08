@@ -2,6 +2,8 @@
 
 **A bench tower for three Siglent instruments: a 2020-extrusion frame with 103 3D-printed parts, designed in CadQuery, proven by boolean intersection before printing, and built in seven weeks on a Bambu X1C.**
 
+On MakerWorld as [SiglentTower](https://makerworld.com/en/models/3573243-siglenttower) (the complete .3mf with its sliced print profile) · project page with the 3D model: [garethcooke.com/projects/siglenttower](https://garethcooke.com/projects/siglenttower) · how to build one: [`docs/BUILD-GUIDE.md`](docs/BUILD-GUIDE.md)
+
 <p align="center">
   <img src="docs/photos/tower-front.jpg" alt="The finished tower from the front: scope on top, AWG and PSU below, three drawers, the IguanaWare iguana on the bottom drawer" width="520">
 </p>
@@ -52,6 +54,7 @@ The CAD, the check scripts, the sheets and the paperwork were written by Claude 
 | Path | What it is |
 |---|---|
 | [`docs/BUILD-GUIDE.md`](docs/BUILD-GUIDE.md) | **Building one? Start here.** Shopping list, tools, cut sheet, what to print, then the build in order — frame, measuring your frame, cradles, drawers, sled and box, skin, trim, lighting — every step numbered with its check, and a symptom → fix table |
+| [`docs/WRITE-UP.md`](docs/WRITE-UP.md) | **The story.** Why the tower is the shape it is: the bench, the level stack, the sled and box, the four-quarter drawer, the vent-channel slot, the coupons, the print rules, what went wrong — draft for garethcooke.com |
 | [`HANDOVER.md`](HANDOVER.md) | **The record.** The tower as built: every level, part, clearance and decision, with a parts index of every STL fitted |
 | [`ROADMAP.md`](ROADMAP.md) | The build log: stages, print jobs, what failed and what replaced it, decisions D1–D15, coupon results |
 | [`PRINT-RULES.md`](PRINT-RULES.md) | The print rules and the design-for-print review of every part |

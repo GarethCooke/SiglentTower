@@ -71,6 +71,8 @@ Hinge pins are printed (`hinge-pins-v1`) — nothing to buy.
 
 ### Filament (±30 %)
 
+As on the [MakerWorld listing](https://makerworld.com/en/models/3573243-siglenttower), which also carries the complete .3mf with its sliced print profile.
+
 | Filament | Prints | Roughly |
 |---|---|---|
 | Black ABS+ — **one spool, reserved**, dried | the sliding pairs and long bars: sled T-feet and beam halves, drawer runners, column guide strips, mini-slot runner | 0.4 kg |
