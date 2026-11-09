@@ -14,7 +14,7 @@ Those four facts decided most of the design before anything was drawn. The shelv
 
 The tower is 361 × 350 mm in plan and 510 mm tall before its feet and top panel, and it carries 13.5–13.9 kg of instruments. My printer's bed is 256 mm. A printed enclosure was out on both counts, so the structure is black 2020 aluminium extrusion — eight 1 m bars and a pack of four 300 mm ones, cut to length on a jig — and every interface on it is printed: cradles that seat the power supply's feet and the waveform generator's pads, three drawers on printed runners, a sled for the scope, a clip-on skin of hex-perforated tiles, a top panel, a fold-down door, feet.
 
-The split paid for itself twice. When seating the instruments showed three cradle clashes at once, the fix was six reprinted cradles and nothing else moved. When the lighting changed controller late in the build, nothing in the frame or the cut sheet changed either. The extrusion takes the load; the printed parts take every fit; a fit can be wrong without the structure being wrong.
+Keeping the structure and the fits in different materials paid off twice. When the instruments first went in, three printed cradles clashed with them at once; the fix was six reprinted cradles, and the frame was not touched. Late in the build the lighting moved from a D1 mini running WLED to my own firmware on a XIAO ESP32-S3, with a new board and a new enclosure; again nothing in the frame or the cut sheet changed. The extrusion carries the weight and the printed parts carry every fit, so a fit can be wrong without the structure being wrong.
 
 ![Front and side elevations, plan and levels, as built](../bench-stack-layout-v16.svg)
 
