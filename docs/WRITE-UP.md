@@ -1,6 +1,6 @@
 # SiglentTower — the build
 
-*Draft for Gareth's edit, 2026-11-08. The long-form story for garethcooke.com: how the tower came to be the shape it is, what the method was, what went wrong, and what stands on the bench. Written from [`ROADMAP.md`](../ROADMAP.md), [`HANDOVER.md`](../HANDOVER.md) and [`PRINT-RULES.md`](../PRINT-RULES.md); every number is theirs. First person is Gareth throughout. The [MakerWorld description](../publish/makerworld/MAKERWORLD.md) is a cut-down of this; [`BUILD-GUIDE.md`](BUILD-GUIDE.md) is the how-to.*
+*The long-form story, rendered at [garethcooke.com/siglenttower/build](https://garethcooke.com/siglenttower/build) (drafted 2026-11-08, live 2026-11-09): how the tower came to be the shape it is, what the method was, what went wrong, and what stands on the bench. Written from [`ROADMAP.md`](../ROADMAP.md), [`HANDOVER.md`](../HANDOVER.md) and [`PRINT-RULES.md`](../PRINT-RULES.md); every number is theirs. First person is Gareth throughout. The [MakerWorld description](../publish/makerworld/MAKERWORLD.md) is a cut-down of this; [`BUILD-GUIDE.md`](BUILD-GUIDE.md) is the how-to.*
 
 ![The finished tower from the front](photos/tower-front.jpg)
 
